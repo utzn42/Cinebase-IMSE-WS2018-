@@ -1,18 +1,20 @@
 package SQLHandling;
 
+import java.net.ConnectException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionHandler {
-    private static String databaseURL = "jdbc:mysql://localhost/kino" + "&useSSL=true" + "&requireSSL=true";
+    private static String databaseURL = "jdbc:mysql://localhost/kino"; //+ "&useSSL=true" + "&requireSSL=true"; //causes unknown database error
+    private static Connection conn;
 
-    public static boolean connect() {
+    public static Connection connect() throws ConnectException {
         try {
-            Connection conn = DriverManager.getConnection(databaseURL, LoginDataProvider.user, LoginDataProvider.pass);
+            conn = DriverManager.getConnection(databaseURL, LoginDataProvider.user, LoginDataProvider.pass);
         } catch (SQLException e) {
-            return false;
+            throw new ConnectException();
         }
-        return true;
+        return conn;
     }
 }

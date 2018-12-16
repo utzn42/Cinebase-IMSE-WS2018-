@@ -7,13 +7,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.ConnectException;
+import java.sql.Connection;
 
 public class KinoJDBC_LoginFrame {
     public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
     public static int height = screenSize.height / 4;
     public static int width = screenSize.width / 4;
     static JFrame frame = new JFrame("Kino JDBC");
-
+    private static Connection conn;
     private JPanel loginPanel;
     private JTextField userNameTextField;
     private JLabel userNameLabel;
@@ -27,12 +29,16 @@ public class KinoJDBC_LoginFrame {
                 String pass = new String(passwordField1.getPassword());
                 int passHash = pass.hashCode();
                 if (userNameTextField.getText().hashCode() == LoginDataProvider.getUserHash() && passHash == LoginDataProvider.getPassHash()) {
-                    ConnectionHandler.connect();
-                    frame.setVisible(false);
-                    new KinoJDBC_MainWindow().frame.setVisible(true);
-
-                } else
+                    try {
+                        conn = ConnectionHandler.connect();
+                        frame.setVisible(false);
+                        new KinoJDBC_MainWindow(conn).frame.setVisible(true);
+                    } catch (ConnectException ce) {
+                        JOptionPane.showMessageDialog(null, "Invalid database URL.");
+                    }
+                } else {
                     JOptionPane.showMessageDialog(null, "Wrong username/password combination");
+                }
             }
         });
     }

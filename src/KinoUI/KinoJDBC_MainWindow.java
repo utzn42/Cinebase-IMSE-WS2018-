@@ -1,17 +1,36 @@
 package KinoUI;
 
+import SQLHandling.SQLScriptLoader;
+
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.sql.Connection;
 
 public class KinoJDBC_MainWindow {
+    JFrame frame = new JFrame("Kino JDBC");
+    private Connection conn;
     private JButton loadSQLScriptCreateButton;
     private JButton manualDataEntryButton;
     private JButton dropTablesButton;
     private JPanel mainPanel;
-    JFrame frame = new JFrame("Kino JDBC");
 
-    public KinoJDBC_MainWindow() {
+    public KinoJDBC_MainWindow(final Connection conn) {
+        this.conn = conn;
         run();
+        loadSQLScriptCreateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SQLScriptLoader.performLoadScript(conn);
+            }
+        });
+        dropTablesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                SQLScriptLoader.performLoadScript(conn);
+            }
+        });
     }
 
     public void run() {
