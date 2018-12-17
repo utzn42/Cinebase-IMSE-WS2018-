@@ -1,13 +1,11 @@
 package extras;
 
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.File;
 
 public class FilePicker {
 
-    public static String pickv1() {                                                                                     //"schirches" UI
+    /*public static String pickv1() {                                                                                     //"schirches" UI
         JFileChooser chooser = new JFileChooser();
         FileNameExtensionFilter filter = new FileNameExtensionFilter(
                 "SQL Files", "sql");
@@ -19,7 +17,7 @@ public class FilePicker {
             return chooser.getSelectedFile().getAbsolutePath();
         }
         return null;
-    }
+    }*/
 
     public static String pickv2() {
         FileDialog dialog = new FileDialog((Frame) null, "Select File to Open");

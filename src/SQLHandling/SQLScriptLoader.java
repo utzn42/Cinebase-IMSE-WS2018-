@@ -20,8 +20,6 @@ public class SQLScriptLoader {
             file.replace("\\", "\\\\");                                                               //avoid backslash escape character
         }
 
-        //createFile = FilePicker.pickv2();
-
         StringBuilder res = new StringBuilder();
         Statement create_stmt = conn.createStatement();
 
