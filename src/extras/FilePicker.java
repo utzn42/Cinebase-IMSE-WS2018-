@@ -2,6 +2,8 @@ package extras;
 
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
+import java.awt.*;
+import java.io.File;
 
 public class FilePicker {
 
@@ -20,6 +22,11 @@ public class FilePicker {
     }
 
     public static String pickv2() {
-        return null;
+        FileDialog dialog = new FileDialog((Frame) null, "Select File to Open");
+        dialog.setMode(FileDialog.LOAD);
+        dialog.setVisible(true);
+        String file = new File(dialog.getFile()).getAbsolutePath();
+        System.out.println(file + " chosen.");
+        return file;
     }
 }

@@ -13,16 +13,19 @@ import java.sql.Statement;
 
 public class SQLScriptLoader {
 
-    public static void loadScript(Connection conn) throws IOException, SQLException {
+    public static void loadScript(Connection conn, String file) throws IOException, SQLException {
 
-        String createFile = FilePicker.pickv1();
+        if (file == null) {
+            file = FilePicker.pickv2();
+            file.replace("\\", "\\\\");                                                               //avoid backslash escape character
+        }
 
         //createFile = FilePicker.pickv2();
 
         StringBuilder res = new StringBuilder();
         Statement create_stmt = conn.createStatement();
 
-        FileReader fr = new FileReader(new File(createFile));
+        FileReader fr = new FileReader(new File(file));
         BufferedReader br = new BufferedReader(fr);
         int j = 0;
         while (j <= 1000) {
@@ -44,12 +47,12 @@ public class SQLScriptLoader {
         create_stmt.close();
     }
 
-    public static void performLoadScript(Connection conn) {
+    public static void performLoadScript(Connection conn, String file) {
         try {
-            SQLScriptLoader.loadScript(conn);
-        } catch (IOException e1) {
+            SQLScriptLoader.loadScript(conn, file);
+        } catch (IOException ioe) {
             JOptionPane.showMessageDialog(null, "Error while loading file.");
-        } catch (SQLException e1) {
+        } catch (SQLException sqle) {
             JOptionPane.showMessageDialog(null, "Error in SQL statement.");
         }
     }
