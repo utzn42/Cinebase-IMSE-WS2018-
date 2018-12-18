@@ -1,0 +1,186 @@
+body {
+  background-color: rgb(49, 51, 53);
+}
+
+.topLine {
+  margin: auto;
+  width: 900px;
+  padding: 10px;
+  color: #b45c01;
+  font-family: Comfortaa, serif;
+  font-size: 30px;
+  font-weight: bold;
+}
+
+.buttonBig {
+  background-color: #001a66;
+  border: none;
+  color: #f2eeff;
+  padding: 15px 25px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Trebuchet MS", serif;
+}
+
+.buttonBig:hover {
+  background-color: #f2eeff;
+  color: cadetblue;
+}
+
+.buttonLogin {
+  margin-left: 20px;
+  background-color: #0a4800;
+  border: none;
+  color: #f2eeff;
+  padding: 15px 25px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Trebuchet MS", serif;
+}
+
+.buttonLogin:hover {
+  background-color: #f2eeff;
+  color: cadetblue;
+}
+
+.buttonRegister {
+  background-color: #b45c01;
+  border: none;
+  color: #f2eeff;
+  padding: 15px 25px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Trebuchet MS", serif;
+}
+
+.buttonRegister:hover {
+  background-color: #f2eeff;
+  color: cadetblue;
+}
+
+/*Start of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp*/
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed; /* Stay in place */
+  z-index: 1; /* Sit on top */
+  left: 0;
+  top: 0;
+  width: 100%; /* Full width */
+  height: 100%; /* Full height */
+  overflow: auto; /* Enable scroll if needed */
+  background-color: rgb(0, 0, 0); /* Fallback color */
+  background-color: rgba(0, 0, 0, 0.4); /* Black w/ opacity */
+  padding-top: 60px;
+}
+
+/* Modal Content/Box */
+.modal-content {
+  background-color: #fefefe;
+  margin: 5px auto; /* 15% from the top and centered */
+  border: 1px solid #888;
+  width: 80%; /* Could be more or less, depending on screen size */
+}
+
+/* The Close Button */
+.close {
+  /* Position it in the top right corner outside of the modal */
+  position: absolute;
+  right: 25px;
+  top: 0;
+  color: #000;
+  font-size: 35px;
+  font-weight: bold;
+}
+
+/* Close button on hover */
+.close:hover,
+.close:focus {
+  color: red;
+  cursor: pointer;
+}
+
+/* Add Zoom Animation */
+.animate {
+  -webkit-animation: animatezoom 0.6s;
+  animation: animatezoom 0.6s
+}
+
+@-webkit-keyframes animatezoom {
+  from {
+    -webkit-transform: scale(0)
+  }
+  to {
+    -webkit-transform: scale(1)
+  }
+}
+
+@keyframes animatezoom {
+  from {
+    transform: scale(0)
+  }
+  to {
+    transform: scale(1)
+  }
+}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+/* Set a style for all buttons */
+.buttonLoginModal {
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+}
+
+.buttonLoginModal:hover {
+  opacity: 0.8;
+}
+
+/* Extra styles for the cancel button */
+.cancelbtn {
+  color: white;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: auto;
+  padding: 10px 18px;
+  background-color: #f44336;
+}
+
+/* Center the image and position the close button */
+.imgcontainer {
+  text-align: center;
+  margin: 24px 0 12px 0;
+  position: relative;
+}
+
+img.avatar {
+  width: 40%;
+  border-radius: 50%;
+}
+
+.container {
+  padding: 16px;
+}
+
+span.psw {
+  float: right;
+  padding-top: 16px;
+}
+
+/*End of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp*/
