@@ -1,7 +1,6 @@
 package extras;
 
 import java.awt.*;
-import java.io.File;
 
 public class FilePicker {
 
@@ -23,7 +22,8 @@ public class FilePicker {
         FileDialog dialog = new FileDialog((Frame) null, "Select File to Open");
         dialog.setMode(FileDialog.LOAD);
         dialog.setVisible(true);
-        String file = new File(dialog.getFile()).getAbsolutePath();
+        String file = dialog.getDirectory() + dialog.getFile();
+        ;
         System.out.println(file + " chosen.");
         return file;
     }

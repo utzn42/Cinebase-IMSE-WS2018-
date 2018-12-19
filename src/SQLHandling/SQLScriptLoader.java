@@ -4,7 +4,6 @@ import extras.FilePicker;
 
 import javax.swing.*;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.sql.Connection;
@@ -23,12 +22,10 @@ public class SQLScriptLoader {
         StringBuilder res = new StringBuilder();
         Statement create_stmt = conn.createStatement();
 
-        FileReader fr = new FileReader(new File(file));
-        BufferedReader br = new BufferedReader(fr);
-        int j = 0;
-        while (j <= 1000) {
-            res.append(br.readLine());
-            j++;
+        BufferedReader br = new BufferedReader(new FileReader(file));
+        String line;
+        while ((line = br.readLine()) != null) {
+            res.append(line);
         }
 
         br.close();
@@ -48,10 +45,13 @@ public class SQLScriptLoader {
     public static void performLoadScript(Connection conn, String file) {
         try {
             SQLScriptLoader.loadScript(conn, file);
+            JOptionPane.showMessageDialog(null, "Success!");
         } catch (IOException ioe) {
             JOptionPane.showMessageDialog(null, "Error while loading file.");
+            System.out.println(ioe.getMessage());
         } catch (SQLException sqle) {
             JOptionPane.showMessageDialog(null, "Error in SQL statement.");
+            System.out.println(sqle.getMessage());
         }
     }
 }

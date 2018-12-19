@@ -29,13 +29,13 @@ public class KinoJDBC_MainWindow {
         dropTablesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SQLScriptLoader.performLoadScript(conn, "C:\\Users\\utzn\\Google Drive\\Uni Wien\\WS 2018-19\\ISE\\Projekt\\Kino_JDBC\\01220194_SCHWEIGER_DBS\\01220194_SCHWEIGER_drop.sql");
+                SQLScriptLoader.performLoadScript(conn, "C:\\Users\\utzn\\Google Drive\\Uni Wien\\WS 2018-19\\ISE\\Projekt\\Kino_JDBC\\oliver_dbs\\01220194_SCHWEIGER_drop.sql");
             }
         });
         createTablesButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                SQLScriptLoader.performLoadScript(conn, "C:\\Users\\utzn\\Google Drive\\Uni Wien\\WS 2018-19\\ISE\\Projekt\\Kino_JDBC\\01220194_SCHWEIGER_DBS\\01220194_SCHWEIGER_create.sql");
+                SQLScriptLoader.performLoadScript(conn, "C:\\Users\\utzn\\Google Drive\\Uni Wien\\WS 2018-19\\ISE\\Projekt\\Kino_JDBC\\oliver_dbs\\01220194_SCHWEIGER_create.sql");
             }
         });
     }
