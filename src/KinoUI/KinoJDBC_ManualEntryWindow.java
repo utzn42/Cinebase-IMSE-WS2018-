@@ -1,11 +1,14 @@
 package KinoUI;
 
-import extras.Window;
+import Extras.Window;
 
 import javax.swing.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 
 public class KinoJDBC_ManualEntryWindow extends Window {
+    private Connection conn;
     private JPanel manualEntryPanel;
     private JLabel tableSelectLabel;
     private JButton programmButton;
@@ -17,9 +20,18 @@ public class KinoJDBC_ManualEntryWindow extends Window {
     private JButton ticketButton;
     private JButton mitarbeiterButton;
     private JButton aufsichtButton;
+    private JButton backButton;
 
-    public KinoJDBC_ManualEntryWindow(Connection conn) {
+    public KinoJDBC_ManualEntryWindow(final Connection conn) {
         run(manualEntryPanel);
+
+        backButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false);
+                new KinoJDBC_MainWindow(conn).frame.setVisible(true);
+            }
+        });
     }
 
 }

@@ -1,6 +1,6 @@
 package SQLHandling;
 
-import extras.FilePicker;
+import Extras.FilePicker;
 
 import javax.swing.*;
 import java.io.BufferedReader;

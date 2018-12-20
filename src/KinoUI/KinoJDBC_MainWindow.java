@@ -1,7 +1,7 @@
 package KinoUI;
 
+import Extras.Window;
 import SQLHandling.SQLScriptLoader;
-import extras.Window;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -45,14 +45,4 @@ public class KinoJDBC_MainWindow extends Window {
             }
         });
     }
-
-    /*public void run() {
-        frame.setPreferredSize(new Dimension(KinoJDBC_LoginFrame.width, KinoJDBC_LoginFrame.height));
-        frame.pack();
-        frame.setLocationRelativeTo(null);
-        frame.setContentPane(mainPanel);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
-    }*/
 }

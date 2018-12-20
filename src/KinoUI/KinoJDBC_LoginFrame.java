@@ -1,8 +1,8 @@
 package KinoUI;
 
+import Extras.Window;
 import SQLHandling.ConnectionHandler;
 import SQLHandling.LoginDataProvider;
-import extras.Window;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,11 +12,8 @@ import java.net.ConnectException;
 import java.sql.Connection;
 
 public class KinoJDBC_LoginFrame extends Window {
-    public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    public static int width = screenSize.width / 4;
-    public static int height = screenSize.height / 4;
-    private static JFrame frame = new JFrame("KinoJDBC");
     private static Connection conn;
+    public static JFrame frame = new JFrame("Kino JDBC");
     private JPanel loginPanel;
     private JTextField userNameTextField;
     private JLabel userNameLabel;
@@ -45,7 +42,9 @@ public class KinoJDBC_LoginFrame extends Window {
     }
 
     public static void main(String[] args) throws Exception {
-        Class.forName("com.mysql.jdbc.Driver");
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        int width = screenSize.width / 4;
+        int height = screenSize.height / 4;
         frame.setPreferredSize(new Dimension(width, height));
         frame.pack();
         frame.setLocationRelativeTo(null);
