@@ -1,85 +1,78 @@
-CREATE TABLE programm (
-	programm_id MEDIUMINT,
-	PRIMARY KEY(programm_id),
-	sprache VARCHAR(20),
-	altersfreigabe TINYINT,
-	CONSTRAINT alter_check CHECK (altersfreigabe BETWEEN 0 and 18)
-);
-
-
 CREATE TABLE film (
-	programm_id MEDIUMINT,
-	CONSTRAINT film_pk PRIMARY KEY(programm_id),
-	CONSTRAINT film_fk FOREIGN KEY (programm_id) REFERENCES programm(programm_id) ON DELETE CASCADE,
-	titel VARCHAR(160),
-	regisseur VARCHAR(60),
-	land VARCHAR(30)	
-);
-
-CREATE TABLE sondervorstellung (
-	programm_id MEDIUMINT,
-	FOREIGN KEY (programm_id) REFERENCES programm(programm_id) ON DELETE CASCADE,
-	PRIMARY KEY(programm_id),
-	typ VARCHAR(30),
-	name VARCHAR(160)	
+	film_id MEDIUMINT,
+	PRIMARY KEY(film_id),
+	title VARCHAR(160),
+	director VARCHAR(60),
+	country VARCHAR(30)	,
+	film_language VARCHAR(30),
+	age_rating TINYINT,
+    CONSTRAINT age_check CHECK (age_rating BETWEEN 0 AND 18)
 );
 
 
-CREATE TABLE saal (
-	saal_id MEDIUMINT,
-	PRIMARY KEY(saal_id),
+CREATE TABLE hall (
+	hall_id MEDIUMINT,
+	PRIMARY KEY(hall_id),
 	name VARCHAR(10),
-	ausstattung VARCHAR(50)		
+	equipment VARCHAR(50)		
 );
 
-CREATE TABLE vorfuehrung (
-	vorfuehrungs_id MEDIUMINT,
-	saal_id MEDIUMINT,
-	programm_id MEDIUMINT,
-	FOREIGN KEY (saal_id) REFERENCES saal(saal_id) ON DELETE CASCADE,
-	FOREIGN KEY (programm_id) REFERENCES programm(programm_id) ON DELETE CASCADE,
-	PRIMARY KEY(vorfuehrungs_id)
+CREATE TABLE screening (
+	screening_id MEDIUMINT,
+	hall_id MEDIUMINT,
+	film_id MEDIUMINT,
+	FOREIGN KEY (hall_id) REFERENCES hall(hall_id) ON DELETE CASCADE,
+	FOREIGN KEY (film_id) REFERENCES film(film_id) ON DELETE CASCADE,
+	PRIMARY KEY(screening_id)
 );
 
-CREATE TABLE sitz (
-	sitz_id SMALLINT AUTO_INCREMENT,
-	saal_id MEDIUMINT,
-	FOREIGN KEY (saal_id) REFERENCES saal(saal_id) ON DELETE CASCADE,
-	PRIMARY KEY(sitz_id, saal_id),
-	sitznummer TINYINT,
-	reihennummer TINYINT,
-	CONSTRAINT UC_saal_sitz_reihe UNIQUE (saal_id, sitznummer, reihennummer)
+CREATE TABLE seat (
+	seat_id SMALLINT AUTO_INCREMENT,
+	hall_id MEDIUMINT,
+	FOREIGN KEY (hall_id) REFERENCES hall(hall_id) ON DELETE CASCADE,
+	PRIMARY KEY(seat_id, hall_id),
+	seat_nr TINYINT,
+	row_nr TINYINT,
+	CONSTRAINT UC_hall_seat_row UNIQUE (hall_id, seat_nr, row_nr)
+);
+
+CREATE TABLE customer(
+	customer_id MEDIUMINT,
+	CONSTRAINT m_pk PRIMARY KEY(customer_id),
+	customer_type VARCHAR(20),
+	email VARCHAR(40) UNIQUE,
+	password VARCHAR(40)
 );
 
 CREATE TABLE ticket (
 	ticket_id MEDIUMINT,
-	vorfuehrungs_id MEDIUMINT,
-	FOREIGN KEY (vorfuehrungs_id) REFERENCES vorfuehrung(vorfuehrungs_id) ON DELETE CASCADE,
+	screening_id MEDIUMINT,
+	customer_id MEDIUMINT,
+	FOREIGN KEY (screening_id) REFERENCES screening(screening_id) ON DELETE CASCADE,
+	FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON DELETE CASCADE,
 	PRIMARY KEY(ticket_id),
-	preis SMALLINT NOT NULL,
-	ermaessigung VARCHAR(15) DEFAULT NULL
+	price SMALLINT NOT NULL,
+	discount_type VARCHAR(15) DEFAULT NULL
 );
 
-CREATE TABLE mitarbeiter(
-	personal_id MEDIUMINT,
-	CONSTRAINT m_pk PRIMARY KEY(personal_id),
-	partner_id MEDIUMINT UNIQUE,
-	CONSTRAINT m_fk FOREIGN KEY (partner_id) REFERENCES mitarbeiter(personal_id) ON DELETE SET NULL,
-	vorname VARCHAR(20),
-	nachname VARCHAR(20),
+
+
+CREATE TABLE employee(
+	employee_nr MEDIUMINT,
+	CONSTRAINT m_pk PRIMARY KEY(employee_nr),
+	manager_id MEDIUMINT,
+	FOREIGN KEY (manager_id) REFERENCES employee(employee_nr) ON DELETE CASCADE,
+	first_name VARCHAR(30),
+	last_name VARCHAR(30),
 	email VARCHAR(40) UNIQUE
+
 );
 
-CREATE TABLE aufsicht(
-	saal_id MEDIUMINT,
-	aufseher_id MEDIUMINT,
-	FOREIGN KEY (saal_id) REFERENCES saal(saal_id) ON DELETE CASCADE,
-	FOREIGN KEY (aufseher_id) REFERENCES mitarbeiter(personal_id) ON DELETE CASCADE,
-	PRIMARY KEY(saal_id, aufseher_id)
+CREATE TABLE supervision(
+	hall_id MEDIUMINT,
+	supervisor_id MEDIUMINT,
+	FOREIGN KEY (hall_id) REFERENCES hall(hall_id) ON DELETE CASCADE,
+	FOREIGN KEY (supervisor_id) REFERENCES employee(employee_nr) ON DELETE CASCADE,
+	PRIMARY KEY(hall_id, supervisor_id)
 );
 
-CREATE OR REPLACE VIEW v_vorf
-	AS SELECT titel, COUNT(*) cn
-	FROM vorfuehrung NATURAL JOIN film
-	GROUP BY titel
-	HAVING COUNT(*) >1;
