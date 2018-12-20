@@ -1,15 +1,14 @@
 package KinoUI;
 
 import SQLHandling.SQLScriptLoader;
+import extras.Window;
 
 import javax.swing.*;
-import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Connection;
 
-public class KinoJDBC_MainWindow {
-    JFrame frame = new JFrame("Kino JDBC");
+public class KinoJDBC_MainWindow extends Window {
     private Connection conn;
     private JButton loadSQLScriptButton;
     private JButton manualDataEntryButton;
@@ -19,7 +18,7 @@ public class KinoJDBC_MainWindow {
 
     public KinoJDBC_MainWindow(final Connection conn) {
         this.conn = conn;
-        run();
+        run(mainPanel);
         loadSQLScriptButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -38,9 +37,16 @@ public class KinoJDBC_MainWindow {
                 SQLScriptLoader.performLoadScript(conn, "C:\\Users\\utzn\\Google Drive\\Uni Wien\\WS 2018-19\\ISE\\Projekt\\Kino_JDBC\\oliver_dbs\\01220194_SCHWEIGER_create.sql");
             }
         });
+        manualDataEntryButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                frame.setVisible(false);
+                new KinoJDBC_ManualEntryWindow(conn).frame.setVisible(true);
+            }
+        });
     }
 
-    public void run() {
+    /*public void run() {
         frame.setPreferredSize(new Dimension(KinoJDBC_LoginFrame.width, KinoJDBC_LoginFrame.height));
         frame.pack();
         frame.setLocationRelativeTo(null);
@@ -48,5 +54,5 @@ public class KinoJDBC_MainWindow {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
-    }
+    }*/
 }

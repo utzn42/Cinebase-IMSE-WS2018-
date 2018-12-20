@@ -2,6 +2,7 @@ package KinoUI;
 
 import SQLHandling.ConnectionHandler;
 import SQLHandling.LoginDataProvider;
+import extras.Window;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,11 +11,11 @@ import java.awt.event.ActionListener;
 import java.net.ConnectException;
 import java.sql.Connection;
 
-public class KinoJDBC_LoginFrame {
+public class KinoJDBC_LoginFrame extends Window {
     public static Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-    public static int height = screenSize.height / 4;
     public static int width = screenSize.width / 4;
-    static JFrame frame = new JFrame("Kino JDBC");
+    public static int height = screenSize.height / 4;
+    private static JFrame frame = new JFrame("KinoJDBC");
     private static Connection conn;
     private JPanel loginPanel;
     private JTextField userNameTextField;
