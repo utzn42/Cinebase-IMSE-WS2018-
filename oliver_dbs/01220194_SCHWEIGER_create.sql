@@ -23,7 +23,10 @@ CREATE TABLE screening (
 	film_id MEDIUMINT,
 	FOREIGN KEY (hall_id) REFERENCES hall(hall_id) ON DELETE CASCADE,
 	FOREIGN KEY (film_id) REFERENCES film(film_id) ON DELETE CASCADE,
-	PRIMARY KEY(screening_id)
+	PRIMARY KEY(screening_id),
+	starting_time DATETIME, 
+	duration SMALLINT
+
 );
 
 CREATE TABLE seat (
