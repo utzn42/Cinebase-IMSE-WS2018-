@@ -18,15 +18,19 @@
     <form id='searchform' action='film.php' method='get'>
       <a href='film.php'>All Films</a> ---
       Search for title: 
-      <input id='search' name='search' type='text' size='20' value='<?php echo $_GET['search']; ?>' />
+      <input id='searchTitle' name='searchTitle' type='text' size='20' value='<?php echo $_GET['searchTitle']; ?>' />
       <input id='submit' type='submit' value='Search!' />
     </form>
   </div>
 <?php
   // check if search view of list view
-  if (isset($_GET['search'])) {
-    $sql = "SELECT * FROM film WHERE title like '%" . $_GET['search'] . "%'";
-  } else {
+  if (isset($_GET['searchTitle'])) {
+    $sql = "SELECT * FROM film WHERE title like '%" . $_GET['searchTitle'] . "%'";
+  } 
+  else if (isset($_GET['searchFilmID'])) {
+    $sql = "SELECT * FROM film WHERE film_id like '" . $_GET['searchFilmID'] . "'";
+  }
+  else {
     $sql ="SELECT * FROM film";
   }
   $result = $conn->query($sql);

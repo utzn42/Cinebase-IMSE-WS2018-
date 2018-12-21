@@ -64,8 +64,8 @@
 		echo "<td>" . $row['starting_time'] . "</td>";
 		echo "<td>" . $row['duration'] . "</td>";
 		echo "<td><a href=\"updatescreening.php?screening_id=" . $row['screening_id'] . "&hall_id=" . $row['hall_id'] . "&film_id=" . $row['film_id'] . "&starting_time=" . $row['starting_time'] . "&duration=" . $row['duration'] . "\"> UPDATE </a></td>"; 
-		
 		echo "<td><a href=\"deletescreening.php?id=" . $row['screening_id'] . "\"> DELETE </a></td>"; 
+		echo "<td><a href=\"film.php?searchFilmID=" . $row['film_id'] . "\"> Show Film Details </a></td>"; 
 
 		echo "</tr>";
 	  }
