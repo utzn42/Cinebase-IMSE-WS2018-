@@ -1,19 +1,15 @@
 DROP TABLE ticket;
 
-DROP TABLE vorfuehrung;
+DROP TABLE screening;
 
-DROP TABLE sondervorstellung;
+DROP TABLE seat;
+
+DROP TABLE supervision;
+
+DROP TABLE hall;
+
+DROP TABLE employee;
+
+DROP TABLE customer;
 
 DROP TABLE film;
-
-DROP TABLE sitz;
-
-DROP TABLE aufsicht;
-
-DROP TABLE saal;
-
-DROP TABLE programm;
-
-DROP TABLE mitarbeiter;
-
-DROP VIEW v_vorf;
