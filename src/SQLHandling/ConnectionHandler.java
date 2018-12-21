@@ -9,7 +9,8 @@ public class ConnectionHandler {
     private static String databaseURL = "jdbc:mysql://localhost/kino" +
             "?verifyServerCertificate=false" +
             "&useSSL=true" +
-            "&requireSSL=true"; //causes unknown database error
+            "&requireSSL=true";
+
     private static Connection conn;
 
     public static Connection connect() throws ConnectException {
