@@ -13,6 +13,7 @@
 
 <?php
 session_start();
+
 //establish serverconnection
 $servername = "localhost";
 $user = "root";
@@ -21,19 +22,19 @@ $db = "cinebase";
 $con = new mysqli($servername, $user, $pw, $db);
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $sqlSearchUser = "SELECT * FROM mitarbeiter";
-    $result = $con->query($sqlSearchUser);
     $username = $_POST['username'];
+    $password = $_POST['password'];
+    $sqlSearchUser = "SELECT * FROM customer WHERE password = \"$password\" AND email = \"$username\";";
+    $result = $con->query($sqlSearchUser);
 
     if ($result->num_rows > 0) {
         while ($i = $result->fetch_assoc()) {
-            if ($i['email'] == $_POST['password']) {
+            if ($i['password'] == $_POST['password']) {
                 echo("<script type=\"text/javascript\">loginSuccess(\"$username\");</script>");
                 $_SESSION['loggedin'] = true;
                 $_SESSION['username'] = $username;
                 break;
             }
-
         }
     } else {
         echo("<script type=\"text/javascript\">loginFailedErrorMessage();</script>");
@@ -62,11 +63,11 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </div>
 
 <?php
-  if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-      $username = $_SESSION['username'];
-      echo("<script type=\"text/javascript\">setLoggedIn(\"username\");</script>");
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+    $username = $_SESSION['username'];
+    echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
 }
-    ?>
+?>
 
 <!-- Start of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp -->
     <div id="popUpLogin" class="modal">
