@@ -1,6 +1,7 @@
 package KinoUI;
 
 import Extras.Window;
+import KinoUI.ManualEntryForms.FilmEntry;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -11,15 +12,15 @@ public class KinoJDBC_ManualEntryWindow extends Window {
     private Connection conn;
     private JPanel manualEntryPanel;
     private JLabel tableSelectLabel;
-    private JButton programmButton;
     private JButton filmButton;
-    private JButton sondervorstellungButton;
-    private JButton saalButton;
-    private JButton vorführungButton;
-    private JButton sitzButton;
+    private JButton hallButton;
+    private JButton screeningButton;
+    private JButton seatButton;
+    private JButton customerButton;
     private JButton ticketButton;
-    private JButton mitarbeiterButton;
-    private JButton aufsichtButton;
+    private JButton employeeButton;
+    private JButton supervisionButton;
+    private JButton deineMutterButton;
     private JButton backButton;
 
     public KinoJDBC_ManualEntryWindow(final Connection conn) {
@@ -30,6 +31,12 @@ public class KinoJDBC_ManualEntryWindow extends Window {
             public void actionPerformed(ActionEvent e) {
                 frame.setVisible(false);
                 new KinoJDBC_MainWindow(conn).frame.setVisible(true);
+            }
+        });
+        filmButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new FilmEntry(conn).frame.setVisible(true);
             }
         });
     }

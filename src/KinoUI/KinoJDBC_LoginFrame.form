@@ -14,7 +14,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <toolTipText value="Please provide a username."/>
+        </properties>
       </component>
       <component id="df756" class="javax.swing.JLabel" binding="userNameLabel">
         <constraints>
@@ -30,7 +32,9 @@
             <preferred-size width="150" height="-1"/>
           </grid>
         </constraints>
-        <properties/>
+        <properties>
+          <toolTipText value="Please provide a password."/>
+        </properties>
       </component>
       <component id="c5f58" class="javax.swing.JLabel">
         <constraints>
