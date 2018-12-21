@@ -11,36 +11,34 @@
 <body>
 
 <?php
-  session_start();
+session_start();
 
-  //establish serverconnection
-  $servername = "localhost";
-  $user = "root";
-  $pw = "";
-  $db = "cinebase";
-  $con = new mysqli($servername, $user, $pw, $db);
+//establish serverconnection
+$servername = "localhost";
+$user = "root";
+$pw = "";
+$db = "cinebase";
+$con = new mysqli($servername, $user, $pw, $db);
 
-  if($_SERVER['REQUEST_METHOD'] == "POST"){
-    $sqlSearchUser = "SELECT * FROM mitarbeiter";
-    $result = $con->query($sqlSearchUser);
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $username = $_POST['username'];
+    $password = $_POST['password'];
+    $sqlSearchUser = "SELECT * FROM customer WHERE password = \"$password\" AND email = \"$username\";";
+    $result = $con->query($sqlSearchUser);
 
-    if($result->num_rows > 0){
-        while($i = $result->fetch_assoc()) {
-            if ($i['email'] == $_POST['password']) {
+    if ($result->num_rows > 0) {
+        while ($i = $result->fetch_assoc()) {
+            if ($i['password'] == $_POST['password']) {
                 echo("<script type=\"text/javascript\">loginSuccess(\"$username\");</script>");
                 $_SESSION['loggedin'] = true;
                 $_SESSION['username'] = $username;
                 break;
             }
-
         }
+    } else {
+        echo("<script type=\"text/javascript\">loginFailedErrorMessage();</script>");
     }
-    else{
-        echo ("<script type=\"text/javascript\">loginFailedErrorMessage();</script>");
-    }
-  }
-
+}
 
 
 ?>
@@ -54,7 +52,8 @@
   <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
   <button onclick="window.location='news.php';" class="buttonBig">News</button>
   <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
-  <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'" class="buttonLogin">
+  <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
+          class="buttonLogin">
     Sign In
   </button>
   <button id="register" onclick="document.getElementById('popUpRegister').style.display='block'"
@@ -63,10 +62,10 @@
 </div>
 
 <?php
-  if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-      $username = $_SESSION['username'];
-      echo("<script type=\"text/javascript\">setLoggedIn(\"username\");</script>");
-  }
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+    $username = $_SESSION['username'];
+    echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
+}
 ?>
 
 <!-- Start of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp -->
@@ -123,7 +122,7 @@
       </label>
 
       <p>By creating an account you agree to our <a href="#" style="color:dodgerblue">Terms &
-        Privacy</a>.</p>
+          Privacy</a>.</p>
 
       <div class="clearfix">
         <button type="button"
@@ -146,8 +145,8 @@
 
 <?php
 
-  //close serverconnection
-  $con->close();
+//close serverconnection
+$con->close();
 ?>
 </body>
 </html>
