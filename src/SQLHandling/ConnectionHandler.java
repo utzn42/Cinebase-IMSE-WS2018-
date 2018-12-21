@@ -6,7 +6,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionHandler {
-    private static String databaseURL = "jdbc:mysql://localhost/kino"; //+ "&useSSL=true" + "&requireSSL=true"; //causes unknown database error
+    private static String databaseURL = "jdbc:mysql://localhost/kino" +
+            "?verifyServerCertificate=false" +
+            "&useSSL=true" +
+            "&requireSSL=true"; //causes unknown database error
     private static Connection conn;
 
     public static Connection connect() throws ConnectException {
