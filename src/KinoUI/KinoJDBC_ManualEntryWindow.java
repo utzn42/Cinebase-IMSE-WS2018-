@@ -4,6 +4,7 @@ import Extras.Window;
 import KinoUI.ManualEntryForms.FilmEntry;
 import KinoUI.ManualEntryForms.HallEntry;
 import KinoUI.ManualEntryForms.ScreeningEntry;
+import KinoUI.ManualEntryForms.SeatEntry;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -51,6 +52,12 @@ public class KinoJDBC_ManualEntryWindow extends Window {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ScreeningEntry(conn).frame.setVisible(true);
+            }
+        });
+        seatButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SeatEntry(conn).frame.setVisible(true);
             }
         });
     }
