@@ -2,6 +2,7 @@ package KinoUI;
 
 import Extras.Window;
 import KinoUI.ManualEntryForms.FilmEntry;
+import KinoUI.ManualEntryForms.HallEntry;
 
 import javax.swing.*;
 import java.awt.event.ActionEvent;
@@ -37,6 +38,12 @@ public class KinoJDBC_ManualEntryWindow extends Window {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new FilmEntry(conn).frame.setVisible(true);
+            }
+        });
+        hallButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new HallEntry(conn).frame.setVisible(true);
             }
         });
     }

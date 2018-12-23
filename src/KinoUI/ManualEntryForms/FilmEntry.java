@@ -10,7 +10,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class FilmEntry extends Window {
-    private JPanel programmPanel;
+    private JPanel filmPanel;
     private JTextField idField;
     private JTextField directorField;
     private JTextField titleField;
@@ -21,7 +21,7 @@ public class FilmEntry extends Window {
     private JTextField ageField;
 
     public FilmEntry(final Connection conn) {
-        run(programmPanel);
+        run(filmPanel);
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
