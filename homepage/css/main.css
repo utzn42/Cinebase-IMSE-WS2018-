@@ -184,3 +184,23 @@ span.psw {
 }
 
 /*End of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp*/
+
+.register{
+  background-color: white;
+}
+
+.buttonLogOut{
+  background-color: #b42112;
+  border: none;
+  color: #f2eeff;
+  padding: 15px 25px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Trebuchet MS", serif;
+}
+
+.buttonLogOut:hover {
+  background-color: #f2eeff;
+  color: cadetblue;
+}
