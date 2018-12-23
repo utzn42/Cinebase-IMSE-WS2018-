@@ -40,7 +40,7 @@ CREATE TABLE seat (
 );
 
 CREATE TABLE customer(
-	customer_id MEDIUMINT,
+	customer_id MEDIUMINT AUTO_INCREMENT,
 	CONSTRAINT m_pk PRIMARY KEY(customer_id),
 	customer_type VARCHAR(20),
 	email VARCHAR(40) UNIQUE,
