@@ -69,6 +69,12 @@ public class KinoJDBC_ManualEntryWindow extends Window {
                 new TicketEntry(conn).frame.setVisible(true);
             }
         });
+        employeeButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new EmployeeEntry(conn).frame.setVisible(true);
+            }
+        });
     }
 
 }
