@@ -4,8 +4,6 @@ import Extras.Window;
 import KinoUI.ManualEntryForms.*;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 
 public class KinoJDBC_ManualEntryWindow extends Window {
@@ -26,61 +24,18 @@ public class KinoJDBC_ManualEntryWindow extends Window {
     KinoJDBC_ManualEntryWindow(final Connection conn) {
         run(manualEntryPanel);
 
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.setVisible(false);
-                new KinoJDBC_MainWindow(conn).frame.setVisible(true);
-            }
+        backButton.addActionListener(e -> {
+            frame.setVisible(false);
+            new KinoJDBC_MainWindow(conn).frame.setVisible(true);
         });
-        filmButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new FilmEntry(conn).frame.setVisible(true);
-            }
-        });
-        hallButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new HallEntry(conn).frame.setVisible(true);
-            }
-        });
-        screeningButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new ScreeningEntry(conn).frame.setVisible(true);
-            }
-        });
-        seatButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new SeatEntry(conn).frame.setVisible(true);
-            }
-        });
-        customerButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new CustomerEntry(conn).frame.setVisible(true);
-            }
-        });
-        ticketButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new TicketEntry(conn).frame.setVisible(true);
-            }
-        });
-        employeeButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new EmployeeEntry(conn).frame.setVisible(true);
-            }
-        });
-        supervisionButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                new SupervisionEntry(conn).frame.setVisible(true);
-            }
-        });
+        filmButton.addActionListener(e -> new FilmEntry(conn).frame.setVisible(true));
+        hallButton.addActionListener(e -> new HallEntry(conn).frame.setVisible(true));
+        screeningButton.addActionListener(e -> new ScreeningEntry(conn).frame.setVisible(true));
+        seatButton.addActionListener(e -> new SeatEntry(conn).frame.setVisible(true));
+        customerButton.addActionListener(e -> new CustomerEntry(conn).frame.setVisible(true));
+        ticketButton.addActionListener(e -> new TicketEntry(conn).frame.setVisible(true));
+        employeeButton.addActionListener(e -> new EmployeeEntry(conn).frame.setVisible(true));
+        supervisionButton.addActionListener(e -> new SupervisionEntry(conn).frame.setVisible(true));
     }
 
 }

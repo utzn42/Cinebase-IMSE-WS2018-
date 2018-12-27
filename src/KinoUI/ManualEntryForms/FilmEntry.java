@@ -3,8 +3,6 @@ package KinoUI.ManualEntryForms;
 import Extras.Window;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -22,24 +20,16 @@ public class FilmEntry extends Window {
 
     public FilmEntry(final Connection conn) {
         run(filmPanel);
-        submitButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    Statement ProgrammInsertStmt = conn.createStatement();
-                    ProgrammInsertStmt.executeUpdate("INSERT INTO film VALUES(" + Integer.valueOf(idField.getText()) + ", '" + titleField.getText() + "', '" + directorField.getText() + "', '" + countryField.getText() + "', '" + languageField.getText() + "', " + Integer.valueOf(ageField.getText()) + ")");
-                    JOptionPane.showMessageDialog(null, "Success!");
-                } catch (SQLException sqle) {
-                    JOptionPane.showMessageDialog(null, "Encountered error while executing SQL statement");
-                    System.out.println(sqle.getMessage());
-                }
+        submitButton.addActionListener(e -> {
+            try {
+                Statement ProgrammInsertStmt = conn.createStatement();
+                ProgrammInsertStmt.executeUpdate("INSERT INTO film VALUES(" + Integer.valueOf(idField.getText()) + ", '" + titleField.getText() + "', '" + directorField.getText() + "', '" + countryField.getText() + "', '" + languageField.getText() + "', " + Integer.valueOf(ageField.getText()) + ")");
+                JOptionPane.showMessageDialog(null, "Success!");
+            } catch (SQLException sqle) {
+                JOptionPane.showMessageDialog(null, "Encountered error while executing SQL statement");
+                System.out.println(sqle.getMessage());
             }
         });
-        backButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.setVisible(false);
-            }
-        });
+        backButton.addActionListener(e -> frame.setVisible(false));
     }
 }
