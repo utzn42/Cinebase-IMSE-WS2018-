@@ -23,7 +23,7 @@ public class KinoJDBC_ManualEntryWindow extends Window {
     private JButton deineMutterButton;
     private JButton backButton;
 
-    public KinoJDBC_ManualEntryWindow(final Connection conn) {
+    KinoJDBC_ManualEntryWindow(final Connection conn) {
         run(manualEntryPanel);
 
         backButton.addActionListener(new ActionListener() {
@@ -73,6 +73,12 @@ public class KinoJDBC_ManualEntryWindow extends Window {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new EmployeeEntry(conn).frame.setVisible(true);
+            }
+        });
+        supervisionButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new SupervisionEntry(conn).frame.setVisible(true);
             }
         });
     }

@@ -15,7 +15,7 @@
           </grid>
         </constraints>
         <properties>
-          <toolTipText value="Please provide a username."/>
+          <toolTipText value="Please provide a username for the kino database."/>
         </properties>
       </component>
       <component id="df756" class="javax.swing.JLabel" binding="userNameLabel">
@@ -33,7 +33,7 @@
           </grid>
         </constraints>
         <properties>
-          <toolTipText value="Please provide a password."/>
+          <toolTipText value="Please provide a password for the kino database."/>
         </properties>
       </component>
       <component id="c5f58" class="javax.swing.JLabel">

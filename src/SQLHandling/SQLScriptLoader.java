@@ -12,7 +12,7 @@ import java.sql.Statement;
 
 public class SQLScriptLoader {
 
-    public static void loadScript(Connection conn, String file) throws IOException, SQLException {
+    private static void loadScript(Connection conn, String file) throws IOException, SQLException {
 
         if (file == null) {
             file = FilePicker.pickv2();
@@ -32,7 +32,7 @@ public class SQLScriptLoader {
 
         String[] insertArray = res.toString().split(";");
 
-        for (int i = 0; i < insertArray.length - 1; ++i) {
+        for (int i = 0; i < insertArray.length; ++i) {
             if (!insertArray[i].trim().equals("")) {
                 create_stmt.executeUpdate(insertArray[i]);
                 System.out.println("[" + i + "] >> " + insertArray[i]);

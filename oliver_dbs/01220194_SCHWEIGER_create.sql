@@ -9,7 +9,6 @@ CREATE TABLE film (
     CONSTRAINT age_check CHECK (age_rating BETWEEN 0 AND 18)
 );
 
-
 CREATE TABLE hall (
 	hall_id MEDIUMINT,
 	PRIMARY KEY(hall_id),
@@ -57,8 +56,6 @@ CREATE TABLE ticket (
 	price SMALLINT NOT NULL,
 	discount_type VARCHAR(15) DEFAULT NULL
 );
-
-
 
 CREATE TABLE employee(
 	employee_nr MEDIUMINT,
