@@ -8,4 +8,4 @@
 6. Good to go!
 
 ## Use SSL to connect to server via PHP
-https://gist.github.com/nguyenanhtu/33aa7ffb6c36fdc110ea8624eeb51e69
+http://robsnotebook.com/xampp-ssl-encrypt-passwords
