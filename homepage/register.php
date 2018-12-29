@@ -36,13 +36,13 @@
       <p>Please fill in this form to create an account.</p>
       <hr>
       <label for="email"><b>Email</b></label>
-      <input type="text" placeholder="Enter Email" name="email" required>
+      <input  class="signInInputs" type="text" placeholder="Enter Email" name="email" required>
 
       <label for="password"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="password" required>
+      <input  class="signInInputs" type="password" placeholder="Enter Password" name="password" required>
 
       <label for="passwordRepeat"><b>Repeat Password</b></label>
-      <input type="password" placeholder="Repeat Password" name="passwordRepeat" required>
+      <input  class="signInInputs" type="password" placeholder="Repeat Password" name="passwordRepeat" required>
 
       <label>
         <input type="checkbox" checked="checked" name="remember" style="margin-bottom:15px">
@@ -66,11 +66,5 @@
 <p style="margin: auto; width: 900px">Yasin Ergüven Utz Nisslmüller Alexander Ramharter Oliver
   Schweiger</p>
 
-
-<?php
-
-//close serverconnection
-$con->close();
-?>
 </body>
 </html>

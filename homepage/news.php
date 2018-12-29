@@ -38,6 +38,10 @@ if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
 if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
     echo("<script type=\"text/javascript\">setAdminMode();</script>");
 }
+if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+    $username = $_SESSION['username'];
+    echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
+}
 ?>
 
 <!-- Start of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp -->
@@ -49,14 +53,14 @@ if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
 
     <div class="container">
       <label for="username"><b>Username</b></label>
-      <input type="text" placeholder="Enter Username" name="username" required>
+      <input  class="signInInputs" type="text" placeholder="Enter Username" name="username" required>
 
       <label for="password"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="password" required>
+      <input  class="signInInputs" type="password" placeholder="Enter Password" name="password" required>
 
       <button class="buttonLoginModal" type="submit">Login</button>
       <label>
-        <input type="checkbox" checked="checked" name="remember"> Remember me
+        <input type="checkbox" name="remember"> Employee
       </label>
     </div>
 

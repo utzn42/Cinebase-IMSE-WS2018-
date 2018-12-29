@@ -23,6 +23,8 @@ $con = new mysqli($servername, $user, $pw, $db);
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $password = $_POST['password'];
 
+
+
     //sign up new user
     if (isset($_POST['passwordRepeat'])) {
         $username = $_POST['email'];
@@ -40,7 +42,33 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             echo("<script type=\"text/javascript\">signUpFailedErrorMessagePasswords();</script>");
         }
 
-    } //sign in existing user
+    }
+
+    //employee login
+    else if(isset($_POST['remember'])){
+        $username = $_POST['username'];
+
+        if ($username != "admin" && $password != "cinebase") {
+            $sqlSearchEmployee = "SELECT * FROM employee WHERE password = \"$password\" AND email = \"$username\";";
+            $result = $con->query($sqlSearchEmployee);
+
+
+            if ($result->num_rows > 0) {
+                while ($i = $result->fetch_assoc()) {
+                    if ($i['password'] == $_POST['password']) {
+                        echo("<script type=\"text/javascript\">loginSuccess(\"$username\");</script>");
+                        $_SESSION['loggedinEmployee'] = true;
+                        $_SESSION['username'] = $username;
+                        break;
+                    }
+                }
+            } else {
+                echo("<script type=\"text/javascript\">loginFailedErrorMessage();</script>");
+            }
+        }
+    }
+
+    //sign in existing user
     else {
         $username = $_POST['username'];
 
@@ -62,8 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             } else {
                 echo("<script type=\"text/javascript\">loginFailedErrorMessage();</script>");
             }
-        }
-        //ADMIN MODE
+        } //ADMIN MODE
         else {
             $_SESSION['loggedinAdmin'] = true;
         }
@@ -91,13 +118,21 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
   </button>
 </div>
 
+<div class="mainBody" id="mainBody">
+  Welcome to cinebase.com! Pick a movie and enjoy!
+</div>
+
 <?php
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-        $username = $_SESSION['username'];
-        echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
+    $username = $_SESSION['username'];
+    echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
 }
 if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
     echo("<script type=\"text/javascript\">setAdminMode();</script>");
+}
+if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+    $username = $_SESSION['username'];
+    echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
 }
 ?>
 
@@ -110,14 +145,15 @@ if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
 
     <div class="container">
       <label for="username"><b>Username</b></label>
-      <input type="text" placeholder="Enter Username" name="username" required>
+      <input class="signInInputs" type="text" placeholder="Enter Username" name="username" required>
 
       <label for="password"><b>Password</b></label>
-      <input type="password" placeholder="Enter Password" name="password" required>
+      <input class="signInInputs" type="password" placeholder="Enter Password" name="password"
+             required>
 
       <button class="buttonLoginModal" type="submit">Login</button>
       <label>
-        <input type="checkbox" checked="checked" name="remember"> Remember me
+        <input type="checkbox" name="remember"> Employee
       </label>
     </div>
 

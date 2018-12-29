@@ -2,6 +2,12 @@ body {
   background-color: rgb(49, 51, 53);
 }
 
+.mainBody{
+  margin-top: 40px;
+  margin-left: 180px;
+  color: #a5a2b2;
+}
+
 .topLine {
   margin: auto;
   width: 900px;
@@ -127,7 +133,7 @@ body {
 }
 
 /* Full-width input fields */
-input[type=text], input[type=password] {
+.signInInputs{
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -135,6 +141,8 @@ input[type=text], input[type=password] {
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
+
+
 
 /* Set a style for all buttons */
 .buttonLoginModal {
@@ -203,4 +211,24 @@ span.psw {
 .buttonLogOut:hover {
   background-color: #f2eeff;
   color: cadetblue;
+}
+
+.searchTitle{
+  width: 200px;
+}
+
+.inputFilmID{
+  width:100px;
+}
+
+.inputAge{
+  width:100px;
+}
+
+.inputCountry{
+  width: 100px;
+}
+
+.inputLanguage{
+  width:100px;
 }

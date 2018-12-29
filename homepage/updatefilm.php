@@ -14,7 +14,7 @@
 </head>
 <body>
 
-	<a href="film.php">Back to Films</a><br><br>
+	<a href="movies.php">Back to Films</a><br><br>
     <div>
 	<form id='updateform' action="" method="get">
 		Update film:
@@ -86,7 +86,7 @@
 		//Parse and execute statement
 		if ($conn->query($sql) === TRUE) {
 			echo "Record updated succesfully";
-		    header("location: film.php");
+		    header("location: movies.php");
 
 			} 
 		else {

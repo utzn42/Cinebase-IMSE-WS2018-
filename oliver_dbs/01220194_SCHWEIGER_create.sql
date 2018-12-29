@@ -64,7 +64,8 @@ CREATE TABLE employee(
 	FOREIGN KEY (manager_id) REFERENCES employee(employee_nr) ON DELETE CASCADE,
 	first_name VARCHAR(30),
 	last_name VARCHAR(30),
-	email VARCHAR(40) UNIQUE
+	email VARCHAR(40) UNIQUE,
+	password varchar(20)
 
 );
 

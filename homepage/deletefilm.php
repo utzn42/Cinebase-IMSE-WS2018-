@@ -13,7 +13,7 @@
 
 	if (mysqli_query($conn, $sql)) {
 		mysqli_close($conn);
-		header('Location: film.php'); 
+		header('Location: movies.php');
 		exit;
 	} else {
 		echo "Error deleting record";
