@@ -17,7 +17,7 @@ CREATE TABLE hall (
 );
 
 CREATE TABLE screening (
-	screening_id MEDIUMINT,
+	screening_id MEDIUMINT AUTO_INCREMENT,
 	hall_id MEDIUMINT,
 	film_id MEDIUMINT,
 	FOREIGN KEY (hall_id) REFERENCES hall(hall_id) ON DELETE CASCADE,
