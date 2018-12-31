@@ -16,6 +16,7 @@ public class EmployeeEntry extends Window {
     private JTextField emailField;
     private JButton backButton;
     private JButton submitButton;
+    private JTextField passwordField;
 
     public EmployeeEntry(final Connection conn) {
         run(employeePanel);
@@ -23,7 +24,7 @@ public class EmployeeEntry extends Window {
         submitButton.addActionListener(e -> {
             try {
                 Statement ProgrammInsertStmt = conn.createStatement();
-                ProgrammInsertStmt.executeUpdate("INSERT INTO employee VALUES(" + Integer.valueOf(employeeNoField.getText()) + ", " + Integer.valueOf(managerIDField.getText()) + ", '" + firstnameField.getText() + "', '" + lastnameField.getText() + "', '" + emailField.getText() + "')");
+                ProgrammInsertStmt.executeUpdate("INSERT INTO employee VALUES(" + Integer.valueOf(employeeNoField.getText()) + ", " + Integer.valueOf(managerIDField.getText()) + ", '" + firstnameField.getText() + "', '" + lastnameField.getText() + "', '" + emailField.getText() + "', '" + passwordField.getText() + "')");
                 JOptionPane.showMessageDialog(null, "Success!");
             } catch (SQLException sqle) {
                 JOptionPane.showMessageDialog(null, "Encountered error while executing SQL statement");
