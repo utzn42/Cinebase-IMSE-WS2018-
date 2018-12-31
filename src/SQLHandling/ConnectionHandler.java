@@ -6,10 +6,10 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class ConnectionHandler {
-    private static String databaseURL = "jdbc:mysql://localhost/kino"; /*+
+    private static String databaseURL = "jdbc:mysql://localhost/cinebase" /*+
             "?verifyServerCertificate=false" +
             "&useSSL=true" +
-            "&requireSSL=true";*/
+            "&requireSSL=true"*/;
 
     private static Connection conn;
 

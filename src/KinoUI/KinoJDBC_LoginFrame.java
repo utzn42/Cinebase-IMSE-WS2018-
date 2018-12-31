@@ -33,6 +33,7 @@ public class KinoJDBC_LoginFrame extends Window {
                         new KinoJDBC_MainWindow(conn).frame.setVisible(true);
                     } catch (ConnectException ce) {
                         JOptionPane.showMessageDialog(null, "Invalid database URL.");
+                        System.out.println(ce.getMessage());
                     }
                 } else {
                     JOptionPane.showMessageDialog(null, "Wrong username/password combination");
