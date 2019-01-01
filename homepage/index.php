@@ -108,8 +108,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
   </button>
   <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
   <button onclick="window.location='news.php';" class="buttonBig">News</button>
-  <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
-  <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
+    <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
+    <button onclick="window.location='Employees.php';" class="buttonBig">Employees</button>
+    <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
           class="buttonLogin">
     Sign In
   </button>

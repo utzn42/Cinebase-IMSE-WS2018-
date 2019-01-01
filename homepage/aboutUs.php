@@ -20,7 +20,8 @@
   <button onclick="window.location='aboutUs.php';"
           style="border-bottom: 2px solid whitesmoke; font-weight: bold" class="buttonBig">About Us
   </button>
-  <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'" class="buttonLogin">
+    <button onclick="window.location='employee_administration.php';" class="buttonBig">Employees</button>
+    <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'" class="buttonLogin">
     Sign In
   </button>
   <button id="register" onclick="window.location='register.php';"

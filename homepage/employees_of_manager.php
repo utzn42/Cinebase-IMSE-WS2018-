@@ -1,19 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Cinebase</title>
-  <link rel="stylesheet"
-        type="text/css"
-        href="css/main.css"/>
-  <script src="js/main.js"></script>
-</head>
-<body>
-
 <?php
-session_start();
 error_reporting(0);
-
+session_start();
 $user = 'root';
 $pass = '';
 $database = 'cinebase';
@@ -23,17 +10,26 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
 ?>
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <link rel="stylesheet"
+        type="text/css"
+        href="css/main.css"/>
+  <script src="js/main.js"></script>
+</head>
+<body>
+
 <div class="topLine" id="topLine">
   cinebase
   <button onclick="window.location='index.php';" style="margin-left: 20px" class="buttonBig">Home
   </button>
-  <button onclick="window.location='movies.php';"class="buttonBig">Movies
-  </button>
+  <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
   <button onclick="window.location='news.php';" class="buttonBig">News</button>
   <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
     <button onclick="window.location='employee_administration.php';"
             style="border-bottom: 2px solid whitesmoke; font-weight: bold" class="buttonBig">Employees</button>
-  <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
+    <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
           class="buttonLogin">
     Sign In
   </button>
@@ -41,28 +37,24 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
           class="buttonRegister">Register
   </button>
 </div>
-
 <div class="mainBody" id="mainBody">
-  <br><br>
   <div>
-    <form id='searchform' action='employee_administration.php' method='get'>
-      <a href='employee_administration.php'>All Employees</a> ---
-      Search for Employee:
-      <input class='searchName' id='searchName' name='searchName' type='text' size='20'
-             value='<?php echo $_GET['searchName']; ?>'/>
+    <form id='searchform' action='employees_of_manager.php' method='get'>
+        <a href="employee_administration.php">Back to All-Employees-View</a><br><br>
+      Employees of Manager:
+      <input id='searchEmployee' name='searchEmployee' type='text' size='20'
+             value='<?php echo $_GET['searchEmployee']; ?>'/>
       <input id='search' type='submit' value='Search!'/>
     </form>
     <br>
   </div>
     <?php
     // check if search view of list view
-    if (isset($_GET['searchName'])) {
-        $sql = "SELECT * FROM employee WHERE first_name like '%" . $_GET['searchName'] . "%'
-        OR last_name like '%" . $_GET['searchName'] . "%'";
+    if (isset($_GET['searchEmployee'])) {
+        $sql = "SELECT * FROM employee WHERE manager_id like '%" . $_GET['searchEmployee'] . "%'";
     }
-
-    else {
-        $sql = "SELECT * FROM employee";
+     else {
+        $sql = "SELECT * FROM employee ";
     }
     $result = $conn->query($sql);
 
@@ -72,12 +64,10 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
   <table style='border: 1px solid #DDDDDD'>
     <thead>
     <tr>
-      <th>Employee Nr.</th>
-      <th>Manager-ID</th>
+      <th>Employee-Nr</th>
       <th>First Name</th>
       <th>Last Name</th>
-      <th>E-Mail</th>
-      <th>Password</th>
+        <th>E-Mail</th>
     </tr>
     </thead>
     <tbody>
@@ -88,20 +78,14 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         while ($row = $result->fetch_assoc()) {
 
             echo "<tr>";
-
-
             echo "<td>" . $row['employee_nr'] . "</td>";
-            echo "<td>" . $row['manager_id'] . "</td>";
             echo "<td>" . $row['first_name'] . "</td>";
             echo "<td>" . $row['last_name'] . "</td>";
             echo "<td>" . $row['email'] . "</td>";
-            echo "<td>" . $row['password'] . "</td>";
             if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
                 echo "<td><a href=\"updateemployee.php?employee_nr=" . $row['employee_nr'] . "&manager_id=" . $row['manager_id'] . "&first_name=" . $row['first_name'] . "&last_name=" . $row['last_name'] . "&email=" . $row['email'] . "&password=" . $row['password'] . "\"> UPDATE </a></td>";
                 echo "<td><a href=\"deleteemployee.php?id=" . $row['employee_nr'] . "\"> DELETE </a></td>";
             }
-            echo "<td><a href=\"employees_of_manager.php?searchEmployee=" . $row['employee_nr'] . "\"> Show Employees of this Manager</a></td>";
-
 
             echo "</tr>";
         }
@@ -118,83 +102,10 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
   <br>
 
-  <div id="insertEmployee">
-    <form id='insertform' action='employee_administration.php' method='get'>
-      Add new Employee:
-      <table style='border: 1px solid #DDDDDD'>
-        <thead>
-        <tr>
-            <th>Employee Nr.</th>
-            <th>Manager-ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>E-Mail</th>
-            <th>Password</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-          <td>
-            <input class="inputEmployeeNr" id='employee_nr' name='employee_nr' type='text' size='10'
-                   value='<?php echo $_GET['employee_nr']; ?>'/>
-          </td>
-          <td>
-            <input id='manager_id' name='manager_id' type='text' size='20'
-                   value='<?php echo $_GET['manager_id']; ?>'/>
-          </td>
-          <td>
-            <input id='first_name' name='first_name' type='text' size='20'
-                   value='<?php echo $_GET['first_name']; ?>'/>
-          </td>
-          <td>
-            <input class="last_name" id='last_name' name='last_name' type='text' size='20'
-                   value='<?php echo $_GET['last_name']; ?>'/>
-          </td>
-          <td>
-            <input class ="email" id='email' name='email' type='text' size='20'
-                   value='<?php echo $_GET['email']; ?>'/>
-          </td>
-          <td>
-            <input class="password" id='password' name='password' type='text' size='20'
-                   value='<?php echo $_GET['password']; ?>'/>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-      <input id='insert' type='submit' value='Insert!'/>
-    </form>
-  </div>
-
-    <?php
-    //Handle insert
-    if (isset($_GET['employee_nr']) && !empty($_GET['employee_nr'])) {
-
-        //Prepare insert statementd
-        $sql = "INSERT INTO employee VALUES(" . $_GET['employee_nr'] . ",'" . $_GET['manager_id'] . "','" . $_GET['first_name'] . "','" . $_GET['last_name'] . "','" . $_GET['email'] . "','" . $_GET['password'] . "')";
-
-
-        //Parse and execute statement
-        if ($conn->query($sql) === TRUE) {
-            echo "New record created succesfully";
-            header("location: employee_administration.php");
-
-        } else {
-            echo "Error: " . $sql . "<br>" . $conn->error;
-        }
-
-    }
-
-
-    ?>
-
-
-    <?php $conn->close(); ?>
-
-</div>
-
 <?php
 
-echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
+
+echo("<script type=\"text/javascript\">hideFormInsertScreening();</script>");
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     $username = $_SESSION['username'];
@@ -208,6 +119,7 @@ if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == tru
     echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
 }
 ?>
+
 
 <!-- Start of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp -->
 <div id="popUpLogin" class="modal">
@@ -241,11 +153,6 @@ if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == tru
 <!-- End of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp -->
 
 
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
-
-<p style="margin: auto; width: 900px">Yasin Ergüven Utz Nisslmüller Alexander Ramharter Oliver
-  Schweiger</p>
-
-
+<?php $conn->close(); ?>
 </body>
 </html>
