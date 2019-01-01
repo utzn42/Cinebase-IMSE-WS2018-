@@ -1,0 +1,15 @@
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (1, 1, 'testFirst1', 'testLast1', 'testMail1@hotmail.com', 'testPassword1');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (2, 2, 'testFirst2', 'testLast2', 'testMail2@hotmail.com', 'testPassword2');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (3, 3, 'testFirst3', 'testLast3', 'testMail3@hotmail.com', 'testPassword3');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (4, 2, 'testFirst4', 'testLast4', 'testMail4@hotmail.com', 'testPassword4');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (5, 2, 'testFirst5', 'testLast5', 'testMail5@hotmail.com', 'testPassword5');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (6, 1, 'testFirst6', 'testLast6', 'testMail6@hotmail.com', 'testPassword6');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (7, 2, 'testFirst7', 'testLast7', 'testMail7@hotmail.com', 'testPassword7');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (8, 3, 'testFirst8', 'testLast8', 'testMail8@hotmail.com', 'testPassword8');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (9, 2, 'testFirst9', 'testLast9', 'testMail9@hotmail.com', 'testPassword9');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (10, 3, 'testFirst10', 'testLast10', 'testMail10@hotmail.com', 'testPassword10');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (11, 1, 'testFirst11', 'testLast11', 'testMail11@hotmail.com', 'testPassword11');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (12, 2, 'testFirst12', 'testLast12', 'testMail12@hotmail.com', 'testPassword12');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (13, 3, 'testFirst13', 'testLast13', 'testMail13@hotmail.com', 'testPassword13');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (14, 1, 'testFirst14', 'testLast14', 'testMail14@hotmail.com', 'testPassword14');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (15, 3, 'testFirst15', 'testLast15', 'testMail15@hotmail.com', 'testPassword15');

@@ -100,7 +100,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                 echo "<td><a href=\"updateemployee.php?employee_nr=" . $row['employee_nr'] . "&manager_id=" . $row['manager_id'] . "&first_name=" . $row['first_name'] . "&last_name=" . $row['last_name'] . "&email=" . $row['email'] . "&password=" . $row['password'] . "\"> UPDATE </a></td>";
                 echo "<td><a href=\"deleteemployee.php?id=" . $row['employee_nr'] . "\"> DELETE </a></td>";
             }
-            echo "<td><a href=\"employees_of_manager.php?searchEmployee=" . $row['employee_nr'] . "\"> Show Employees of this Manager</a></td>";
+            echo "<td><a href=\"employees_of_manager.php?searchEmployee=" . $row['employee_nr'] . "\"> Show Employees</a></td>";
 
 
             echo "</tr>";
