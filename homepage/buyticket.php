@@ -9,8 +9,7 @@
     <script src="js/main.js"></script>
 </head>
 <body>
-</body>
-</html>
+
 
 <?php
 session_start();
@@ -24,8 +23,7 @@ $database = 'cinebase';
 
 $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
-// sql to delete a record
-$sql = "INSERT INTO ticket(screening_id, customer_id, 10.0)";
+$sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES (\"$screening_id\", \"$customer_id\", 10.00, 0)";
 
 $ticket_id = $conn->query("SELECT ticket_id FROM ticket WHERE customer_id = \"$customer_id\" AND ticket_id = MAX(ticket_id)");
 
@@ -40,4 +38,7 @@ if (mysqli_query($conn, $sql)) {
     echo "Error while buying ticket";
 }
 ?>
+
+</body>
+</html>
 

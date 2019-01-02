@@ -52,7 +52,7 @@ CREATE TABLE ticket (
 	FOREIGN KEY (screening_id) REFERENCES screening(screening_id) ON DELETE CASCADE,
 	FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON DELETE CASCADE,
 	PRIMARY KEY(ticket_id),
-	price SMALLINT NOT NULL,
+	price FLOAT NOT NULL,
 	discount_type VARCHAR(15) DEFAULT NULL
 );
 
