@@ -119,4 +119,8 @@ function setEmployeeMode(username){
   };
 }
 
+function buyTicketSuccess(ticket_id, start_time){
+  window.alert("Success! Your ticket number is " + ticket_id + "." + '\n' + "Your screening starts at" + start_time + ".");
+}
+
 

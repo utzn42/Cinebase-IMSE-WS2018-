@@ -46,7 +46,7 @@ CREATE TABLE customer(
 );
 
 CREATE TABLE ticket (
-	ticket_id MEDIUMINT,
+	ticket_id MEDIUMINT AUTO_INCREMENT,
 	screening_id MEDIUMINT,
 	customer_id MEDIUMINT,
 	FOREIGN KEY (screening_id) REFERENCES screening(screening_id) ON DELETE CASCADE,
