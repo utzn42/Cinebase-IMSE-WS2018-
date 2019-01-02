@@ -10,27 +10,36 @@
 </head>
 <body>
 
-
-<div class="topLine" id="topLine">
-  cinebase
-  <button onclick="window.location='index.php';" style="margin-left: 20px" class="buttonBig">Home
-  </button>
-  <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
-  <button onclick="window.location='news.php';" class="buttonBig">News</button>
-  <button onclick="window.location='aboutUs.php';"
-          style="border-bottom: 2px solid whitesmoke; font-weight: bold" class="buttonBig">About Us
-  </button>
-    <button onclick="window.location='employee_administration.php';" class="buttonBig">Employees</button>
-    <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'" class="buttonLogin">
-    Sign In
-  </button>
-  <button id="register" onclick="window.location='register.php';"
-          class="buttonRegister">Register
-  </button>
+<?php
+session_start();
+?>
+<div class="wrapper">
+  <div class="topLine" id="topLine">
+    cinebase
+    <button onclick="window.location='index.php';" style="margin-left: 20px" class="buttonBig">Home
+    </button>
+    <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
+    <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
+    <button onclick="window.location='news.php';" class="buttonBig">News</button>
+    <button onclick="window.location='aboutUs.php';"
+            style="border-bottom: 2px solid whitesmoke; font-weight: bold" class="buttonBig">About
+      Us
+    </button>
+      <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+          echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
+      } ?>
+    <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
+            class="buttonLogin">
+      Sign In
+    </button>
+    <button id="register" onclick="window.location='register.php';"
+            class="buttonRegister">Register
+    </button>
+  </div>
 </div>
 
 <?php
-session_start();
+
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     $username = $_SESSION['username'];
     echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
@@ -53,10 +62,11 @@ if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == tru
 
     <div class="container">
       <label for="username"><b>Username</b></label>
-      <input  class="signInInputs" type="text" placeholder="Enter Username" name="username" required>
+      <input class="signInInputs" type="text" placeholder="Enter Username" name="username" required>
 
       <label for="password"><b>Password</b></label>
-      <input  class="signInInputs" type="password" placeholder="Enter Password" name="password" required>
+      <input class="signInInputs" type="password" placeholder="Enter Password" name="password"
+             required>
 
       <button class="buttonLoginModal" type="submit">Login</button>
       <label>
@@ -77,7 +87,7 @@ if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == tru
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-<p style="margin: auto; width: 900px">Yasin Ergüven Utz Nisslmüller Alexander Ramharter Oliver
+<p style="text-align:center">Yasin Ergüven Utz Nisslmüller Alexander Ramharter Oliver
   Schweiger</p>
 
 </body>

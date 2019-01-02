@@ -24,7 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $password = $_POST['password'];
 
 
-
     //sign up new user
     if (isset($_POST['passwordRepeat'])) {
         $username = $_POST['email'];
@@ -42,10 +41,8 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             echo("<script type=\"text/javascript\">signUpFailedErrorMessagePasswords();</script>");
         }
 
-    }
-
-    //employee login
-    else if(isset($_POST['remember'])){
+    } //employee login
+    else if (isset($_POST['remember'])) {
         $username = $_POST['username'];
 
         if ($username != "admin" && $password != "cinebase") {
@@ -66,9 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 echo("<script type=\"text/javascript\">loginFailedErrorMessage();</script>");
             }
         }
-    }
-
-    //sign in existing user
+    } //sign in existing user
     else {
         $username = $_POST['username'];
 
@@ -84,6 +79,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         echo("<script type=\"text/javascript\">loginSuccess(\"$username\");</script>");
                         $_SESSION['loggedin'] = true;
                         $_SESSION['username'] = $username;
+                        $_SESSION['customer_id'] = $i['customer_id'];
                         break;
                     }
                 }
@@ -99,29 +95,36 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 
 ?>
-
-<div class="topLine" id="topLine">
-  cinebase
-  <button onclick="window.location='index.php';"
-          style="border-bottom: 2px solid whitesmoke; font-weight: bold; margin-left: 20px"
-          class="buttonBig">Home
-  </button>
-  <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
-  <button onclick="window.location='news.php';" class="buttonBig">News</button>
+<div class="wrapper">
+  <div class="topLine" id="topLine">
+    cinebase
+    <button onclick="window.location='index.php';"
+            style="border-bottom: 2px solid whitesmoke; font-weight: bold; margin-left: 20px"
+            class="buttonBig">Home
+    </button>
+    <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
+    <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
+    <button onclick="window.location='news.php';" class="buttonBig">News</button>
     <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
-    <button onclick="window.location='employee_administration.php';" class="buttonBig">Employees</button>
+      <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+          echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
+      } ?>
+
     <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
-          class="buttonLogin">
-    Sign In
-  </button>
-  <button id="register" onclick="window.location='register.php';"
-          class="buttonRegister">Register
-  </button>
+            class="buttonLogin">
+      Sign In
+    </button>
+    <button id="register" onclick="window.location='register.php';"
+            class="buttonRegister">Register
+    </button>
+  </div>
+</div>
+<div class="wrapperMainBody">
+  <div class="mainBody" id="mainBody">
+    Welcome to cinebase.com! Pick a movie and enjoy!
+  </div>
 </div>
 
-<div class="mainBody" id="mainBody">
-  Welcome to cinebase.com! Pick a movie and enjoy!
-</div>
 
 <?php
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
@@ -170,7 +173,7 @@ if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == tru
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
-<p style="margin: auto; width: 900px">Yasin Ergüven Utz Nisslmüller Alexander Ramharter Oliver
+<p style="text-align:center">Yasin Ergüven Utz Nisslmüller Alexander Ramharter Oliver
   Schweiger</p>
 
 

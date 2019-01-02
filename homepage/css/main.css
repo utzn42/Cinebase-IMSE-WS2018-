@@ -1,16 +1,23 @@
 body {
-  background-color: rgb(49, 51, 53);
+  background-color: rgb(185, 186, 191);
 }
 
-.mainBody{
+.mainBody {
   margin-top: 40px;
-  margin-left: 180px;
-  color: #a5a2b2;
+  color: #000000;
+  display: inline-block;
+}
+
+.wrapper {
+  text-align: center;
+}
+
+.wrapperMainBody{
+  text-align: center;
 }
 
 .topLine {
-  margin: auto;
-  width: 900px;
+  display: inline-block;
   padding: 10px;
   color: #b45c01;
   font-family: Comfortaa, serif;
@@ -133,7 +140,7 @@ body {
 }
 
 /* Full-width input fields */
-.signInInputs{
+.signInInputs {
   width: 100%;
   padding: 12px 20px;
   margin: 8px 0;
@@ -141,8 +148,6 @@ body {
   border: 1px solid #ccc;
   box-sizing: border-box;
 }
-
-
 
 /* Set a style for all buttons */
 .buttonLoginModal {
@@ -193,11 +198,11 @@ span.psw {
 
 /*End of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp*/
 
-.register{
+.register {
   background-color: white;
 }
 
-.buttonLogOut{
+.buttonLogOut {
   background-color: #b42112;
   border: none;
   color: #f2eeff;
@@ -213,22 +218,22 @@ span.psw {
   color: cadetblue;
 }
 
-.searchTitle{
+.searchTitle {
   width: 200px;
 }
 
-.inputFilmID{
-  width:100px;
-}
-
-.inputAge{
-  width:100px;
-}
-
-.inputCountry{
+.inputFilmID {
   width: 100px;
 }
 
-.inputLanguage{
-  width:100px;
+.inputAge {
+  width: 100px;
+}
+
+.inputCountry {
+  width: 100px;
+}
+
+.inputLanguage {
+  width: 100px;
 }

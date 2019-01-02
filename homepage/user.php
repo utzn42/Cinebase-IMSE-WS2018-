@@ -12,6 +12,15 @@
 
 <?php
 session_start();
+error_reporting(0);
+
+$user = 'root';
+$pass = '';
+$database = 'cinebase';
+
+// establish database connection
+$conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
+
 ?>
 
 <div class="wrapper">
@@ -19,15 +28,11 @@ session_start();
     cinebase
     <button onclick="window.location='index.php';" style="margin-left: 20px" class="buttonBig">Home
     </button>
-    <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
-    <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
-    <button onclick="window.location='news.php';"
-            style="border-bottom: 2px solid whitesmoke; font-weight: bold" class="buttonBig">News
+    <button onclick="window.location='movies.php';" class="buttonBig">Movies
     </button>
+    <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
+    <button onclick="window.location='news.php';" class="buttonBig">News</button>
     <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
-      <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
-          echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
-      } ?>
     <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
             class="buttonLogin">
       Sign In
@@ -37,7 +42,62 @@ session_start();
     </button>
   </div>
 </div>
+
+<div class="wrapperMainBody">
+  <div class="mainBody" id="mainBody">
+    <br><br>
+    <table style='border: 1px solid #DDDDDD'>
+      <thead>
+      <tr>
+        <th>Ticket-ID</th>
+        <th>Film</th>
+        <th>Date</th>
+      </tr>
+      </thead>
+      <tbody>
+
+      <?php
+
+      $customer_id = $_SESSION['customer_id'];
+
+      $sql = "SELECT * FROM ticket_film WHERE customer_id = \"$customer_id\"";
+      $result = $conn->query($sql);
+
+      // fetch rows of the executed sql query
+      if ($result->num_rows > 0) {
+          while ($row = $result->fetch_assoc()) {
+
+              echo "<tr>";
+
+
+              echo "<td>" . $row['ticket_id'] . "</td>";
+              echo "<td>" . $row['title'] . "</td>";
+              echo "<td>" . $row['starting_time'] . "</td>";
+              echo "</tr>";
+          }
+      }
+      $row_cnt = mysqli_num_rows($result);
+
+
+      ?>
+      </tbody>
+    </table>
+
+    <div><?php echo $row_cnt ?> Ticket/s found!</div>
+
+
+    <br>
+
+
+
+      <?php $conn->close(); ?>
+
+  </div>
+</div>
+
 <?php
+
+echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
 
 if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
     $username = $_SESSION['username'];
@@ -83,10 +143,12 @@ if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == tru
 </div>
 <!-- End of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp -->
 
+
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <p style="text-align:center">Yasin Ergüven Utz Nisslmüller Alexander Ramharter Oliver
   Schweiger</p>
+
 
 </body>
 </html>
