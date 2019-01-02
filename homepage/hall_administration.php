@@ -31,9 +31,9 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
   </button>
   <button onclick="window.location='news.php';" class="buttonBig">News</button>
   <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
-    <button onclick="window.location='employee_administration.php';"
-            style="border-bottom: 2px solid whitesmoke; font-weight: bold" class="buttonBig">Employees</button>
-    <button onclick="window.location='hall_administration.php';" class="buttonBig">Halls</button>
+    <button onclick="window.location='employee_administration.php';" class="buttonBig">Employees</button>
+    <button onclick="window.location='hall_administration.php';"
+            style="border-bottom: 2px solid whitesmoke; font-weight: bold" class="buttonBig">Halls</button>
     <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
           class="buttonLogin">
     Sign In
@@ -46,9 +46,9 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 <div class="mainBody" id="mainBody">
   <br><br>
   <div>
-    <form id='searchform' action='employee_administration.php' method='get'>
-      <a href='employee_administration.php'>All Employees</a> ---
-      Search for Employee:
+    <form id='searchform' action='hall_administration.php' method='get'>
+      <a href='hall_administration.php'>All Halls</a> ---
+      Search for Hall:
       <input class='searchName' id='searchName' name='searchName' type='text' size='20'
              value='<?php echo $_GET['searchName']; ?>'/>
       <input id='search' type='submit' value='Search!'/>
@@ -58,12 +58,11 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
     <?php
     // check if search view of list view
     if (isset($_GET['searchName'])) {
-        $sql = "SELECT * FROM employee WHERE first_name like '%" . $_GET['searchName'] . "%'
-        OR last_name like '%" . $_GET['searchName'] . "%'";
+        $sql = "SELECT * FROM hall WHERE name like '%" . $_GET['searchName'] . "%'";
     }
 
     else {
-        $sql = "SELECT * FROM employee";
+        $sql = "SELECT * FROM hall";
     }
     $result = $conn->query($sql);
 
@@ -73,12 +72,9 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
   <table style='border: 1px solid #DDDDDD'>
     <thead>
     <tr>
-      <th>Employee Nr.</th>
-      <th>Manager-ID</th>
-      <th>First Name</th>
-      <th>Last Name</th>
-      <th>E-Mail</th>
-      <th>Password</th>
+      <th>Hall-ID</th>
+      <th>Name</th>
+      <th>Equipment</th>
     </tr>
     </thead>
     <tbody>
@@ -91,19 +87,13 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
             echo "<tr>";
 
 
-            echo "<td>" . $row['employee_nr'] . "</td>";
-            echo "<td>" . $row['manager_id'] . "</td>";
-            echo "<td>" . $row['first_name'] . "</td>";
-            echo "<td>" . $row['last_name'] . "</td>";
-            echo "<td>" . $row['email'] . "</td>";
-            echo "<td>" . $row['password'] . "</td>";
+            echo "<td>" . $row['hall_id'] . "</td>";
+            echo "<td>" . $row['name'] . "</td>";
+            echo "<td>" . $row['equipment'] . "</td>";
             if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
-                echo "<td><a href=\"updateemployee.php?employee_nr=" . $row['employee_nr'] . "&manager_id=" . $row['manager_id'] . "&first_name=" . $row['first_name'] . "&last_name=" . $row['last_name'] . "&email=" . $row['email'] . "&password=" . $row['password'] . "\"> UPDATE </a></td>";
-                echo "<td><a href=\"deleteemployee.php?id=" . $row['employee_nr'] . "\"> DELETE </a></td>";
+                echo "<td><a href=\"updatehall.php?hall_id=" . $row['hall_id'] . "&name=" . $row['name'] . "&equipment=" . $row['equipment'] . "\"> UPDATE </a></td>";
+                echo "<td><a href=\"deletehall.php?id=" . $row['hall_id'] . "\"> DELETE </a></td>";
             }
-            echo "<td><a href=\"employees_of_manager.php?searchEmployee=" . $row['employee_nr'] . "\"> Show Employees</a></td>";
-
-
             echo "</tr>";
         }
     }
@@ -114,50 +104,35 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
     </tbody>
   </table>
 
-  <div><?php echo $row_cnt ?> Employee/s found!</div>
+  <div><?php echo $row_cnt ?> Hall/s found!</div>
 
 
   <br>
 
-  <div id="insertEmployee">
-    <form id='insertform' action='employee_administration.php' method='get'>
-      Add new Employee:
+  <div id="insertHall">
+    <form id='insertform' action='hall_administration.php' method='get'>
+      Add new Hall:
       <table style='border: 1px solid #DDDDDD'>
         <thead>
         <tr>
-            <th>Employee Nr.</th>
-            <th>Manager-ID</th>
-            <th>First Name</th>
-            <th>Last Name</th>
-            <th>E-Mail</th>
-            <th>Password</th>
+            <th>Hall-ID</th>
+            <th>Name</th>
+            <th>Equipment</th>
         </tr>
         </thead>
         <tbody>
         <tr>
           <td>
-            <input class="inputEmployeeNr" id='employee_nr' name='employee_nr' type='text' size='10'
-                   value='<?php echo $_GET['employee_nr']; ?>'/>
+            <input class="inputHall_ID" id='inputHall_ID' name='inputHall_ID' type='text' size='10'
+                   value='<?php echo $_GET['hall_id']; ?>'/>
           </td>
           <td>
-            <input id='manager_id' name='manager_id' type='text' size='20'
-                   value='<?php echo $_GET['manager_id']; ?>'/>
+            <input id='nameHall' name='nameHall' type='text' size='20'
+                   value='<?php echo $_GET['name']; ?>'/>
           </td>
           <td>
-            <input id='first_name' name='first_name' type='text' size='20'
-                   value='<?php echo $_GET['first_name']; ?>'/>
-          </td>
-          <td>
-            <input class="last_name" id='last_name' name='last_name' type='text' size='20'
-                   value='<?php echo $_GET['last_name']; ?>'/>
-          </td>
-          <td>
-            <input class ="email" id='email' name='email' type='text' size='20'
-                   value='<?php echo $_GET['email']; ?>'/>
-          </td>
-          <td>
-            <input class="password" id='password' name='password' type='text' size='20'
-                   value='<?php echo $_GET['password']; ?>'/>
+            <input id='equipmentHall' name='equipmentHall' type='text' size='20'
+                   value='<?php echo $_GET['equipment']; ?>'/>
           </td>
         </tr>
         </tbody>
@@ -168,16 +143,16 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
     <?php
     //Handle insert
-    if (isset($_GET['employee_nr']) && !empty($_GET['employee_nr'])) {
+    if (isset($_GET['inputHall_ID']) && !empty($_GET['inputHall_ID'])) {
 
         //Prepare insert statementd
-        $sql = "INSERT INTO employee VALUES(" . $_GET['employee_nr'] . ",'" . $_GET['manager_id'] . "','" . $_GET['first_name'] . "','" . $_GET['last_name'] . "','" . $_GET['email'] . "','" . $_GET['password'] . "')";
+        $sql = "INSERT INTO hall VALUES(" . $_GET['inputHall_ID'] . ",'" . $_GET['nameHall'] . "','" . $_GET['equipmentHall'] . "')";
 
 
         //Parse and execute statement
         if ($conn->query($sql) === TRUE) {
             echo "New record created succesfully";
-            header("location: employee_administration.php");
+            header("location: hall_administration.php");
 
         } else {
             echo "Error: " . $sql . "<br>" . $conn->error;

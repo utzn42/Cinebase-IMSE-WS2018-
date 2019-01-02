@@ -33,6 +33,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
     <button onclick="window.location='news.php';" class="buttonBig">News</button>
     <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
     <button onclick="window.location='employee_administration.php';" class="buttonBig">Employees</button>
+    <button onclick="window.location='hall_administration.php';" class="buttonBig">Halls</button>
     <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
             class="buttonLogin">
         Sign In
