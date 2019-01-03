@@ -132,7 +132,7 @@ $row_cnt = mysqli_num_rows($result);
 
         <?php
 		
-        if (isset($_POST['buy'])) {
+        if (isset($_POST['reserve'])) {
             $qty = $_POST['quantity'];  // Storing Selected Value In Variable
         }
 
@@ -145,7 +145,7 @@ $row_cnt = mysqli_num_rows($result);
             }
         }
 
-        if (array_key_exists('buy', $_POST)) {
+        if (array_key_exists('reserve', $_POST)) {
             buytickets($conn, $screening_id, $customer_id, $qty);
         }
         ?>
