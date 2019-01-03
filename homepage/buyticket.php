@@ -1,3 +1,16 @@
+<?php
+session_start();
+
+$screening_id = $_GET['screening_id'];
+$customer_id = $_SESSION['customer_id'];
+
+$user = 'root';
+$pass = '';
+$database = 'cinebase';
+
+$conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,35 +23,131 @@
 </head>
 <body>
 
+<div class="wrapper">
+    <div class="topLine" id="topLine">
+        cinebase
+        <button onclick="window.location='index.php';" style="margin-left: 20px" class="buttonBig">Home
+        </button>
+        <button onclick="window.location='movies.php';"
+                class="buttonBig">Movies
+        </button>
+        <button onclick="window.location='screening.php';"
+                style="border-bottom: 2px solid whitesmoke; font-weight: bold" class="buttonBig">
+            Screenings
+        </button>
+        <button onclick="window.location='news.php';" class="buttonBig">News</button>
+        <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
+        <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+            echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
+        } ?>
+        <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+            echo "<button onclick=\"window.location='hall_administration.php';\" class=\"buttonBig\">Halls</button>";
+        } ?>
+        <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
+                class="buttonLogin">
+            Sign In
+        </button>
+        <button id="register" onclick="window.location='register.php';"
+                class="buttonRegister">Register
+        </button>
+    </div>
+</div>
 
 <?php
-session_start();
-
-$screening_id = $_GET['screening_id'];
-$customer_id = $_SESSION['customer_id'];
-
-$user = 'root';
-$pass = '';
-$database = 'cinebase';
-
-$conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
-
-$sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES (\"$screening_id\", \"$customer_id\", 10.00, 0)";
-
-$ticket_id = $conn->query("SELECT ticket_id FROM ticket WHERE customer_id = \"$customer_id\" AND ticket_id = MAX(ticket_id)");
-
-$start_time = $conn->query("SELECT starting_time FROM screening WHERE customer_id = \"$customer_id\"");
-
-if (mysqli_query($conn, $sql)) {
-    mysqli_close($conn);
-    echo ("<script type=\"text/javascript\">buyTicketSuccess(\"$ticket_id\", $start_time);</script>");
-    header('Location: screening.php');
-    exit;
-} else {
-    echo "Error while buying ticket";
-}
+$sql = "SELECT screening_id, title, name, starting_time, duration FROM screening INNER JOIN film ON screening.film_id=film.film_id INNER JOIN hall ON screening.hall_id = hall.hall_id WHERE screening_id = $screening_id ";
+$result = $conn->query($sql);
+$row_cnt = mysqli_num_rows($result);
 ?>
 
+<div class="wrapperMainBody">
+    <div class="mainBody" id="mainBody">
+        <div>
+            <form id='searchform' action='screening.php' method='get'>
+                <a href='screening.php'>back to screenings</a>
+            </form>
+            <br>
+        </div>
+
+        <table style='border: 1px solid #DDDDDD'>
+            <thead>
+            <tr>
+                <th>Screening-ID</th>
+                <th>Film-Title</th>
+                <th>Hall</th>
+                <th>Starting Time</th>
+                <th>Duration (minutes)</th>
+                <th>Quantity</th>
+                <th>Discount Type</th>
+            </tr>
+
+            </thead>
+            <tbody>
+            <?php
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+
+                    echo "<tr>";
+                    echo "<td>" . $row['screening_id'] . "</td>";
+                    echo "<td>" . $row['title'] . "</td>";
+                    echo "<td>" . $row['name'] . "</td>";
+                    echo "<td>" . $row['starting_time'] . "</td>";
+                    echo "<td>" . $row['duration'] . "</td>";
+                }
+            }
+            ?>
+            <td>
+                <form name="quantity_form" action="" method="get">
+                    <select name="quantity">
+                        <option value="1">1</option>
+                        <option value="2">2</option>
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                    </select>
+                </form>
+            </td>
+            <td>
+                <input type="checkbox" name="student" value="student" vertical-align: middle;>Student<br>
+                <input type="checkbox" name="pensioner" value="pensioner" vertical-align: middle;>Pensioner<br>
+            </td>
+            </tbody>
+        </table>
+
+        <form method="post">
+            <input type="submit" name="buy" id="buy" value="Buy Tickets" style="margin-top: 30px;"/><br/>
+        </form>
+
+        <?php
+
+        function buytickets()
+        {
+            echo "To be implemented!";
+        }
+
+        if (array_key_exists('buy', $_POST)) {
+            buytickets();
+        }
+
+        ?>
+
+        <div>
+            <?php
+            if (mysqli_query($conn, $sql)) {
+                $sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES (\"$screening_id\", \"$customer_id\", 10.00, 0)";
+
+                $ticket_id = $conn->query("SELECT ticket_id FROM ticket WHERE customer_id = \"$customer_id\" AND ticket_id = MAX(ticket_id)");
+
+                $start_time = $conn->query("SELECT starting_time FROM screening WHERE customer_id = \"$customer_id\"");
+
+                mysqli_close($conn);
+            } else {
+                echo "Error while buying ticket";
+            }
+            ?>
+        </div>
+    </div>
+</div>
 </body>
 </html>
 
