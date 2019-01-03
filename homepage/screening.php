@@ -108,7 +108,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
               }
               echo "<td><a href=\"movies.php?searchFilmID=" . $row['film_id'] . "\"> Show Film Details </a></td>";
               if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-                  echo "<td><a href=\"buyticket.php?screening_id=" . $row['screening_id'] . "\"> BUY TICKET </a></td>";
+                  echo "<td><a href=\"reserveticket.php?screening_id=" . $row['screening_id'] . "\"> RESERVE </a></td>";
               }
               echo "</tr>";
           }
