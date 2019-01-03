@@ -136,9 +136,9 @@ $row_cnt = mysqli_num_rows($result);
             $qty = $_POST['quantity'];  // Storing Selected Value In Variable
         }
 
-        function buytickets($conn, $screening_id, $customer_id, $qty)
+        function reservetickets($conn, $screening_id, $customer_id, $qty)
         {
-			echo("<script type=\"text/javascript\">buyTicketSuccess(".$qty.");</script>");
+			echo("<script type=\"text/javascript\">reserveTicketSuccess(".$qty.");</script>");
             $sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES (\"$screening_id\", \"$customer_id\", 10.00, 0)";
             for ($x = 0; $x < $qty; $x++) {
                 mysqli_query($conn, $sql);
@@ -146,7 +146,7 @@ $row_cnt = mysqli_num_rows($result);
         }
 
         if (array_key_exists('reserve', $_POST)) {
-            buytickets($conn, $screening_id, $customer_id, $qty);
+            reservetickets($conn, $screening_id, $customer_id, $qty);
         }
         ?>
 

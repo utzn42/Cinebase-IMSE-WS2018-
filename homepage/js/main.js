@@ -119,7 +119,7 @@ function setEmployeeMode(username){
   };
 }
 
-function buyTicketSuccess(qty){
+function reserveTicketSuccess(qty){
   window.alert(qty + " tickets have been set aside for you." + '\n' + "Discount eligibility will be checked during OTC purchase.");
 }
 
