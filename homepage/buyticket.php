@@ -54,6 +54,20 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 </div>
 
 <?php
+if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+    $username = $_SESSION['username'];
+    echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
+}
+if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+    echo("<script type=\"text/javascript\">setAdminMode();</script>");
+}
+if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+    $username = $_SESSION['username'];
+    echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
+}
+?>
+
+<?php
 $sql = "SELECT screening_id, title, name, starting_time, duration FROM screening INNER JOIN film ON screening.film_id=film.film_id INNER JOIN hall ON screening.hall_id = hall.hall_id WHERE screening_id = $screening_id ";
 $result = $conn->query($sql);
 $row_cnt = mysqli_num_rows($result);
@@ -96,8 +110,8 @@ $row_cnt = mysqli_num_rows($result);
             }
             ?>
             <td>
-                <form name="quantity_form" action="" method="get">
-                    <select name="quantity">
+                <form id="qty_select" name="qty_select" action="" method="post">
+                    <select name="quantity" id="quantity">
                         <option value="1">1</option>
                         <option value="2">2</option>
                         <option value="3">3</option>
@@ -105,7 +119,6 @@ $row_cnt = mysqli_num_rows($result);
                         <option value="5">5</option>
                         <option value="6">6</option>
                     </select>
-                </form>
             </td>
             <td>
                 <input type="checkbox" name="student" value="student" vertical-align: middle;>Student<br>
@@ -113,38 +126,30 @@ $row_cnt = mysqli_num_rows($result);
             </td>
             </tbody>
         </table>
-
-        <form method="post">
-            <input type="submit" name="buy" id="buy" value="Buy Tickets" style="margin-top: 30px;"/><br/>
+        <input type="submit" name="buy" id="buy" value="Buy Tickets" style="margin-top: 30px;"/><br/>
         </form>
 
         <?php
 
-        function buytickets()
+        if (isset($_POST['buy'])) {
+            $qty = $_POST['quantity'];  // Storing Selected Value In Variable
+        }
+
+        function buytickets($conn, $screening_id, $customer_id, $qty)
         {
-            echo "To be implemented!";
+            $sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES (\"$screening_id\", \"$customer_id\", 10.00, 0)";
+            for ($x = 0; $x < $qty; $x++) {
+                mysqli_query($conn, $sql);
+            }
         }
 
         if (array_key_exists('buy', $_POST)) {
-            buytickets();
+            buytickets($conn, $screening_id, $customer_id, $qty);
         }
-
         ?>
 
         <div>
-            <?php
-            if (mysqli_query($conn, $sql)) {
-                $sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES (\"$screening_id\", \"$customer_id\", 10.00, 0)";
-
-                $ticket_id = $conn->query("SELECT ticket_id FROM ticket WHERE customer_id = \"$customer_id\" AND ticket_id = MAX(ticket_id)");
-
-                $start_time = $conn->query("SELECT starting_time FROM screening WHERE customer_id = \"$customer_id\"");
-
-                mysqli_close($conn);
-            } else {
-                echo "Error while buying ticket";
-            }
-            ?>
+            <?php mysqli_close($conn); ?>
         </div>
     </div>
 </div>
