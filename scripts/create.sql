@@ -75,11 +75,3 @@ CREATE TABLE supervision(
 	FOREIGN KEY (supervisor_id) REFERENCES employee(employee_nr) ON DELETE CASCADE,
 	PRIMARY KEY(hall_id, supervisor_id)
 );
-
-
-CREATE OR REPLACE VIEW ticket_film AS (
-SELECT ticket.ticket_id, ticket.customer_id, screening.starting_time, film.title
-FROM ticket
-	LEFT JOIN screening ON ticket.screening_id = screening.screening_id
-	LEFT JOIN film ON screening.film_id = film.film_id
-);
