@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Cinebase</title>
-  <link rel="stylesheet"
-        type="text/css"
-        href="css/main.css"/>
-  <script src="js/main.js"></script>
+    <meta charset="UTF-8">
+    <title>Cinebase</title>
+    <link rel="stylesheet"
+          type="text/css"
+          href="css/main.css"/>
+    <script src="js/main.js"></script>
 </head>
 <body>
 
@@ -96,36 +96,36 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 ?>
 <div class="wrapper">
-  <div class="topLine" id="topLine">
-    cinebase
-    <button onclick="window.location='index.php';"
-            style="border-bottom: 2px solid whitesmoke; font-weight: bold; margin-left: 20px"
-            class="buttonBig">Home
-    </button>
-    <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
-    <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
-    <button onclick="window.location='news.php';" class="buttonBig">News</button>
-    <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
-      <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
-          echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
-      } ?>
-      <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
-          echo "<button onclick=\"window.location='hall_administration.php';\" class=\"buttonBig\">Halls</button>";
-      } ?>
+    <div class="topLine" id="topLine">
+        cinebase
+        <button onclick="window.location='index.php';"
+                style="border-bottom: 2px solid whitesmoke; font-weight: bold; margin-left: 20px"
+                class="buttonBig">Home
+        </button>
+        <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
+        <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
+        <button onclick="window.location='news.php';" class="buttonBig">News</button>
+        <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
+        <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+            echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
+        } ?>
+        <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+            echo "<button onclick=\"window.location='hall_administration.php';\" class=\"buttonBig\">Halls</button>";
+        } ?>
 
-    <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
-            class="buttonLogin">
-      Sign In
-    </button>
-    <button id="register" onclick="window.location='register.php';"
-            class="buttonRegister">Register
-    </button>
-  </div>
+        <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
+                class="buttonLogin">
+            Sign In
+        </button>
+        <button id="register" onclick="window.location='register.php';"
+                class="buttonRegister">Register
+        </button>
+    </div>
 </div>
 <div class="wrapperMainBody">
-  <div class="mainBody" id="mainBody">
-    Welcome to cinebase.com! Pick a movie and enjoy!
-  </div>
+    <div class="mainBody" id="mainBody">
+        Welcome to cinebase.com! Pick a movie and enjoy!
+    </div>
 </div>
 
 
@@ -148,36 +148,36 @@ if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == tru
   <span onclick="document.getElementById('popUpLogin').style.display='none'"
         class="close" title="Close Modal">&times;</span>
 
-  <form class="modal-content animate" action="index.php" method="post">
+    <form class="modal-content animate" action="index.php" method="post">
 
-    <div class="container">
-      <label for="username"><b>Username</b></label>
-      <input class="signInInputs" type="text" placeholder="Enter Username" name="username" required>
+        <div class="container">
+            <label for="username"><b>Username</b></label>
+            <input class="signInInputs" type="text" placeholder="Enter Username" name="username" required>
 
-      <label for="password"><b>Password</b></label>
-      <input class="signInInputs" type="password" placeholder="Enter Password" name="password"
-             required>
+            <label for="password"><b>Password</b></label>
+            <input class="signInInputs" type="password" placeholder="Enter Password" name="password"
+                   required>
 
-      <button class="buttonLoginModal" type="submit">Login</button>
-      <label>
-        <input type="checkbox" name="remember"> Employee
-      </label>
-    </div>
+            <button class="buttonLoginModal" type="submit">Login</button>
+            <label>
+                <input type="checkbox" name="remember"> Employee
+            </label>
+        </div>
 
-    <div class="container" style="background-color:#f1f1f1">
-      <button type="button" onclick="document.getElementById('popUpLogin').style.display='none'"
-              class="cancelbtn">Cancel
-      </button>
-      <span class="psw">Forgot <a href="#">password?</a></span>
-    </div>
-  </form>
+        <div class="container" style="background-color:#f1f1f1">
+            <button type="button" onclick="document.getElementById('popUpLogin').style.display='none'"
+                    class="cancelbtn">Cancel
+            </button>
+            <span class="psw">Forgot <a href="#">password?</a></span>
+        </div>
+    </form>
 </div>
 <!-- End of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp -->
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <p style="text-align:center">Yasin Ergüven Utz Nisslmüller Alexander Ramharter Oliver
-  Schweiger</p>
+    Schweiger</p>
 
 
 <?php

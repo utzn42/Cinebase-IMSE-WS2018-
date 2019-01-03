@@ -95,12 +95,15 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
       if ($result->num_rows > 0) {
           while ($row = $result->fetch_assoc()) {
 
+			$date = $row['starting_time'];
+			$simpleDate = new DateTime($date);
+		  
               echo "<tr>";
               echo "<td>" . $row['screening_id'] . "</td>";
               echo "<td>" . $row['hall_id'] . "</td>";
               echo "<td>" . $row['film_id'] . "</td>";
               echo "<td>" . $row['title'] . "</td>";
-              echo "<td>" . $row['starting_time'] . "</td>";
+              echo "<td>" . $simpleDate->format('d/m/Y h:m') . "</td>";
               echo "<td>" . $row['duration'] . "</td>";
               if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
                   echo "<td><a href=\"updatescreening.php?screening_id=" . $row['screening_id'] . "&hall_id=" . $row['hall_id'] . "&film_id=" . $row['film_id'] . "&starting_time=" . $row['starting_time'] . "&duration=" . $row['duration'] . "\"> UPDATE </a></td>";

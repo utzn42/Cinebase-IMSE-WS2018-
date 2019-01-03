@@ -101,11 +101,14 @@ $row_cnt = mysqli_num_rows($result);
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
 
+					$date = $row['starting_time'];
+					$simpleDate = new DateTime($date);
+				
                     echo "<tr>";
                     echo "<td>" . $row['screening_id'] . "</td>";
                     echo "<td>" . $row['title'] . "</td>";
                     echo "<td>" . $row['name'] . "</td>";
-                    echo "<td>" . $row['starting_time'] . "</td>";
+                    echo "<td>" . $simpleDate->format('d/m/Y h:m')  . "</td>";
                     echo "<td>" . $row['duration'] . "</td>";
                 }
             }

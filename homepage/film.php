@@ -5,7 +5,7 @@
   $pass = '';
   $database = 'cinebase';
  
-  // establish database connection
+  // establish database connection as usual
   $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
     
 ?>

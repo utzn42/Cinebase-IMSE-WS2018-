@@ -70,12 +70,16 @@ FROM ticket
       if ($result->num_rows > 0) {
           while ($row = $result->fetch_assoc()) {
 
+			$date = $row['starting_time'];
+			$simpleDate = new DateTime($date);
+			
+		  
               echo "<tr>";
 
 
               echo "<td>" . $row['ticket_id'] . "</td>";
               echo "<td>" . $row['title'] . "</td>";
-              echo "<td>" . $row['starting_time'] . "</td>";
+              echo "<td>" . $simpleDate->format('d/m/Y h:m') . "</td>";
               echo "</tr>";
           }
       }
