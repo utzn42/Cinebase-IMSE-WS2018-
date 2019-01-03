@@ -32,6 +32,7 @@
 
 <!-- Start of the part taken from: https://www.w3schools.com/howto/howto_css_signup_form.asp -->
 <div class="register" id="popUpRegister">
+  <span onclick="window.location='index.php'" class="close" title="Close Modal">&times;</span>
   <form action="index.php" method="post">
     <div class="container">
       <h1>Sign Up</h1>
