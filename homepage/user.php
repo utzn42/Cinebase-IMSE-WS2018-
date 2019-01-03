@@ -60,7 +60,10 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
       $customer_id = $_SESSION['customer_id'];
 
-      $sql = "SELECT * FROM ticket_film WHERE customer_id = \"$customer_id\"";
+      $sql = "SELECT ticket.ticket_id, ticket.customer_id, screening.starting_time, film.title
+FROM ticket
+	LEFT JOIN screening ON ticket.screening_id = screening.screening_id
+	LEFT JOIN film ON screening.film_id = film.film_id WHERE customer_id = \"$customer_id\"";
       $result = $conn->query($sql);
 
       // fetch rows of the executed sql query
@@ -87,7 +90,6 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
 
     <br>
-
 
 
       <?php $conn->close(); ?>
