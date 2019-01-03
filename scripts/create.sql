@@ -53,7 +53,7 @@ CREATE TABLE ticket (
 	FOREIGN KEY (customer_id) REFERENCES customer(customer_id) ON DELETE CASCADE,
 	PRIMARY KEY(ticket_id),
 	price FLOAT NOT NULL,
-	discount_type VARCHAR(15) DEFAULT NULL
+	discount_type VARCHAR(20) DEFAULT NULL
 );
 
 CREATE TABLE employee(
