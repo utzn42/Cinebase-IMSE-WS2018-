@@ -126,7 +126,6 @@ function reserveTicketSuccess(qty){
 
 function deleteAccount(customerID){
   if(window.confirm("Are you sure you want to delete your account?")){
-    window.alert(customerID);
     window.location="deleteAccount.php?id="+customerID;
   }
 

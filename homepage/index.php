@@ -34,7 +34,18 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 echo("<script type=\"text/javascript\">loginSuccess(\"$username\");</script>");
                 $_SESSION['loggedin'] = true;
                 $_SESSION['username'] = $username;
-                $_SESSION['customer_id'] = $i['customer_id'];
+
+                $sqlSearchUser = "SELECT * FROM customer WHERE password = \"$password\" AND email = \"$username\";";
+                $result = $con->query($sqlSearchUser);
+
+                if ($result->num_rows > 0) {
+                    while ($i = $result->fetch_assoc()) {
+                        if ($i['password'] == $_POST['password']) {
+                            $_SESSION['customer_id'] = $i['customer_id'];
+                            break;
+                        }
+                    }
+                }
             } else {
                 echo("<script type=\"text/javascript\">signUpFailedErrorMessage();</script>");
             }
