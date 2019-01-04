@@ -32,7 +32,9 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                 style="border-bottom: 2px solid whitesmoke; font-weight: bold" class="buttonBig">Movies
         </button>
         <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
-       <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+        <button onclick="window.location='news.php';" class="buttonBig">News</button>
+        <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
+        <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
             echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
         } ?>
         <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
@@ -137,7 +139,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
         <?php
         //Handle insert
-        if (isset($_GET['film_id']) && !empty($_GET['film_id'])) {
+        if (isset($_GET['film_id']) && !empty($_GET['film_id']) && isset($_GET['title']) && !empty($_GET['title'])) {
 
             //Prepare insert statementd
             $sql = "INSERT INTO film VALUES(" . $_GET['film_id'] . ",'" . $_GET['title'] . "','" . $_GET['director'] . "','" . $_GET['country'] . "','" . $_GET['film_language'] . "','" . $_GET['age_rating']  . "','" . $_GET['duration'] . "')";
@@ -146,7 +148,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
             //Parse and execute statement
             if ($conn->query($sql) === TRUE) {
                 echo "New record created succesfully";
-                header("location: movies.php");
+                #header("location: movies.php");
 
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;

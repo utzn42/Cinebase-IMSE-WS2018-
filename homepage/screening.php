@@ -32,6 +32,8 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                 style="border-bottom: 2px solid whitesmoke; font-weight: bold" class="buttonBig">
             Screenings
         </button>
+        <button onclick="window.location='news.php';" class="buttonBig">News</button>
+        <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
         <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
             echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
         } ?>
@@ -120,7 +122,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
         <?php
         //Handle insert
-        if (isset($_GET['screening_id']) && !empty($_GET['screening_id'])) {
+        if (isset($_GET['screening_id']) && !empty($_GET['screening_id']) && isset($_GET['film_id']) && !empty($_GET['film_id']) && isset($_GET['hall_id']) && !empty($_GET['hall_id'])) {
 
             //Prepare insert statementd
             $sql = "INSERT INTO screening VALUES(" . $_GET['screening_id'] . ",'" . $_GET['hall_id'] . "','" . $_GET['film_id'] . "','" . $_GET['starting_time'] . "')";
@@ -129,7 +131,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
             //Parse and execute statement
             if ($conn->query($sql) === TRUE) {
                 echo "New record created succesfully";
-                header("location: screening.php");
+                #header("location: screening.php");
 
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
