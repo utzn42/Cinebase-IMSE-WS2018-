@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 echo("<script type=\"text/javascript\">loginSuccess(\"$username\");</script>");
                 $_SESSION['loggedin'] = true;
                 $_SESSION['username'] = $username;
+                $_SESSION['customer_id'] = $i['customer_id'];
             } else {
                 echo("<script type=\"text/javascript\">signUpFailedErrorMessage();</script>");
             }
