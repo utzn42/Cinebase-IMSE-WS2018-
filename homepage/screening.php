@@ -86,7 +86,6 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         <th>Starting Time</th>
         <th>Duration (minutes)</th>
       </tr>
-      </tr>
       </thead>
       <tbody>
       <?php
@@ -109,9 +108,9 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                   echo "<td><a href=\"updatescreening.php?screening_id=" . $row['screening_id'] . "&hall_id=" . $row['hall_id'] . "&film_id=" . $row['film_id'] . "&starting_time=" . $row['starting_time'] . "&duration=" . $row['duration'] . "\"> UPDATE </a></td>";
                   echo "<td><a href=\"deletescreening.php?id=" . $row['screening_id'] . "\"> DELETE </a></td>";
               }
-              echo "<td><a href=\"movies.php?searchFilmID=" . $row['film_id'] . "\"> Show Film Details </a></td>";
+              echo "<td style=\"padding: 5px 10px 5px 10px;\"><a href=\"movies.php?searchFilmID=" . $row['film_id'] . "\"> Show Film Details </a></td>";
               if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-                  echo "<td><a href=\"reserveticket.php?screening_id=" . $row['screening_id'] . "\"> RESERVE </a></td>";
+                  echo "<td style=\"padding: 5px 10px 5px 10px;\"><a href=\"reserveticket.php?screening_id=" . $row['screening_id'] . "\"> RESERVE </a></td>";
               }
               echo "</tr>";
           }
