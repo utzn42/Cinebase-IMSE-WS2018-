@@ -139,7 +139,6 @@ $row_cnt = mysqli_num_rows($result);
 			foreach($_POST['boxes'] as $checked){
 			array_push($discounts, $checked);
 			}
-			//echo implode(', ', $discounts)."</br>";
 		}
 		
         if (isset($_POST['reserve'])) {
@@ -153,7 +152,6 @@ $row_cnt = mysqli_num_rows($result);
 			}
 			
 			if(sizeof($discounts)==1){
-				echo $discounts[0];
 				$sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES (\"$screening_id\", \"$customer_id\", 10.00, \"" .$discounts[0]. "\")";
 				echo $sql;
 			}
