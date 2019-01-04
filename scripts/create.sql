@@ -6,6 +6,7 @@ CREATE TABLE film (
 	country VARCHAR(30)	,
 	film_language VARCHAR(30),
 	age_rating TINYINT,
+	duration SMALLINT,
     CONSTRAINT age_check CHECK (age_rating BETWEEN 0 AND 18)
 );
 
@@ -23,7 +24,6 @@ CREATE TABLE screening (
 	FOREIGN KEY (hall_id) REFERENCES hall(hall_id) ON DELETE CASCADE,
 	FOREIGN KEY (film_id) REFERENCES film(film_id) ON DELETE CASCADE,
 	PRIMARY KEY(screening_id),
-	duration SMALLINT,
 	starting_time DATETIME
 );
 
