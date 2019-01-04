@@ -153,7 +153,6 @@ $row_cnt = mysqli_num_rows($result);
 			
 			if(sizeof($discounts)==1){
 				$sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES (\"$screening_id\", \"$customer_id\", 10.00, \"" .$discounts[0]. "\")";
-				echo $sql;
 			}
 			
 			if(sizeof($discounts)==2){
