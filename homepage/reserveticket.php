@@ -92,8 +92,8 @@ $row_cnt = mysqli_num_rows($result);
                 <th>Hall</th>
                 <th>Starting Time</th>
                 <th>Duration (minutes)</th>
-                <th>Quantity</th>
-                <th>Discount Type</th>
+                <th style="padding: 0px 10px 0px 10px;">Quantity</th>
+                <th style="padding: 0px 10px 0px 10px;">Discount Type</th>
             </tr>
 
             </thead>
@@ -106,10 +106,10 @@ $row_cnt = mysqli_num_rows($result);
 					$simpleDate = new DateTime($date);
 				
                     echo "<tr>";
-                    echo "<td>" . $row['screening_id'] . "</td>";
-                    echo "<td>" . $row['title'] . "</td>";
-                    echo "<td>" . $row['name'] . "</td>";
-                    echo "<td>" . $simpleDate->format('d/m/Y h:m')  . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['screening_id'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['title'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['name'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $simpleDate->format('d/m/Y h:m')  . "</td>";
                     echo "<td>" . $row['duration'] . "</td>";
                 }
             }
@@ -132,7 +132,6 @@ $row_cnt = mysqli_num_rows($result);
             </tbody>
         </table>
 			<input type="submit" name="reserve" id="reserve" value="Make Reservation" style="margin-top: 30px;"/><br/>
-        </form>
 
         <?php
 		if(!empty($_POST['boxes'])){

@@ -50,8 +50,8 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         <div>
             <form id='searchform' action='employees_of_manager.php' method='get'>
                 <a href="employee_administration.php">Back to All-Employees-View</a><br><br>
-                Manager-ID:
-                <input id='searchEmployee' name='searchEmployee' type='text' size='20' readonly
+                Employees of Manager:
+                <input id='searchEmployee' name='searchEmployee' type='text' size='20'
                        value='<?php echo $_GET['searchEmployee']; ?>'/>
                 <input id='search' type='submit' value='Search!'/>
             </form>
@@ -60,8 +60,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         <?php
         // check if search view of list view
         if (isset($_GET['searchEmployee'])) {
-            $sql = "SELECT * FROM employee WHERE manager_id = '" . $_GET['searchEmployee'] . "'
-            AND manager_id <> employee_nr";
+            $sql = "SELECT * FROM employee WHERE manager_id like '%" . $_GET['searchEmployee'] . "%'";
         } else {
             $sql = "SELECT * FROM employee ";
         }
