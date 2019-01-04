@@ -31,8 +31,6 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
     <button onclick="window.location='movies.php';" class="buttonBig">Movies
     </button>
     <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
-    <button onclick="window.location='news.php';" class="buttonBig">News</button>
-    <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
     <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
             class="buttonLogin">
       Sign In

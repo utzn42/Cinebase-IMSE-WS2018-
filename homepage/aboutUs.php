@@ -20,11 +20,6 @@ session_start();
         </button>
         <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
         <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
-        <button onclick="window.location='news.php';" class="buttonBig">News</button>
-        <button onclick="window.location='aboutUs.php';"
-                style="border-bottom: 2px solid whitesmoke; font-weight: bold" class="buttonBig">About
-            Us
-        </button>
         <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
             echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
         } ?>
