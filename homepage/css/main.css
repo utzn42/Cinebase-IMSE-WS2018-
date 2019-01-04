@@ -237,3 +237,19 @@ span.psw {
 .inputLanguage {
   width: 100px;
 }
+
+.deleteMyAccount {
+  background-color: #960005;
+  border: none;
+  color: #f2eeff;
+  padding: 15px 25px;
+  text-align: center;
+  font-size: 16px;
+  cursor: pointer;
+  font-family: "Trebuchet MS", serif;
+}
+
+.deleteMyAccount:hover {
+  background-color: #f2eeff;
+  color: cadetblue;
+}

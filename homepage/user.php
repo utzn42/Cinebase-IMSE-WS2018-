@@ -97,9 +97,10 @@ FROM ticket
     <div><?php echo $row_cnt ?> Ticket/s found!</div>
 
 
-    <br>
+    <br><br><br><br>
 
-    <button onclick="deleteAccount(<?php echo $_SESSION['customer_id']; ?>)">Delete my Account</button>
+
+    <button class="deleteMyAccount" onclick="deleteAccount(<?php echo $_SESSION['customer_id']; ?>)">Delete my Account</button>
 
 
       <?php $conn->close(); ?>
