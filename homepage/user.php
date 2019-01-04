@@ -51,9 +51,9 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
       <tr>
         <th>Ticket-ID</th>
         <th>Film</th>
-		<th>Hall</th>
+        <th>Hall</th>
         <th>Date</th>
-		<th>Discount Type</th>
+        <th>Discount Type</th>
       </tr>
       </thead>
       <tbody>
@@ -73,18 +73,19 @@ FROM ticket
       if ($result->num_rows > 0) {
           while ($row = $result->fetch_assoc()) {
 
-			$date = $row['starting_time'];
-			$simpleDate = new DateTime($date);
-			
-		  
+              $date = $row['starting_time'];
+              $simpleDate = new DateTime($date);
+
+
               echo "<tr>";
 
 
               echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['ticket_id'] . "</td>";
               echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['title'] . "</td>";
-			  echo "<td style=\"padding: 5px 20px 5px 20px;\">" . $row['name'] . "</td>";
+              echo "<td style=\"padding: 5px 20px 5px 20px;\">" . $row['name'] . "</td>";
               echo "<td style=\"padding: 5px 30px 5px 30px;\">" . $simpleDate->format('d/m/Y h:m') . "</td>";
-			  echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['discount_type'] . "</td>";
+              echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['discount_type'] . "</td>";
+              echo "<td><a href=\"deleteTicket.php?id=" . $row['ticket_id'] . "\"> DELETE </a></td>";
               echo "</tr>";
           }
       }
