@@ -85,12 +85,12 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         <table style="float:none; border: 1px solid #DDDDDD">
             <thead>
             <tr>
-                <th>Film-ID</th>
-                <th>Title</th>
-                <th>Director</th>
-                <th>Country</th>
-                <th>Language</th>
-                <th>Age rating</th>
+                <th style="padding: 0px 10px 0px 10px;">Film-ID</th>
+                <th style="padding: 0px 10px 0px 10px;">Title</th>
+                <th style="padding: 0px 10px 0px 10px;">Director</th>
+                <th style="padding: 0px 10px 0px 10px;">Country</th>
+                <th style="padding: 0px 10px 0px 10px;">Language</th>
+                <th style="padding: 0px 10px 0px 10px;">Age rating</th>
             </tr>
             </thead>
             <tbody>
@@ -103,12 +103,12 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                     echo "<tr>";
 
 
-                    echo "<td>" . $row['film_id'] . "</td>";
-                    echo "<td>" . $row['title'] . "</td>";
-                    echo "<td>" . $row['director'] . "</td>";
-                    echo "<td>" . $row['country'] . "</td>";
-                    echo "<td>" . $row['film_language'] . "</td>";
-                    echo "<td>" . $row['age_rating'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['film_id'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['title'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['director'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['country'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['film_language'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['age_rating'] . "</td>";
                     if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
                         echo "<td><a href=\"updatefilm.php?film_id=" . $row['film_id'] . "&title=" . $row['title'] . "&director=" . $row['director'] . "&country=" . $row['country'] . "&film_language=" . $row['film_language'] . "&age_rating=" . $row['age_rating'] . "\"> UPDATE </a></td>";
                         echo "<td><a href=\"deletefilm.php?id=" . $row['film_id'] . "\"> DELETE </a></td>";

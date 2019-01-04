@@ -80,11 +80,11 @@ FROM ticket
               echo "<tr>";
 
 
-              echo "<td>" . $row['ticket_id'] . "</td>";
-              echo "<td>" . $row['title'] . "</td>";
-			  echo "<td>" . $row['name'] . "</td>";
-              echo "<td>" . $simpleDate->format('d/m/Y h:m') . "</td>";
-			  echo "<td>" . $row['discount_type'] . "</td>";
+              echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['ticket_id'] . "</td>";
+              echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['title'] . "</td>";
+			  echo "<td style=\"padding: 5px 20px 5px 20px;\">" . $row['name'] . "</td>";
+              echo "<td style=\"padding: 5px 30px 5px 30px;\">" . $simpleDate->format('d/m/Y h:m') . "</td>";
+			  echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['discount_type'] . "</td>";
               echo "</tr>";
           }
       }

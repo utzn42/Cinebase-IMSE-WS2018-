@@ -94,10 +94,10 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                     echo "<td>" . $row['hall_id'] . "</td>";
                     echo "<td>" . $row['name'] . "</td>";
                     echo "<td>" . $row['equipment'] . "</td>";
-
-                    echo "<td><a href=\"updatehall.php?hall_id=" . $row['hall_id'] . "&name=" . $row['name'] . "&equipment=" . $row['equipment'] . "\"> UPDATE </a></td>";
-                    echo "<td><a href=\"deletehall.php?id=" . $row['hall_id'] . "\"> DELETE </a></td>";
-
+                    if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+                        echo "<td><a href=\"updatehall.php?hall_id=" . $row['hall_id'] . "&name=" . $row['name'] . "&equipment=" . $row['equipment'] . "\"> UPDATE </a></td>";
+                        echo "<td><a href=\"deletehall.php?id=" . $row['hall_id'] . "\"> DELETE </a></td>";
+                    }
                     echo "</tr>";
                 }
             }
