@@ -99,6 +99,8 @@ FROM ticket
 
     <br>
 
+    <button onclick="deleteAccount(<?php echo $_SESSION['customer_id']; ?>)">Delete my Account</button>
+
 
       <?php $conn->close(); ?>
 
