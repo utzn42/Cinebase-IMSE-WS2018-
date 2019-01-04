@@ -52,16 +52,11 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
 <div class="wrapperMainBody">
     <div class="mainBody" id="mainBody">
-        <button onclick="window.location='screening.php';" class="buttonShowScreenings">Show all current
-            screenings
-        </button>
-
-
-        <br><br>
+  
         <div>
             <form id='searchform' action='movies.php' method='get'>
                 <a href='movies.php'>All Films</a> ---
-                Search for title:
+                Search for Film Title:
                 <input class='searchTitle' id='searchTitle' name='searchTitle' type='text' size='20'
                        value='<?php echo $_GET['searchTitle']; ?>'/>
                 <input id='search' type='submit' value='Search!'/>
@@ -69,7 +64,14 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
             <br>
         </div>
         <?php
-        // check if search view of list view
+		$sql = "SELECT MAX(film_id) AS max FROM film";
+
+        $result = $conn->query($sql);
+		$max_row = mysqli_fetch_array($result);
+
+
+		
+		
         if (isset($_GET['searchTitle'])) {
             $sql = "SELECT * FROM film WHERE title like '%" . $_GET['searchTitle'] . "%'";
         } else if (isset($_GET['searchFilmID'])) {
@@ -80,57 +82,8 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         $result = $conn->query($sql);
 
         ?>
-
-
-        <table style="float:none; border: 1px solid #DDDDDD">
-            <thead>
-            <tr>
-                <th style="padding: 0px 10px 0px 10px;">Film-ID</th>
-                <th style="padding: 0px 10px 0px 10px;">Title</th>
-                <th style="padding: 0px 10px 0px 10px;">Director</th>
-                <th style="padding: 0px 10px 0px 10px;">Country</th>
-                <th style="padding: 0px 10px 0px 10px;">Language</th>
-                <th style="padding: 0px 10px 0px 10px;">Age rating</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
-
-            // fetch rows of the executed sql query
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-
-                    echo "<tr>";
-
-
-                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['film_id'] . "</td>";
-                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['title'] . "</td>";
-                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['director'] . "</td>";
-                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['country'] . "</td>";
-                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['film_language'] . "</td>";
-                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['age_rating'] . "</td>";
-                    if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
-                        echo "<td><a href=\"updatefilm.php?film_id=" . $row['film_id'] . "&title=" . $row['title'] . "&director=" . $row['director'] . "&country=" . $row['country'] . "&film_language=" . $row['film_language'] . "&age_rating=" . $row['age_rating'] . "\"> UPDATE </a></td>";
-                        echo "<td><a href=\"deletefilm.php?id=" . $row['film_id'] . "\"> DELETE </a></td>";
-                    }
-                    echo "<td><a href=\"screening.php?searchFilmID=" . $row['film_id'] . "\"> Show Screenings </a></td>";
-
-
-                    echo "</tr>";
-                }
-            }
-            $row_cnt = mysqli_num_rows($result);
-
-
-            ?>
-            </tbody>
-        </table>
-
-        <div><?php echo $row_cnt ?> Film/s found!</div>
-
-
-        <br>
-
+		
+		  <br>
         <div id="insertMovie">
             <form id='insertform' action='movies.php' method='get'>
                 Add new film:
@@ -143,13 +96,14 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                         <th>Country</th>
                         <th>Language</th>
                         <th>Age rating</th>
+						<th>Duration (minutes)</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr>
                         <td>
                             <input class="inputFilmID" id='film_id' name='film_id' type='text' size='10'
-                                   value='<?php echo $_GET['film_id']; ?>'/>
+                                   value='<?php echo $max_row["max"] +1; ?>'/>
                         </td>
                         <td>
                             <input id='title' name='title' type='text' size='20'
@@ -172,6 +126,10 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                             <input class="inputAge" id='age_rating' name='age_rating' type='text' size='20'
                                    value='<?php echo $_GET['age_rating']; ?>'/>
                         </td>
+						<td>
+                            <input class="inputDuration" id='duration' name='duration' type='text' size='20'
+                                   value='<?php echo $_GET['duration']; ?>'/>
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -184,7 +142,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         if (isset($_GET['film_id']) && !empty($_GET['film_id'])) {
 
             //Prepare insert statementd
-            $sql = "INSERT INTO film VALUES(" . $_GET['film_id'] . ",'" . $_GET['title'] . "','" . $_GET['director'] . "','" . $_GET['country'] . "','" . $_GET['film_language'] . "','" . $_GET['age_rating'] . "')";
+            $sql = "INSERT INTO film VALUES(" . $_GET['film_id'] . ",'" . $_GET['title'] . "','" . $_GET['director'] . "','" . $_GET['country'] . "','" . $_GET['film_language'] . "','" . $_GET['age_rating']  . "','" . $_GET['duration'] . "')";
 
 
             //Parse and execute statement
@@ -200,6 +158,62 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
 
         ?>
+		
+		<br>
+
+
+        <table style="float:none; border: 1px solid #DDDDDD">
+            <thead>
+            <tr>
+                <th style="padding: 0px 10px 0px 10px;">Film-ID</th>
+                <th style="padding: 0px 10px 0px 10px;">Title</th>
+                <th style="padding: 0px 10px 0px 10px;">Director</th>
+                <th style="padding: 0px 10px 0px 10px;">Country</th>
+                <th style="padding: 0px 10px 0px 10px;">Language</th>
+                <th style="padding: 0px 10px 0px 10px;">Age rating</th>
+				<th style="padding: 0px 10px 0px 10px;">Duration (minutes)</th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+
+            // fetch rows of the executed sql query
+            if ($result->num_rows > 0) {
+                while ($row = $result->fetch_assoc()) {
+
+                    echo "<tr>";
+
+
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['film_id'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['title'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['director'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['country'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['film_language'] . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['age_rating'] . "</td>";
+					echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['duration'] . "</td>";
+
+                    if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+                        echo "<td><a href=\"updatefilm.php?film_id=" . $row['film_id'] . "&title=" . $row['title'] . "&director=" . $row['director'] . "&country=" . $row['country'] . "&film_language=" . $row['film_language'] . "&age_rating=" . $row['age_rating'] . "&duration=" . $row['duration'] . "\"> UPDATE </a></td>";
+                        echo "<td><a href=\"deletefilm.php?id=" . $row['film_id'] . "\"> DELETE </a></td>";
+                    }
+                    echo "<td><a href=\"screening.php?searchFilmID=" . $row['film_id'] . "\"> Show Screenings </a></td>";
+
+
+                    echo "</tr>";
+                }
+            }
+            $row_cnt = mysqli_num_rows($result);
+
+
+            ?>
+            </tbody>
+        </table>
+
+        <div><?php echo $row_cnt ?> Film/s found!</div>
+
+
+      
 
 
 
