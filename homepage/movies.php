@@ -32,9 +32,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                 style="border-bottom: 2px solid whitesmoke; font-weight: bold" class="buttonBig">Movies
         </button>
         <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
-        <button onclick="window.location='news.php';" class="buttonBig">News</button>
-        <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
-        <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+       <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
             echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
         } ?>
         <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {

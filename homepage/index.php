@@ -104,9 +104,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </button>
         <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
         <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
-        <button onclick="window.location='news.php';" class="buttonBig">News</button>
-        <button onclick="window.location='aboutUs.php';" class="buttonBig">About Us</button>
-        <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+         <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
             echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
         } ?>
         <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
