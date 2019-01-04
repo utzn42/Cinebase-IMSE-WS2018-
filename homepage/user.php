@@ -51,7 +51,9 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
       <tr>
         <th>Ticket-ID</th>
         <th>Film</th>
+		<th>Hall</th>
         <th>Date</th>
+		<th>Discount Type</th>
       </tr>
       </thead>
       <tbody>
@@ -60,10 +62,11 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
       $customer_id = $_SESSION['customer_id'];
 
-      $sql = "SELECT ticket.ticket_id, ticket.customer_id, screening.starting_time, film.title
+      $sql = "SELECT ticket.ticket_id, ticket.customer_id, screening.starting_time, film.title, hall.name, ticket.discount_type
 FROM ticket
 	LEFT JOIN screening ON ticket.screening_id = screening.screening_id
-	LEFT JOIN film ON screening.film_id = film.film_id WHERE customer_id = \"$customer_id\"";
+	LEFT JOIN film ON screening.film_id = film.film_id  
+	LEFT JOIN hall ON screening.hall_id = hall.hall_id WHERE customer_id = \"$customer_id\"";
       $result = $conn->query($sql);
 
       // fetch rows of the executed sql query
@@ -79,7 +82,9 @@ FROM ticket
 
               echo "<td>" . $row['ticket_id'] . "</td>";
               echo "<td>" . $row['title'] . "</td>";
+			  echo "<td>" . $row['name'] . "</td>";
               echo "<td>" . $simpleDate->format('d/m/Y h:m') . "</td>";
+			  echo "<td>" . $row['discount_type'] . "</td>";
               echo "</tr>";
           }
       }
