@@ -132,6 +132,35 @@ function deleteAccount(customerID){
   if(window.confirm("Are you sure you want to delete your account?")){
     window.location="deleteAccount.php?id="+customerID;
   }
+}
 
+function displayFilmIDs(){
+  var filmID = document.createElement('th');
+  var t = document.createTextNode("Film-ID");
+  filmID.appendChild(t);
+  var tableRow = document.getElementById("tableRow");
+  tableRow.insertBefore(filmID, tableRow.firstChild);
 
+  filmID.style.padding="0px 10px 0px 10px";
+}
+
+function displayScreeningIDs(){
+  var screeningID = document.createElement('th');
+  var t = document.createTextNode("Screening-ID");
+  screeningID.appendChild(t);
+  var tableRow = document.getElementById("tableRow");
+  tableRow.insertBefore(screeningID, tableRow.firstChild);
+  screeningID.style.padding="0px 10px 0px 10px";
+
+  var hallID = document.createElement('th');
+  t = document.createTextNode("Hall-ID");
+  hallID.appendChild(t);
+  tableRow.insertBefore(hallID, document.getElementById("hallName"));
+  hallID.style.padding="0px 10px 0px 10px";
+
+  var filmID = document.createElement('th');
+  t = document.createTextNode("Film-ID");
+  filmID.appendChild(t);
+  tableRow.insertBefore(filmID, document.getElementById("filmTitle"));
+  filmID.style.padding="0px 10px 0px 10px";
 }

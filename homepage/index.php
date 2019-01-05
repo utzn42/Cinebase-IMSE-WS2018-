@@ -134,7 +134,10 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </div>
 <div class="wrapperMainBody">
     <div class="mainBody" id="mainBody">
-        Welcome to cinebase.com! Pick a movie and enjoy!
+      <br>
+      <img src="img/filmReel.png" height="135" width="135">
+      <br><br>
+        Welcome to cinebase! Pick a movie and enjoy!
     </div>
 </div>
 
@@ -184,7 +187,7 @@ if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == tru
 </div>
 <!-- End of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp -->
 
-<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <p style="text-align:center">Yasin Ergüven Utz Nisslmüller Alexander Ramharter Oliver
     Schweiger</p>
