@@ -31,7 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         if (strcmp($password, $passwordRepeat) == 0) {
             $sqlInsertUser = "INSERT INTO customer (email, password) VALUES (\"$username\", \"$password\")";
             if ($con->query($sqlInsertUser) == true) {
-                echo("<script type=\"text/javascript\">loginSuccess(\"$username\");</script>");
+                echo("<script type=\"text/javascript\">registerSuccess(\"$username\");</script>");
                 $_SESSION['loggedin'] = true;
                 $_SESSION['username'] = $username;
 

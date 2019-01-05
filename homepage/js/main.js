@@ -6,6 +6,10 @@ function loginSuccess(username){
   window.alert("Welcome Back " + username + "!");
 }
 
+function registerSuccess(username){
+  window.alert("You have been registered! Your username is: \'" + username + "\'.");
+}
+
 function setLoggedIn(username){
   document.getElementById("signIn").parentNode.removeChild(document.getElementById("signIn"));
   document.getElementById("register").parentNode.removeChild(document.getElementById("register"));
