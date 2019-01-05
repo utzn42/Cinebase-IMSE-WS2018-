@@ -162,8 +162,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
         <table style="float:none; border: 1px solid #DDDDDD">
             <thead>
-            <tr>
-                <th style="padding: 0px 10px 0px 10px;">Film-ID</th>
+            <tr id="tableRow">
                 <th style="padding: 0px 10px 0px 10px;">Title</th>
                 <th style="padding: 0px 10px 0px 10px;">Director</th>
                 <th style="padding: 0px 10px 0px 10px;">Country</th>
@@ -182,8 +181,9 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
                     echo "<tr>";
 
-
-                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['film_id'] . "</td>";
+                    if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+                        echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['film_id'] . "</td>";
+                    }
                     echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['title'] . "</td>";
                     echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['director'] . "</td>";
                     echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['country'] . "</td>";
@@ -239,6 +239,7 @@ if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
 if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
     $username = $_SESSION['username'];
     echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
+    echo("<script type=\"text/javascript\">displayFilmIDs();</script>");
 }
 ?>
 
