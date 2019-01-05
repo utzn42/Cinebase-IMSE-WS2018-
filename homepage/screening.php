@@ -7,6 +7,7 @@ $database = 'cinebase';
 
 // establish database connection
 $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
+date_default_timezone_set('Europe/Berlin');
 
 ?>
 
@@ -60,22 +61,36 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
       </form>
       <br>
     </div>
-      <?php
-      $sql = "SELECT MAX(screening_id) AS max FROM screening";
-      $result = $conn->query($sql);
-      $max_row = mysqli_fetch_array($result);
+	<div>
+		
+        <a href="screening.php?today=true">Show todays screenings</a><br>
+		<a href="screening.php?tomorrow=true">Show tomorrows screenings</a><br>
+		<a href="screening.php?nextweek=true">Show this weeks screenings</a><br>
+		
+    </div>
+    <?php
+    $sql = "SELECT MAX(screening_id) AS max FROM screening";
+    $result = $conn->query($sql);
+    $max_row = mysqli_fetch_array($result);
 
 
-      if (isset($_GET['searchTitle'])) {
-          $sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall WHERE title like '%" . $_GET['searchTitle'] . "%'";
-      } else if (isset($_GET['searchFilmID'])) {
-          $sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall WHERE film_id like '" . $_GET['searchFilmID'] . "'";
-      } else {
-          $sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall ";
-      }
-      $result = $conn->query($sql);
+	if (isset($_GET['searchTitle'])) {
+		$sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall WHERE title like '%" . $_GET['searchTitle'] . "%'";
+	} else if (isset($_GET['searchFilmID'])) {
+		$sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall WHERE film_id like '" . $_GET['searchFilmID'] . "'";
+	} else if (isset($_GET['today'])) {
+		$sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall WHERE DATEDIFF(starting_time, CURDATE()) = 0 ORDER BY starting_time ASC";
+	} else if (isset($_GET['tomorrow'])) {
+		$sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall WHERE DATEDIFF(starting_time, CURDATE()) = 1 ORDER BY starting_time ASC";      
+	} else if (isset($_GET['nextweek'])) {
+		$sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall WHERE DATEDIFF(starting_time, CURDATE()) >= 0 AND DATEDIFF(starting_time, CURDATE()) <= 7 ORDER BY starting_time ASC"; 
+	}
+	else {
+		$sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall ";
+	}
+	$result = $conn->query($sql);
 
-      ?>
+	?>
 
     <br>
 
