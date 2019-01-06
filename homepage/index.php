@@ -34,6 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 echo("<script type=\"text/javascript\">registerSuccess(\"$username\");</script>");
                 $_SESSION['loggedin'] = true;
                 $_SESSION['username'] = $username;
+                $_SESSION['password'] = $password;
 
                 $sqlSearchUser = "SELECT * FROM customer WHERE password = \"$password\" AND email = \"$username\";";
                 $result = $con->query($sqlSearchUser);
@@ -92,6 +93,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                         $_SESSION['loggedin'] = true;
                         $_SESSION['username'] = $username;
                         $_SESSION['customer_id'] = $i['customer_id'];
+                        $_SESSION['password'] = $password;
                         break;
                     }
                 }
