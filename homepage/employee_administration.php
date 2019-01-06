@@ -193,7 +193,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
             //Parse and execute statement
             if ($conn->query($sql) === TRUE) {
                 echo "New record created succesfully";
-                header("location: employee_administration.php");
+                echo '<meta http-equiv="refresh" content="0">';
 
             } else {
                 echo "Error: " . $sql . "<br>" . $conn->error;
