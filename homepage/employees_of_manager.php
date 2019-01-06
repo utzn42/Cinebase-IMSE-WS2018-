@@ -106,7 +106,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
         <div><?php
             if ($row_cnt != 0) {
-                echo "$row_cnt Employee/s found!";
+                echo "$row_cnt Subordinate/s found!";
             } else {
                 echo "This employee is not a manager!";
             } ?>
