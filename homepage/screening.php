@@ -86,7 +86,7 @@ date_default_timezone_set('Europe/Berlin');
 		$sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall WHERE DATEDIFF(starting_time, CURDATE()) >= 0 AND DATEDIFF(starting_time, CURDATE()) <= 7 ORDER BY starting_time ASC"; 
 	}
 	else {
-		$sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall ";
+		$sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall ORDER BY starting_time ASC";
 	}
 	$result = $conn->query($sql);
 
