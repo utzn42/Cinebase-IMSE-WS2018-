@@ -164,3 +164,14 @@ function displayScreeningIDs(){
   tableRow.insertBefore(filmID, document.getElementById("filmTitle"));
   filmID.style.padding="0px 10px 0px 10px";
 }
+
+function checkPassword(password){
+  if(window.prompt("Old password: ") == password){
+    var newPassword = window.prompt("New password: ");
+    window.location="changePassword.php?pw="+newPassword;
+    window.alert("Your new password has been set!");
+  }
+  else{
+    window.alert("Wrong password!");
+  }
+}

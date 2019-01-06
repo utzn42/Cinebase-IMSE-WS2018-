@@ -99,7 +99,7 @@ FROM ticket
 
     <br><br><br><br>
 
-
+    <button class="changePassword" onclick="checkPassword('<?php echo $_SESSION['password']; ?>')">Change Password</button>
     <button class="deleteMyAccount" onclick="deleteAccount(<?php echo $_SESSION['customer_id']; ?>)">Delete my Account</button>
 
 
