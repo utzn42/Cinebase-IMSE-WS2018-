@@ -17,13 +17,14 @@ public class FilmEntry extends Window {
     private JTextField countryField;
     private JTextField languageField;
     private JTextField ageField;
+    private JTextField durationField;
 
     public FilmEntry(final Connection conn) {
         run(filmPanel);
         submitButton.addActionListener(e -> {
             try {
                 Statement ProgrammInsertStmt = conn.createStatement();
-                ProgrammInsertStmt.executeUpdate("INSERT INTO film VALUES(" + Integer.valueOf(idField.getText()) + ", '" + titleField.getText() + "', '" + directorField.getText() + "', '" + countryField.getText() + "', '" + languageField.getText() + "', " + Integer.valueOf(ageField.getText()) + ")");
+                ProgrammInsertStmt.executeUpdate("INSERT INTO film VALUES(" + Integer.valueOf(idField.getText()) + ", '" + titleField.getText() + "', '" + directorField.getText() + "', '" + countryField.getText() + "', '" + languageField.getText() + "', " + Integer.valueOf(ageField.getText()) + ", " + Integer.valueOf(durationField.getText()) + ")");
                 JOptionPane.showMessageDialog(null, "Success!");
             } catch (SQLException sqle) {
                 JOptionPane.showMessageDialog(null, "Encountered error while executing SQL statement");

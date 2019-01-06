@@ -9,7 +9,6 @@ import java.sql.Statement;
 
 public class TicketEntry extends Window {
     private JPanel ticketPanel;
-    private JTextField ticketIDField;
     private JTextField screeningIDField;
     private JTextField customerIDField;
     private JTextField priceField;
@@ -23,7 +22,7 @@ public class TicketEntry extends Window {
         submitButton.addActionListener(e -> {
             try {
                 Statement ProgrammInsertStmt = conn.createStatement();
-                ProgrammInsertStmt.executeUpdate("INSERT INTO ticket VALUES(" + Integer.valueOf(ticketIDField.getText()) + ", " + Integer.valueOf(screeningIDField.getText()) + ", " + Integer.valueOf(customerIDField.getText()) + ", " + Integer.valueOf(priceField.getText()) + ", '" + discountTypeField.getText() + "')");
+                ProgrammInsertStmt.executeUpdate("INSERT INTO ticket VALUES(NULL, " + Integer.valueOf(screeningIDField.getText()) + ", " + Integer.valueOf(customerIDField.getText()) + ", " + Integer.valueOf(priceField.getText()) + ", '" + discountTypeField.getText() + "')");
                 JOptionPane.showMessageDialog(null, "Success!");
             } catch (SQLException sqle) {
                 JOptionPane.showMessageDialog(null, "Encountered error while executing SQL statement");
