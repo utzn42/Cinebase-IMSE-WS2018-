@@ -154,18 +154,6 @@ date_default_timezone_set('Europe/Berlin');
 
 		echo("<script type=\"text/javascript\">hideFormInsertScreening();</script>");
 
-		if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-			$username = $_SESSION['username'];
-			echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
-		}
-		if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
-			echo("<script type=\"text/javascript\">setAdminMode();</script>");
-		}
-		if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
-			$username = $_SESSION['username'];
-			echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
-			echo("<script type=\"text/javascript\">displayScreeningIDs();</script>");
-		}
 		?>
     <br>
 
@@ -226,7 +214,21 @@ date_default_timezone_set('Europe/Berlin');
     </table>
 
     <div><?php echo $row_cnt ?> Screening/s found!</div>
-
+	
+	<?php
+		if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+			$username = $_SESSION['username'];
+			echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
+		}
+		if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+			echo("<script type=\"text/javascript\">setAdminMode();</script>");
+		}
+		if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+			$username = $_SESSION['username'];
+			echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
+			echo("<script type=\"text/javascript\">displayScreeningIDs();</script>");
+		}
+	?>
 
   </div>
 </div>

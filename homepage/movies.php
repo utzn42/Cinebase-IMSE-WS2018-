@@ -157,18 +157,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
 		echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
 
-		if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-			$username = $_SESSION['username'];
-			echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
-		}
-		if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
-			echo("<script type=\"text/javascript\">setAdminMode();</script>");
-		}
-		if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
-			$username = $_SESSION['username'];
-			echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
-			echo("<script type=\"text/javascript\">displayFilmIDs();</script>");
-		}
+
 		?>
 		
 		<br>
@@ -232,9 +221,21 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
 
 
-
-
-        <?php $conn->close(); ?>
+        <?php
+		if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+			$username = $_SESSION['username'];
+			echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
+		}
+		if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+			echo("<script type=\"text/javascript\">setAdminMode();</script>");
+		}
+		if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+			$username = $_SESSION['username'];
+			echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
+			echo("<script type=\"text/javascript\">displayFilmIDs();</script>");
+		}
+        $conn->close(); 
+		?>
 
     </div>
 </div>
