@@ -155,7 +155,21 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         }
 
 
-        ?>
+		echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
+
+		if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+			$username = $_SESSION['username'];
+			echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
+		}
+		if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+			echo("<script type=\"text/javascript\">setAdminMode();</script>");
+		}
+		if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+			$username = $_SESSION['username'];
+			echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
+			echo("<script type=\"text/javascript\">displayFilmIDs();</script>");
+		}
+		?>
 		
 		<br>
 
@@ -225,23 +239,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
     </div>
 </div>
 
-<?php
 
-echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
-
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-    $username = $_SESSION['username'];
-    echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
-}
-if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
-    echo("<script type=\"text/javascript\">setAdminMode();</script>");
-}
-if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
-    $username = $_SESSION['username'];
-    echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
-    echo("<script type=\"text/javascript\">displayFilmIDs();</script>");
-}
-?>
 
 <!-- Start of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp -->
 <div id="popUpLogin" class="modal">

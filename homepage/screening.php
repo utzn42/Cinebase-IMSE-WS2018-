@@ -152,7 +152,21 @@ date_default_timezone_set('Europe/Berlin');
       }
 
 
-      ?>
+		echo("<script type=\"text/javascript\">hideFormInsertScreening();</script>");
+
+		if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+			$username = $_SESSION['username'];
+			echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
+		}
+		if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+			echo("<script type=\"text/javascript\">setAdminMode();</script>");
+		}
+		if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+			$username = $_SESSION['username'];
+			echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
+			echo("<script type=\"text/javascript\">displayScreeningIDs();</script>");
+		}
+		?>
     <br>
 
 
@@ -217,24 +231,7 @@ date_default_timezone_set('Europe/Berlin');
   </div>
 </div>
 
-<?php
 
-
-echo("<script type=\"text/javascript\">hideFormInsertScreening();</script>");
-
-if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
-    $username = $_SESSION['username'];
-    echo("<script type=\"text/javascript\">setLoggedIn(\"$username\");</script>");
-}
-if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
-    echo("<script type=\"text/javascript\">setAdminMode();</script>");
-}
-if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
-    $username = $_SESSION['username'];
-    echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
-    echo("<script type=\"text/javascript\">displayScreeningIDs();</script>");
-}
-?>
 
 
 <!-- Start of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp -->
