@@ -1,5 +1,5 @@
 # IMSE-WS2018
-## 1. How to pull the Java project correctly (IntelliJ)
+## How to pull the Java project correctly (IntelliJ)
 1. Create a new project from Version Control (Git). URL is https://github.com/utzn42/IMSE-WS2018.git
 2. Go to ```File - > Project Structure -> Modules```. Mark ```src``` as your source folder. Confirm, and **don't** add any of the files IntelliJ creates to git.
 3. Right Click on the root directory in your IntelliJ Project Structure and create a new directory called ```out```. Go to ```File - > Project Structure -> Project``` and specify the newly created folder as Project compiler output. Then, mark it as excluded in the same fashion as above.
@@ -7,8 +7,5 @@
 5. Finally, go to the ```KinoJDBC_LoginFrame.java``` class and to the left of the main method, there should be a green triangle. Click on it, and IntelliJ will remember the run configuration.
 6. Good to go!
 
-## 2. Use SSL to connect to server via PHP
+## Use SSL to connect to server via PHP
 http://robsnotebook.com/xampp-ssl-encrypt-passwords
-
-## 3. Work protocol for MS2
-https://docs.google.com/document/d/1K2dP3tQ2EAsVDo15hy6hMDVRDUkwNPScla3PtW0tr0k/edit?usp=sharing
