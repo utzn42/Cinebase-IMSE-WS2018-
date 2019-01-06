@@ -1,48 +1,36 @@
 package KinoUI;
 
+import Extras.Defaults;
 import Extras.Window;
 import SQLHandling.SQLScriptLoader;
 
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.sql.Connection;
 
 public class KinoJDBC_MainWindow extends Window {
     private Connection conn;
     private JButton loadSQLScriptButton;
     private JButton manualDataEntryButton;
-    private JButton dropTablesButton;
+    private JButton dropDatabaseButton;
     private JPanel mainPanel;
-    private JButton createTablesButton;
+    private JButton initializeDatabaseButton;
 
     public KinoJDBC_MainWindow(final Connection conn) {
         this.conn = conn;
         run(mainPanel);
-        loadSQLScriptButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SQLScriptLoader.performLoadScript(conn, null);
-            }
+        loadSQLScriptButton.addActionListener(e -> SQLScriptLoader.performLoadScript(conn, null));
+        dropDatabaseButton.addActionListener(e -> {
+            SQLScriptLoader.performLoadScript(conn, Defaults.scriptFolder + "drop_tables.sql");
+            //SQLScriptLoader.performLoadScript(conn, Defaults.scriptFolder + "drop_DB.sql");                           //reconnect issue! See Defaults.databaseURL
         });
-        dropTablesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SQLScriptLoader.performLoadScript(conn, "C:\\Users\\utzn\\Google Drive\\Uni Wien\\WS 2018-19\\ISE\\Projekt\\Kino_JDBC\\scripts\\drop.sql");
-            }
+        initializeDatabaseButton.addActionListener(e -> {
+            //SQLScriptLoader.performLoadScript(conn, Defaults.scriptFolder + "create_DB.sql");                         //reconnect issue! See Defaults.databaseURL
+            SQLScriptLoader.performLoadScript(conn, Defaults.scriptFolder + "create_tables.sql");
+            SQLScriptLoader.performLoadScript(conn, Defaults.scriptFolder + "insertAll.sql");
         });
-        createTablesButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                SQLScriptLoader.performLoadScript(conn, "C:\\Users\\utzn\\Google Drive\\Uni Wien\\WS 2018-19\\ISE\\Projekt\\Kino_JDBC\\scripts\\create.sql");
-            }
-        });
-        manualDataEntryButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.setVisible(false);
-                new KinoJDBC_ManualEntryWindow(conn).frame.setVisible(true);
-            }
+        manualDataEntryButton.addActionListener(e -> {
+            frame.setVisible(false);
+            new KinoJDBC_ManualEntryWindow(conn).frame.setVisible(true);
         });
     }
 }

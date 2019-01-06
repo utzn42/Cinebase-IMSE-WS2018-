@@ -12,8 +12,8 @@ import java.net.ConnectException;
 import java.sql.Connection;
 
 public class KinoJDBC_LoginFrame extends Window {
-    private static Connection conn;
     public static JFrame frame = new JFrame("Kino JDBC");
+    private static Connection conn;
     private JPanel loginPanel;
     private JTextField userNameTextField;
     private JLabel userNameLabel;
