@@ -7,7 +7,6 @@ $database = 'cinebase';
 
 // establish database connection
 $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
-date_default_timezone_set('Europe/Berlin');
 
 ?>
 
