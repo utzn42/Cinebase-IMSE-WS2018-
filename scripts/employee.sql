@@ -1,5 +1,5 @@
 insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (1, 1, 'Yasin', 'Ergueven', 'yasin', 'yasin');
-insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (2, 2, 'Utz', 'testLast2', 'utz', 'utz');
+insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (2, 2, 'Utz', 'Nisslmueller', 'utz', 'utz');
 insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (3, 3, 'Alexander', 'Ramharter', 'xandi', 'xandi');
 insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (4, 4, 'Oliver', 'Schweiger', 'oliver', 'oliver');
 insert into employee (employee_nr, manager_id, first_name, last_name, email, password) values (5, 1, 'Mercedes', 'Fenck', 'mfenck0@unblog.fr', 'ItIuqIIgjL');

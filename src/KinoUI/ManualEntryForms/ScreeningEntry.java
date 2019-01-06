@@ -9,11 +9,9 @@ import java.sql.Statement;
 
 public class ScreeningEntry extends Window {
     private JPanel screeningPanel;
-    private JTextField screeningIDField;
     private JTextField hallIDField;
     private JTextField filmIDField;
     private JTextField starttimeField;
-    private JTextField durationField;
     private JButton backButton;
     private JButton submitButton;
 
@@ -23,7 +21,7 @@ public class ScreeningEntry extends Window {
         submitButton.addActionListener(e -> {
             try {
                 Statement ProgrammInsertStmt = conn.createStatement();
-                ProgrammInsertStmt.executeUpdate("INSERT INTO screening VALUES(" + Integer.valueOf(screeningIDField.getText()) + ", " + Integer.valueOf(hallIDField.getText()) + ", " + Integer.valueOf(filmIDField.getText()) + ", '" + starttimeField.getText() + "', " + Integer.valueOf(durationField.getText()) + ")");
+                ProgrammInsertStmt.executeUpdate("INSERT INTO screening VALUES(NULL, " + Integer.valueOf(hallIDField.getText()) + ", " + Integer.valueOf(filmIDField.getText()) + ", '" + starttimeField.getText() + "')");
                 JOptionPane.showMessageDialog(null, "Success!");
             } catch (SQLException sqle) {
                 JOptionPane.showMessageDialog(null, "Encountered error while executing SQL statement");
