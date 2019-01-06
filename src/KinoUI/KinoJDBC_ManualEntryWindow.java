@@ -18,7 +18,7 @@ public class KinoJDBC_ManualEntryWindow extends Window {
     private JButton ticketButton;
     private JButton employeeButton;
     private JButton supervisionButton;
-    private JButton deineMutterButton;
+    private JButton blankButton;
     private JButton backButton;
 
     KinoJDBC_ManualEntryWindow(final Connection conn) {
