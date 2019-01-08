@@ -54,25 +54,23 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
     <div class="mainBody" id="mainBody">
 
         <div>
-            <form id='searchform' action='movies.php' method='get'>
-                Search for tickets under user surname:
-                <input class='searchTitle' id='searchTitle' name='searchTitle' type='text' size='20'
-                       value='<?php echo $_GET['searchTitle']; ?>'/>
+            <form id='searchform' action='ticket.php' method='get'>
+                Search for tickets under user email:
+                <input class='searchEmail' id='searchEmail' name='searchEmail' type='text' size='20'
+                       value='<?php echo $_GET['searchEmail']; ?>'/>
                 <input id='search' type='submit' value='Search!'/>
             </form>
             <br>
         </div>
         <?php
-        $sql = "SELECT * FROM ticket";
+        $sql = "SELECT * FROM ticket ORDER BY ticket_id ASC";
 
         $result = $conn->query($sql);
         $max_row = mysqli_fetch_array($result);
 
 
-        if (isset($_GET['searchTitle'])) {
-            $sql = "SELECT * FROM film WHERE title like '%" . $_GET['searchTitle'] . "%'";
-        } else if (isset($_GET['searchFilmID'])) {
-            $sql = "SELECT * FROM film WHERE film_id like '" . $_GET['searchFilmID'] . "'";
+        if (isset($_GET['searchEmail'])) {
+            $sql = "SELECT * FROM ticket INNER JOIN customer ON ticket.customer_id = customer.customer_id WHERE email like '%" . $_GET['searchEmail'] . "%'";
         } else {
             $sql = "SELECT * FROM ticket";
         }
@@ -82,7 +80,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
         <br>
         <div id="insertMovie">
-            <form id='insertform' action='movies.php' method='get'>
+            <form id='insertform' action='ticket.php' method='get'>
                 Add new ticket:
                 <table style='border: 1px solid #DDDDDD'>
                     <thead>
@@ -95,7 +93,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                     <tbody>
                     <tr>
                         <td>
-                            <input class="screeningID" id='screeningID' name='film_id' type='text' size='10'
+                            <input class="screeningID" id='screeningID' name='screeningID' type='text' size='10'
                                    value='<?php echo $GET['screeningID'] ?>'/>
                         </td>
                         <td>
@@ -118,7 +116,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         if (isset($_GET['screeningID']) && !empty($_GET['screeningID']) && isset($_GET['customerID']) && !empty($_GET['customerID'])) {
 
             //Prepare insert statementd
-            $sql = "INSERT INTO ticket VALUES(" . $_GET['screeningID'] . ", " . $_GET['customerID'] . ", " . $_GET['price'] . ")";
+            $sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES(" . $_GET['screeningID'] . ", " . $_GET['customerID'] . ", " . $_GET['price'] . ", 'manually created')";
 
 
             //Parse and execute statement
@@ -138,6 +136,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
         ?>
 
+        <br>
         <br>
 
 
@@ -167,8 +166,8 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                     echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['discount_type'] . "</td>";
 
                     if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
-                        echo "<td><a href=\"updatefilm.php?film_id=" . $row['film_id'] . "&title=" . $row['title'] . "&director=" . $row['director'] . "&country=" . $row['country'] . "&film_language=" . $row['film_language'] . "&age_rating=" . $row['age_rating'] . "&duration=" . $row['duration'] . "\"> UPDATE </a></td>";
-                        echo "<td><a href=\"deletefilm.php?id=" . $row['film_id'] . "\"> DELETE </a></td>";
+                        echo "<td><a href=\"updateticket.php?ticket_id=" . $row['ticket_id'] . "&screening_id=" . $row['screening_id'] . "&customer_id=" . $row['customer_id'] . "&price=" . $row['price'] . "&discount_type=" . $row['discount_type'] . "\"> UPDATE </a></td>";
+                        echo "<td><a href=\"deleteticket.php?id=" . $row['ticket_id'] . "\"> DELETE </a></td>";
                     }
 
                     echo "</tr>";

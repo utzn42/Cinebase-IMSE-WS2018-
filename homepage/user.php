@@ -83,7 +83,7 @@ FROM ticket
                     echo "<td style=\"padding: 5px 20px 5px 20px;\">" . $row['name'] . "</td>";
                     echo "<td style=\"padding: 5px 30px 5px 30px;\">" . $simpleDate->format('d/m/Y h:m') . "</td>";
                     echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['discount_type'] . "</td>";
-                    echo "<td><a href=\"deleteTicket.php?id=" . $row['ticket_id'] . "\"> DELETE </a></td>";
+                    echo "<td><a href=\"deleteticket.php?id=" . $row['ticket_id'] . "\"> DELETE </a></td>";
                     echo "</tr>";
                 }
             }

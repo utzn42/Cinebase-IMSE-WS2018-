@@ -14,7 +14,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 </head>
 <body>
 
-<a href="movies.php">Back to Films</a><br><br>
+<a href="ticket.php">Back to Tickets</a><br><br>
 <div>
     <form id='updateform' action="" method="get">
         Update film:
