@@ -98,7 +98,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
         <br>
         <div id="insertMovie">
-            <form id='insertform' action='movies.php' method='get'>
+            <form id='insertform' action='movies.php' method='post'>
                 Add new film:
                 <table style='border: 1px solid #DDDDDD'>
                     <thead>
@@ -152,10 +152,10 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
         <?php
         //Handle insert
-        if (isset($_GET['film_id']) && !empty($_GET['film_id']) && isset($_GET['title']) && !empty($_GET['title'])) {
+        if (isset($_POST['film_id']) && !empty($_POST['film_id']) && isset($_POST['title']) && !empty($_POST['title'])) {
 
             //Prepare insert statementd
-            $sql = "INSERT INTO film VALUES(" . $_GET['film_id'] . ",'" . $_GET['title'] . "','" . $_GET['director'] . "','" . $_GET['country'] . "','" . $_GET['film_language'] . "','" . $_GET['age_rating'] . "','" . $_GET['duration'] . "')";
+            $sql = "INSERT INTO film VALUES(" . $_POST['film_id'] . ",'" . $_POST['title'] . "','" . $_POST['director'] . "','" . $_POST['country'] . "','" . $_POST['film_language'] . "','" . $_POST['age_rating'] . "','" . $_POST['duration'] . "')";
 
 
             //Parse and execute statement

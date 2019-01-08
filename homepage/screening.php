@@ -108,7 +108,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         <br>
 
         <div id="insertScreening">
-            <form id='insertform' action='screening.php' method='get'>
+            <form id='insertform' action='screening.php' method='post'>
                 Add new screening:
 
                 <table style='border: 1px solid #DDDDDD'>
@@ -147,10 +147,10 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
         <?php
         //Handle insert
-        if (isset($_GET['screening_id']) && !empty($_GET['screening_id']) && isset($_GET['film_id']) && !empty($_GET['film_id']) && isset($_GET['hall_id']) && !empty($_GET['hall_id'])) {
+        if (isset($_POST['screening_id']) && !empty($_POST['screening_id']) && isset($_POST['film_id']) && !empty($_POST['film_id']) && isset($_POST['hall_id']) && !empty($_POST['hall_id'])) {
 
             //Prepare insert statementd
-            $sql = "INSERT INTO screening VALUES(" . $_GET['screening_id'] . ",'" . $_GET['hall_id'] . "','" . $_GET['film_id'] . "','" . $_GET['starting_time'] . "')";
+            $sql = "INSERT INTO screening VALUES(" . $_POST['screening_id'] . ",'" . $_POST['hall_id'] . "','" . $_POST['film_id'] . "','" . $_POST['starting_time'] . "')";
 
 
             //Parse and execute statement
