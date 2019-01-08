@@ -102,14 +102,14 @@ $row_cnt = mysqli_num_rows($result);
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
 
-					$date = $row['starting_time'];
-					$simpleDate = new DateTime($date);
-				
+                    $date = $row['starting_time'];
+                    $simpleDate = new DateTime($date);
+
                     echo "<tr>";
                     echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['screening_id'] . "</td>";
                     echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['title'] . "</td>";
                     echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['name'] . "</td>";
-                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $simpleDate->format('d/m/Y h:m')  . "</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $simpleDate->format('d/m/Y h:m') . "</td>";
                     echo "<td>" . $row['duration'] . "</td>";
                 }
             }
@@ -131,40 +131,40 @@ $row_cnt = mysqli_num_rows($result);
             </td>
             </tbody>
         </table>
-			<input type="submit" name="reserve" id="reserve" value="Make Reservation" style="margin-top: 30px;"/><br/>
+        <input type="submit" name="reserve" id="reserve" value="Make Reservation" style="margin-top: 30px;"/><br/>
 
         <?php
-		if(!empty($_POST['boxes'])){
-			$discounts = array();
-			foreach($_POST['boxes'] as $checked){
-			array_push($discounts, $checked);
-			}
-		}
-		
+        if (!empty($_POST['boxes'])) {
+            $discounts = array();
+            foreach ($_POST['boxes'] as $checked) {
+                array_push($discounts, $checked);
+            }
+        }
+
         if (isset($_POST['reserve'])) {
             $qty = $_POST['quantity'];
         }
 
         function reservetickets($conn, $screening_id, $customer_id, $qty, $discounts)
-        {			
-			if($discounts==NULL){
-				$sql = "INSERT INTO ticket(screening_id, customer_id, price) VALUES (\"$screening_id\", \"$customer_id\", 10.00)";
-			}
-			
-			if(sizeof($discounts)==1){
-				$sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES (\"$screening_id\", \"$customer_id\", 10.00, \"" .$discounts[0]. "\")";
-			}
-			
-			if(sizeof($discounts)==2){
-				$sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES (\"$screening_id\", \"$customer_id\", 10.00, \"" 
-				.$discounts[0]. ", " .$discounts[1]. "\")";
-			}
-			
+        {
+            if ($discounts == NULL) {
+                $sql = "INSERT INTO ticket(screening_id, customer_id, price) VALUES (\"$screening_id\", \"$customer_id\", 10.00)";
+            }
+
+            if (sizeof($discounts) == 1) {
+                $sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES (\"$screening_id\", \"$customer_id\", 10.00, \"" . $discounts[0] . "\")";
+            }
+
+            if (sizeof($discounts) == 2) {
+                $sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES (\"$screening_id\", \"$customer_id\", 10.00, \""
+                    . $discounts[0] . ", " . $discounts[1] . "\")";
+            }
+
             for ($x = 0; $x < $qty; $x++) {
                 mysqli_query($conn, $sql);
             }
-			
-			echo("<script type=\"text/javascript\">reserveTicketSuccess(".$qty.");</script>");
+
+            echo("<script type=\"text/javascript\">reserveTicketSuccess(" . $qty . ");</script>");
         }
 
         if (array_key_exists('reserve', $_POST)) {

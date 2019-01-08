@@ -118,11 +118,14 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         </button>
         <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
         <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
-         <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+        <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
             echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
         } ?>
         <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
             echo "<button onclick=\"window.location='hall_administration.php';\" class=\"buttonBig\">Halls</button>";
+        } ?>
+        <?php if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+            echo "<button onclick=\"window.location='ticket.php';\" class=\"buttonBig\">Tickets</button>";
         } ?>
 
         <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
@@ -136,9 +139,9 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 </div>
 <div class="wrapperMainBody">
     <div class="mainBody" id="mainBody">
-      <br>
-      <img src="img/filmReel.png" height="135" width="135">
-      <br><br>
+        <br>
+        <img src="img/filmReel.png" height="135" width="135">
+        <br><br>
         Welcome to cinebase! Pick a movie and enjoy!
     </div>
 </div>

@@ -72,7 +72,6 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         $result = $conn->query($sql);
 
 
-
         ?>
 
 
@@ -107,11 +106,11 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                     echo "<td><a href=\"updateemployee.php?employee_nr=" . $row['employee_nr'] . "&manager_id=" . $row['manager_id'] . "&first_name=" . $row['first_name'] . "&last_name=" . $row['last_name'] . "&email=" . $row['email'] . "&password=" . $row['password'] . "\"> UPDATE </a></td>";
                     echo "<td><a href=\"deleteemployee.php?id=" . $row['employee_nr'] . "\"> DELETE </a></td>";
 
-                    $id = $row['employee_nr'] ;
+                    $id = $row['employee_nr'];
                     $sql2 = "SELECT COUNT(*) as amount FROM employee WHERE manager_id = $id
                     AND manager_id <> employee_nr";
                     $rs = $conn->query($sql2);
-                    while($data=mysqli_fetch_array($rs)) {
+                    while ($data = mysqli_fetch_array($rs)) {
                         $count = $data['amount'];
                     }
                     if ($count > 0) {
