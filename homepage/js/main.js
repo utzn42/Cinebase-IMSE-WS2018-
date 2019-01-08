@@ -136,8 +136,13 @@ function deleteAccount(customerID){
 
 function displayFilmIDs(){
   var filmID = document.createElement('th');
-  var t = document.createTextNode("Film-ID");
-  filmID.appendChild(t);
+  var a = document.createElement('a');
+
+  var linkText = document.createTextNode("Film-ID");
+  a.appendChild(linkText);
+  a.title = "Film-ID";
+  a.href = "movies.php?sortbyid=true";
+  filmID.appendChild(a);
   var tableRow = document.getElementById("tableRow");
   tableRow.insertBefore(filmID, tableRow.firstChild);
 
@@ -146,21 +151,33 @@ function displayFilmIDs(){
 
 function displayScreeningIDs(){
   var screeningID = document.createElement('th');
-  var t = document.createTextNode("Screening-ID");
-  screeningID.appendChild(t);
+  var a = document.createElement('a');
+  var linkText = document.createTextNode("Screening-ID");
+  a.appendChild(linkText);
+  a.title = "Screening-ID";
+  a.href = "screening.php?sortbyscreening=true";
+  screeningID.appendChild(a);
   var tableRow = document.getElementById("tableRow");
   tableRow.insertBefore(screeningID, tableRow.firstChild);
   screeningID.style.padding="0px 10px 0px 10px";
 
   var hallID = document.createElement('th');
-  t = document.createTextNode("Hall-ID");
-  hallID.appendChild(t);
+  var a2 = document.createElement('a');
+  linkText = document.createTextNode("Hall-ID");
+  a2.appendChild(linkText);
+  a2.title = "Hall-ID";
+  a2.href = "screening.php?sortbyhall=true";
+  hallID.appendChild(a2);
   tableRow.insertBefore(hallID, document.getElementById("hallName"));
   hallID.style.padding="0px 10px 0px 10px";
 
   var filmID = document.createElement('th');
-  t = document.createTextNode("Film-ID");
-  filmID.appendChild(t);
+  var a3 = document.createElement('a');
+  linkText = document.createTextNode("Film-ID");
+  a3.appendChild(linkText);
+  a3.title = "Hall-ID";
+  a3.href = "screening.php?sortbyfilm=true";
+  filmID.appendChild(a3);
   tableRow.insertBefore(filmID, document.getElementById("filmTitle"));
   filmID.style.padding="0px 10px 0px 10px";
 }

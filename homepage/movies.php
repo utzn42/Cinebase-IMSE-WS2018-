@@ -75,6 +75,20 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
             $sql = "SELECT * FROM film WHERE title like '%" . $_GET['searchTitle'] . "%'";
         } else if (isset($_GET['searchFilmID'])) {
             $sql = "SELECT * FROM film WHERE film_id like '" . $_GET['searchFilmID'] . "'";
+        } else if (isset($_GET['sortbytitle'])) {
+            $sql = "SELECT * FROM film ORDER BY title ASC";
+        } else if (isset($_GET['sortbydirector'])) {
+            $sql = "SELECT * FROM film ORDER BY director ASC";
+        } else if (isset($_GET['sortbycountry'])) {
+            $sql = "SELECT * FROM film ORDER BY country ASC";
+        } else if (isset($_GET['sortbylanguage'])) {
+            $sql = "SELECT * FROM film ORDER BY film_language ASC";
+        } else if (isset($_GET['sortbydur'])) {
+            $sql = "SELECT * FROM film ORDER BY duration ASC";
+        } else if (isset($_GET['sortbyage'])) {
+            $sql = "SELECT * FROM film ORDER BY age_rating ASC";
+        } else if (isset($_GET['sortbyid'])) {
+            $sql = "SELECT * FROM film ORDER BY film_id ASC";
         } else {
             $sql = "SELECT * FROM film";
         }
@@ -167,12 +181,13 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         <table style="float:none; border: 1px solid #DDDDDD">
             <thead>
             <tr id="tableRow">
-                <th style="padding: 0px 10px 0px 10px;">Title</th>
-                <th style="padding: 0px 10px 0px 10px;">Director</th>
-                <th style="padding: 0px 10px 0px 10px;">Country</th>
-                <th style="padding: 0px 10px 0px 10px;">Language</th>
-                <th style="padding: 0px 10px 0px 10px;">Age rating</th>
-                <th style="padding: 0px 10px 0px 10px;">Duration (minutes)</th>
+
+                <th style="padding: 0px 10px 0px 10px;"><a href="movies.php?sortbytitle=true">Title</a></th>
+                <th style="padding: 0px 10px 0px 10px;"><a href="movies.php?sortbydirector=true">Director</a></th>
+                <th style="padding: 0px 10px 0px 10px;"><a href="movies.php?sortbycountry=true">Country</a></th>
+                <th style="padding: 0px 10px 0px 10px;"><a href="movies.php?sortbylanguage=true">Language</a></th>
+                <th style="padding: 0px 10px 0px 10px;"><a href="movies.php?sortbyage=true">Age rating</a></th>
+                <th style="padding: 0px 10px 0px 10px;"><a href="movies.php?sortbydur=true">Duration (minutes)</a></th>
 
             </tr>
             </thead>

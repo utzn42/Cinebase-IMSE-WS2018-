@@ -86,6 +86,18 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
             $sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall WHERE DATEDIFF(starting_time, CURDATE()) = 1 ORDER BY starting_time ASC";
         } else if (isset($_GET['nextweek'])) {
             $sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall WHERE DATEDIFF(starting_time, CURDATE()) >= 0 AND DATEDIFF(starting_time, CURDATE()) <= 7 ORDER BY starting_time ASC";
+        } else if (isset($_GET['sortbyhall'])) {
+            $sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall ORDER BY hall_id ASC";
+        } else if (isset($_GET['sortbystarting'])) {
+            $sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall ORDER BY starting_time ASC";
+        } else if (isset($_GET['sortbytitle'])) {
+            $sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall ORDER BY title ASC";
+        } else if (isset($_GET['sortbyfilm'])) {
+            $sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall ORDER BY film_id ASC";
+        } else if (isset($_GET['sortbydur'])) {
+            $sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall ORDER BY duration ASC";
+        } else if (isset($_GET['sortbyscreening'])) {
+            $sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall ORDER BY screening_id ASC";
         } else {
             $sql = "SELECT * FROM screening NATURAL JOIN film NATURAL JOIN hall ORDER BY starting_time ASC";
         }
@@ -162,10 +174,10 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         <table style='border: 1px solid #DDDDDD'>
             <thead>
             <tr id="tableRow">
-                <th id="hallName" style="padding: 0px 10px 0px 10px;">Hall Name</th>
-                <th id="filmTitle" style="padding: 0px 10px 0px 10px;">Film-Title</th>
-                <th style="padding: 0px 10px 0px 10px;">Starting Time</th>
-                <th style="padding: 0px 10px 0px 10px;">Duration (minutes)</th>
+                <th id="hallName" style="padding: 0px 10px 0px 10px;"><a href="screening.php?sortbyhall=true">Hall Name</a></th>
+                <th id="filmTitle" style="padding: 0px 10px 0px 10px;"><a href="screening.php?sortbytitle=true">Film-Title</a></th>
+                <th style="padding: 0px 10px 0px 10px;"><a href="screening.php?sortbystarting=true">Starting Time</a></th>
+                <th style="padding: 0px 10px 0px 10px;"><a href="screening.php?sortbydur=true">Duration (minutes)</a></th>
 
             </tr>
             </thead>
