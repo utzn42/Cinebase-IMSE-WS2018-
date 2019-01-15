@@ -13,7 +13,7 @@ $sql = "DELETE FROM ticket WHERE ticket_id = $id";
 
 if (mysqli_query($conn, $sql)) {
     mysqli_close($conn);
-    header('Location: user.php');
+    header('Location: ticket.php');
     exit;
 } else {
     echo "Error deleting record";
