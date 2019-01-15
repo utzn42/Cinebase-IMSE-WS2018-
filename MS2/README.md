@@ -1,4 +1,4 @@
-# IMSE-WS2018
+# IMSE-WS2018 MS2
 ## 1. How to pull the Java project correctly (IntelliJ)
 1. Create a new project from Version Control (Git). URL is https://github.com/utzn42/IMSE-WS2018.git
 2. Go to ```File - > Project Structure -> Modules```. Mark ```src``` as your source folder. Confirm, and **don't** add any of the files IntelliJ creates to git.
