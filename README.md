@@ -10,4 +10,4 @@
 http://robsnotebook.com/xampp-ssl-encrypt-passwords
 
 ## 3. Documentation for MS2
-https://docs.google.com/document/d/1K2dP3tQ2EAsVDo15hy6hMDVRDUkwNPScla3PtW0tr0k/edit?usp=sharing
+https://docs.google.com/document/d/1JCOZX0dZhAGQLyJ-2gw6WzFZUrPco5MWx4ZgjtWSHKM/edit?usp=sharing
