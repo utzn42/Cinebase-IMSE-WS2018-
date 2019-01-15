@@ -9,5 +9,5 @@
 ## 2. Use SSL to connect to server via PHP
 http://robsnotebook.com/xampp-ssl-encrypt-passwords
 
-## 3. Documentation for MS2
+## 3. Documentation for MS3
 https://docs.google.com/document/d/1JCOZX0dZhAGQLyJ-2gw6WzFZUrPco5MWx4ZgjtWSHKM/edit?usp=sharing
