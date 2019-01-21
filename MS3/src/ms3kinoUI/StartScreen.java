@@ -5,19 +5,19 @@ import ms3extras.MongoConnector;
 import javax.swing.*;
 import java.awt.*;
 
-public class startScreen {
+public class StartScreen {
     public static JFrame frame = new JFrame("Kino JDBC (MongoDB)");
     private JPanel loginPanel;
     private JTextField usernameField;
     private JPasswordField passwordField;
     private JButton submitButton;
 
-    public startScreen() {
+    public StartScreen() {
 
         submitButton.addActionListener(e -> {
             MongoConnector.connect(usernameField.getText(), String.valueOf(passwordField.getPassword()));
             frame.setVisible(false);
-            new mainScreen().frame.setVisible(true);
+            new MainScreen().frame.setVisible(true);
         });
     }
 
@@ -28,7 +28,7 @@ public class startScreen {
         frame.setPreferredSize(new Dimension(width, height));
         frame.pack();
         frame.setLocationRelativeTo(null);
-        frame.setContentPane(new startScreen().loginPanel);
+        frame.setContentPane(new StartScreen().loginPanel);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.pack();
         frame.setVisible(true);
