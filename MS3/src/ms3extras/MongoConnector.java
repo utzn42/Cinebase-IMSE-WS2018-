@@ -13,7 +13,7 @@ public class MongoConnector {
     }
 
     public static void connect(String user, String pwd) {
-        mongoClient = MongoClients.create("mongodb://" + user + ":" + pwd + "@host1/?authSource=db1&ssl=true");
+        mongoClient = MongoClients.create();
         cinebase = mongoClient.getDatabase("cinebase");
     }
 }
