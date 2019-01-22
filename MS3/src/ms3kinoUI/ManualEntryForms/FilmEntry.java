@@ -19,6 +19,7 @@ public class FilmEntry extends Window {
     private JTextField durationField;
     private JButton submitButton;
     private JTextField idField;
+    private JButton backButton;
 
     public FilmEntry() {
         run(filmPanel);
@@ -49,6 +50,10 @@ public class FilmEntry extends Window {
             collection.insertOne(doc);
 
             JOptionPane.showMessageDialog(null, "Success!");
+            frame.setVisible(false);
+            new DataEntryChooser().frame.setVisible(true);
+        });
+        backButton.addActionListener(e -> {
             frame.setVisible(false);
             new DataEntryChooser().frame.setVisible(true);
         });

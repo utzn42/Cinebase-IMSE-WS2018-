@@ -15,6 +15,7 @@ public class HallEntry extends Window {
     private JTextField equipmentField;
     private JButton button1;
     private JTextField idField;
+    private JButton backButton;
 
     public HallEntry() {
         run(hallPanel);
@@ -36,6 +37,10 @@ public class HallEntry extends Window {
             collection.insertOne(doc);
 
             JOptionPane.showMessageDialog(null, "Success!");
+            frame.setVisible(false);
+            new DataEntryChooser().frame.setVisible(true);
+        });
+        backButton.addActionListener(e -> {
             frame.setVisible(false);
             new DataEntryChooser().frame.setVisible(true);
         });

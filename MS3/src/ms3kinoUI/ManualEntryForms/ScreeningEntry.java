@@ -5,6 +5,7 @@ import com.mongodb.client.MongoCollection;
 import ms3extras.MongoConnector;
 import ms3kinoUI.DataEntryChooser;
 import org.bson.Document;
+import org.bson.types.ObjectId;
 
 import javax.swing.*;
 
@@ -17,6 +18,7 @@ public class ScreeningEntry extends Window {
     private JTextField timeField;
     private JButton submitButton;
     private JPanel screeningPanel;
+    private JButton backButton;
 
     public ScreeningEntry() {
         run(screeningPanel);
@@ -36,9 +38,13 @@ public class ScreeningEntry extends Window {
                         .append("starting_time", timeField.getText());
             }
 
-            collection.updateOne(eq("_id", filmidField.getText()), new Document("$push", new Document("screenings", screening)));
+            collection.updateOne(eq("_id", new ObjectId(filmidField.getText())), new Document("$push", new Document("screenings", screening)));
 
             JOptionPane.showMessageDialog(null, "Success!");
+            frame.setVisible(false);
+            new DataEntryChooser().frame.setVisible(true);
+        });
+        backButton.addActionListener(e -> {
             frame.setVisible(false);
             new DataEntryChooser().frame.setVisible(true);
         });
