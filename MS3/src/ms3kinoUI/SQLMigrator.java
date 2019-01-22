@@ -1,20 +1,13 @@
 package ms3kinoUI;
 
 import Extras.Defaults;
-import SQLHandling.LoginDataProvider;
 import com.mongodb.client.MongoCollection;
-import java.net.ConnectException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Collections;
-import javax.swing.JOptionPane;
-import javax.xml.transform.Result;
 import ms3extras.MongoConnector;
 import org.bson.Document;
+
+import javax.swing.*;
+import java.net.ConnectException;
+import java.sql.*;
 
 public class SQLMigrator {
 
@@ -45,7 +38,7 @@ public class SQLMigrator {
     int customerColumnCount = customerData.getColumnCount();
 
     MongoCollection<Document> collectionCustomer = MongoConnector.cinebase
-        .getCollection("customer");
+            .getCollection("customers");
 
     Document docCustomer;
 
