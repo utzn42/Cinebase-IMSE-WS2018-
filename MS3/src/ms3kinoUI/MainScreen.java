@@ -2,6 +2,8 @@ package ms3kinoUI;
 
 import Extras.Window;
 
+import java.net.ConnectException;
+import java.sql.SQLException;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,11 +15,18 @@ public class MainScreen extends Window {
 
     public MainScreen() {
         run(mainPanel);
-        manualDataEntryButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                frame.setVisible(false);
-                new DataEntryChooser().frame.setVisible(true);
+        manualDataEntryButton.addActionListener(e -> {
+            frame.setVisible(false);
+            new DataEntryChooser().frame.setVisible(true);
+        });
+        importAllFromCinebaseButton.addActionListener(e -> {
+            frame.setVisible(false);
+            try {
+                new SQLMigrator();
+            } catch (ConnectException e1) {
+                e1.printStackTrace();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
             }
         });
     }
