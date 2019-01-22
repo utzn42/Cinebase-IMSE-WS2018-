@@ -38,7 +38,11 @@ public class ScreeningEntry extends Window {
                         .append("starting_time", timeField.getText());
             }
 
-            collection.updateOne(eq("_id", new ObjectId(filmidField.getText())), new Document("$push", new Document("screenings", screening)));
+            try {
+                collection.updateOne(eq("_id", new ObjectId(filmidField.getText())), new Document("$push", new Document("screenings", screening)));
+            } catch (Exception e1) {
+                collection.updateOne(eq("_id", filmidField.getText()), new Document("$push", new Document("screenings", screening)));
+            }
 
             JOptionPane.showMessageDialog(null, "Success!");
             frame.setVisible(false);

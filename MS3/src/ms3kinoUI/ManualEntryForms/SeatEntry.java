@@ -43,7 +43,11 @@ public class SeatEntry extends Window {
             }
 
 
-            collection.updateOne(eq("_id", new ObjectId(hallidField.getText())), new Document("$push", new Document("seats", seat)));
+            try {
+                collection.updateOne(eq("_id", new ObjectId(hallidField.getText())), new Document("$push", new Document("seats", seat)));
+            } catch (Exception e1) {
+                collection.updateOne(eq("_id", hallidField.getText()), new Document("$push", new Document("seats", seat)));
+            }
 
             JOptionPane.showMessageDialog(null, "Success!");
             frame.setVisible(false);

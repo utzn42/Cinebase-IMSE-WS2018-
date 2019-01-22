@@ -1,10 +1,7 @@
 package ms3kinoUI;
 
 import Extras.Window;
-import ms3kinoUI.ManualEntryForms.FilmEntry;
-import ms3kinoUI.ManualEntryForms.HallEntry;
-import ms3kinoUI.ManualEntryForms.ScreeningEntry;
-import ms3kinoUI.ManualEntryForms.SeatEntry;
+import ms3kinoUI.ManualEntryForms.*;
 
 import javax.swing.*;
 
@@ -42,6 +39,14 @@ public class DataEntryChooser extends Window {
         seatButton.addActionListener(e -> {
             frame.setVisible(false);
             new SeatEntry().frame.setVisible(true);
+        });
+        employeeButton.addActionListener(e -> {
+            frame.setVisible(false);
+            new EmployeeEntry().frame.setVisible(true);
+        });
+        supervisionButton.addActionListener(e -> {
+            frame.setVisible(false);
+            new ManagerEntry().frame.setVisible(true);
         });
     }
 }
