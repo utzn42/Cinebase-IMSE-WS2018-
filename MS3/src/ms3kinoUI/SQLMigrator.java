@@ -38,6 +38,17 @@ public class SQLMigrator {
 
   }
 
+  public void migrateAll() throws SQLException, ConnectException {
+    migrateFilms();
+    migrateCustomers();
+    migrateScreenings();
+
+    JOptionPane.showMessageDialog(null, "Success!");
+    new MainScreen().frame.setVisible(true);
+  }
+
+
+
   public void migrateCustomers() throws ConnectException, SQLException{
 
     statement.execute("SELECT * FROM customer");
@@ -78,8 +89,7 @@ public class SQLMigrator {
           .append("password", password);
       collectionCustomer.insertOne(docCustomer);
     }
-    JOptionPane.showMessageDialog(null, "Success!");
-    new MainScreen().frame.setVisible(true);
+
 
   }
 
@@ -138,8 +148,7 @@ public class SQLMigrator {
 
       collectionFilm.insertOne(docFilm);
     }
-    JOptionPane.showMessageDialog(null, "Success!");
-    new MainScreen().frame.setVisible(true);
+
 
   }
 
@@ -183,9 +192,6 @@ public class SQLMigrator {
 
       collectionFilm.updateOne(eq("film_id", film_id), new Document("$push", new Document("screenings", docScreening)));
     }
-
-    JOptionPane.showMessageDialog(null, "Success!");
-    new MainScreen().frame.setVisible(true);
 
   }
 
