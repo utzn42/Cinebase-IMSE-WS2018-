@@ -48,5 +48,13 @@ public class DataEntryChooser extends Window {
             frame.setVisible(false);
             new ManagerEntry().frame.setVisible(true);
         });
+        customerButton.addActionListener(e -> {
+            frame.setVisible(false);
+            new CustomerEntry().frame.setVisible(true);
+        });
+        ticketButton.addActionListener(e -> {
+            frame.setVisible(false);
+            new TicketEntry().frame.setVisible(true);
+        });
     }
 }
