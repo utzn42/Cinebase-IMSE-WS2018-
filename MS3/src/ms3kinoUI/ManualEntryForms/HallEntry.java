@@ -7,6 +7,7 @@ import ms3kinoUI.DataEntryChooser;
 import org.bson.Document;
 
 import javax.swing.*;
+import java.util.Collections;
 
 public class HallEntry extends Window {
     private JPanel hallPanel;
@@ -23,11 +24,13 @@ public class HallEntry extends Window {
             Document doc;
             if (idField.getText().equals("")) {
                 doc = new Document("name", nameField.getText())
-                        .append("equipment", equipmentField.getText());
+                        .append("equipment", equipmentField.getText())
+                        .append("seats", Collections.emptyList());
             } else {
                 doc = new Document("_id", idField.getText())
                         .append("name", nameField.getText())
-                        .append("equipment", equipmentField.getText());
+                        .append("equipment", equipmentField.getText())
+                        .append("seats", Collections.emptyList());
             }
 
             collection.insertOne(doc);

@@ -8,6 +8,8 @@ import org.bson.Document;
 
 import javax.swing.*;
 
+import static com.mongodb.client.model.Filters.eq;
+
 public class ScreeningEntry extends Window {
     private JTextField idField;
     private JTextField hallidField;
@@ -19,20 +21,22 @@ public class ScreeningEntry extends Window {
     public ScreeningEntry() {
         run(screeningPanel);
         submitButton.addActionListener(e -> {
-            MongoCollection<Document> collection = MongoConnector.cinebase.getCollection("screenings");
-            Document doc;
+            MongoCollection<Document> collection = MongoConnector.cinebase.getCollection("films");
+
+            Document screening;
+
             if (idField.getText().equals("")) {
-                doc = new Document("hall_id", hallidField.getText())
+                screening = new Document("hall_id", hallidField.getText())
                         .append("film_id", filmidField.getText())
                         .append("starting_time", timeField.getText());
             } else {
-                doc = new Document("_id", idField.getText())
+                screening = new Document("_id", idField.getText())
                         .append("hall_id", hallidField.getText())
                         .append("film_id", filmidField.getText())
                         .append("starting_time", timeField.getText());
             }
 
-            collection.insertOne(doc);
+            collection.updateOne(eq("_id", filmidField.getText()), new Document("$push", new Document("screenings", screening)));
 
             JOptionPane.showMessageDialog(null, "Success!");
             frame.setVisible(false);
