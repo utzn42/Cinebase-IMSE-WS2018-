@@ -192,8 +192,12 @@ public class SQLMigrator {
       Date date = format.parse ( starting_time );
 
       Document docScreening = new Document("screening_id", screening_id)
+          //.append("$ref", "halls")
           .append("hall_id", hall_id)
-          .append("starting_time", date);
+          //.append("$db", "cinebase")
+          .append("starting_time", starting_time);
+
+
 
 
 
