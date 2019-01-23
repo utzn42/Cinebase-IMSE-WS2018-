@@ -4,6 +4,7 @@ import Extras.Defaults;
 import com.mongodb.client.MongoCollection;
 import ms3extras.MongoConnector;
 import org.bson.Document;
+
 import javax.swing.*;
 import java.net.ConnectException;
 import java.sql.*;
@@ -181,11 +182,11 @@ public class SQLMigrator {
               .getCollection("films");
 
 
-      Document docScreening = new Document("screening_id", screening_id)
+        Document docScreening = new Document("_id", screening_id)
           .append("hall_id", hall_id)
           .append("starting_time", starting_time);
 
-      collectionFilm.updateOne(eq("film_id", film_id), new Document("$push", new Document("screenings", docScreening)));
+        collectionFilm.updateOne(eq("_id", film_id), new Document("$push", new Document("screenings", docScreening)));
     }
 
   }
@@ -312,11 +313,11 @@ public class SQLMigrator {
                     .getCollection("halls");
 
 
-            Document docSeat = new Document("seat_id", seat_id)
+            Document docSeat = new Document("_id", seat_id)
                     .append("seat_nr", seat_nr)
                     .append("row_nr", row_nr);
 
-            collectionHall.updateOne(eq("hall_id", hall_id), new Document("$push", new Document("seats", docSeat)));
+            collectionHall.updateOne(eq("_id", hall_id), new Document("$push", new Document("seats", docSeat)));
         }
 
     }
