@@ -185,7 +185,7 @@ public class SQLMigrator {
           .append("hall_id", hall_id)
           .append("starting_time", starting_time);
 
-      collectionFilm.updateOne(eq("film_id", film_id), new Document("$push", new Document("screenings", docScreening)));
+      collectionFilm.updateOne(eq("_id", film_id), new Document("$push", new Document("screenings", docScreening)));
     }
 
   }
