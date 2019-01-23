@@ -330,7 +330,57 @@ public class SQLMigrator {
 
             collectionHall.updateOne(eq("_id", hall_id), new Document("$push", new Document("seats", docSeat)));
         }
+    }
 
+    public void migrateTickets() throws ConnectException, SQLException{
+
+        statement.execute("SELECT * FROM ticket");
+
+        ResultSet ticketSet = statement.executeQuery("SELECT * FROM ticket");
+
+        String ticket_id = "";
+        String screening_id = "";
+        String customer_id = "";
+        String price = "";
+        String discount_type = "";
+
+        MongoCollection<Document> collectionTicket = MongoConnector.cinebase
+                .getCollection("tickets");
+
+        while (ticketSet.next()) {
+
+            for (int i = 1; i <= ticketSet.getMetaData().getColumnCount(); i++) {
+                switch (i) {
+                    case 1:
+                        ticket_id = ticketSet.getString(i);
+                        break;
+                    case 2:
+                        screening_id = ticketSet.getString(i);
+                        break;
+                    case 3:
+                        customer_id = ticketSet.getString(i);
+                        break;
+                    case 4:
+                        price = ticketSet.getString(i);
+                        break;
+                    case 5:
+                        discount_type = ticketSet.getString(i);
+                        break;
+                }
+            }
+
+            MongoCollection<Document> collectionCustomer = MongoConnector.cinebase
+                    .getCollection("customers");
+
+            Document docTicket = new Document("_id", ticket_id)
+                    .append("screening_id", screening_id)
+                    .append("customer_id", customer_id)
+                    .append("price", price)
+                    .append("discount_type", discount_type);
+
+            collectionCustomer.updateOne(eq("_id", customer_id), new Document("$push", new Document("tickets", docTicket)));
+
+        }
     }
 }
 
