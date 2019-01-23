@@ -4,6 +4,7 @@ import Extras.Window;
 
 import java.net.ConnectException;
 import java.sql.SQLException;
+import java.text.ParseException;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -26,6 +27,8 @@ public class MainScreen extends Window {
             } catch (ConnectException e1) {
                 e1.printStackTrace();
             } catch (SQLException e1) {
+                e1.printStackTrace();
+            } catch (ParseException e1) {
                 e1.printStackTrace();
             }
         });

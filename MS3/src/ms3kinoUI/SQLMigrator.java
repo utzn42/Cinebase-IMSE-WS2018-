@@ -2,9 +2,11 @@ package ms3kinoUI;
 
 import Extras.Defaults;
 import com.mongodb.client.MongoCollection;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import ms3extras.MongoConnector;
 import org.bson.Document;
-
 import javax.swing.*;
 import java.net.ConnectException;
 import java.sql.*;
@@ -30,7 +32,7 @@ public class SQLMigrator {
     statement = conn.createStatement();
   }
 
-  public void migrateAll() throws SQLException, ConnectException {
+  public void migrateAll() throws SQLException, ConnectException, ParseException {
     migrateFilms();
     migrateCustomers();
     migrateScreenings();
@@ -148,7 +150,7 @@ public class SQLMigrator {
 
   }
 
-  public void migrateScreenings() throws ConnectException, SQLException{
+  public void migrateScreenings() throws ConnectException, SQLException, ParseException {
 
     statement.execute("SELECT * FROM screening");
 
@@ -181,12 +183,21 @@ public class SQLMigrator {
       MongoCollection<Document> collectionFilm = MongoConnector.cinebase
               .getCollection("films");
 
+      //Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(starting_time);
 
-        Document docScreening = new Document("_id", screening_id)
+     // Date formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+      Date date = format.parse ( starting_time );
+
+      Document docScreening = new Document("screening_id", screening_id)
           .append("hall_id", hall_id)
-          .append("starting_time", starting_time);
+          .append("starting_time", date);
 
-        collectionFilm.updateOne(eq("_id", film_id), new Document("$push", new Document("screenings", docScreening)));
+
+
+      collectionFilm.updateOne(eq("_id", film_id), new Document("$push", new Document("screenings", docScreening)));
     }
 
   }
@@ -313,7 +324,7 @@ public class SQLMigrator {
                     .getCollection("halls");
 
 
-            Document docSeat = new Document("_id", seat_id)
+            Document docSeat = new Document("seat_id", seat_id)
                     .append("seat_nr", seat_nr)
                     .append("row_nr", row_nr);
 
