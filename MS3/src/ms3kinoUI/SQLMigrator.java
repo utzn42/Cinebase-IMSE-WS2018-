@@ -4,7 +4,6 @@ import Extras.Defaults;
 import com.mongodb.client.MongoCollection;
 import ms3extras.MongoConnector;
 import org.bson.Document;
-
 import javax.swing.*;
 import java.net.ConnectException;
 import java.sql.*;
@@ -28,14 +27,15 @@ public class SQLMigrator {
       throw new ConnectException();
     }
     statement = conn.createStatement();
-    migrateAll();
-
   }
 
   public void migrateAll() throws SQLException, ConnectException {
     migrateFilms();
     migrateCustomers();
     migrateScreenings();
+    migrateEmployees();
+    migrateHalls();
+    migrateSeats();
 
     JOptionPane.showMessageDialog(null, "Success!");
     new MainScreen().frame.setVisible(true);
@@ -190,7 +190,135 @@ public class SQLMigrator {
 
   }
 
+    public void migrateEmployees() throws ConnectException, SQLException{
+
+        statement.execute("SELECT * FROM employee");
+
+        ResultSet employeeSet = statement.executeQuery("SELECT * FROM employee");
+
+        String employee_nr = "";
+        String manager_id = "";
+        String first_name = "";
+        String last_name = "";
+        String email = "";
+        String password = "";
+
+        MongoCollection<Document> collectionEmployee = MongoConnector.cinebase
+                .getCollection("employees");
+
+        Document docEmployee;
+
+        while (employeeSet.next()) {
+
+            for (int i = 1; i <= employeeSet.getMetaData().getColumnCount(); i++) {
+                switch (i) {
+                    case 1:
+                        employee_nr = employeeSet.getString(i);
+                        break;
+                    case 2:
+                        manager_id = employeeSet.getString(i);
+                        break;
+                    case 3:
+                        first_name = employeeSet.getString(i);
+                        break;
+                    case 4:
+                        last_name = employeeSet.getString(i);
+                        break;
+                    case 5:
+                        email = employeeSet.getString(i);
+                        break;
+                    case 6:
+                        password = employeeSet.getString(i);
+                        break;
+                }
+            }
+            docEmployee = new Document("_id", employee_nr)
+                    .append("manager_id", manager_id)
+                    .append("first_name", first_name)
+                    .append("last_name", last_name)
+                    .append("email",email)
+                    .append("password",password);
+            collectionEmployee.insertOne(docEmployee);
+        }
+    }
+
+    public void migrateHalls() throws ConnectException, SQLException{
+
+        statement.execute("SELECT * FROM hall");
+
+        ResultSet hallSet = statement.executeQuery("SELECT * FROM hall");
+
+        String hall_id = "";
+        String name = "";
+        String equipment = "";
+
+        MongoCollection<Document> collectionHall = MongoConnector.cinebase
+                .getCollection("halls");
+
+        while (hallSet.next()) {
+
+            for (int i = 1; i <= hallSet.getMetaData().getColumnCount(); i++) {
+                switch (i) {
+                    case 1:
+                        hall_id = hallSet.getString(i);
+                        break;
+                    case 2:
+                        name = hallSet.getString(i);
+                        break;
+                    case 3:
+                        equipment = hallSet.getString(i);
+                        break;
+                }
+            }
+            Document docHall = new Document("_id", hall_id)
+                    .append("title", name)
+                    .append("director", equipment);
+
+            collectionHall.insertOne(docHall);
+        }
+    }
+
+    public void migrateSeats() throws ConnectException, SQLException{
+
+        statement.execute("SELECT * FROM seat");
+
+        ResultSet seatSet = statement.executeQuery("SELECT * FROM seat");
+
+        String seat_id = "";
+        String hall_id = "";
+        String seat_nr = "";
+        String row_nr = "";
+
+        while (seatSet.next()) {
+
+            for (int i = 1; i <= seatSet.getMetaData().getColumnCount(); i++) {
+                switch (i) {
+                    case 1:
+                        seat_id = seatSet.getString(i);
+                        break;
+                    case 2:
+                        hall_id = seatSet.getString(i);
+                        break;
+                    case 3:
+                        seat_nr = seatSet.getString(i);
+                        break;
+                    case 4:
+                        row_nr = seatSet.getString(i);
+                        break;
+                }
+            }
+
+            MongoCollection<Document> collectionHall = MongoConnector.cinebase
+                    .getCollection("halls");
 
 
+            Document docSeat = new Document("seat_id", seat_id)
+                    .append("seat_nr", seat_nr)
+                    .append("row_nr", row_nr);
+
+            collectionHall.updateOne(eq("hall_id", hall_id), new Document("$push", new Document("seats", docSeat)));
+        }
+
+    }
 }
 
