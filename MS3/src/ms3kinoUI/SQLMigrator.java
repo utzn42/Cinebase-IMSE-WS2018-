@@ -316,7 +316,7 @@ public class SQLMigrator {
                     .append("seat_nr", seat_nr)
                     .append("row_nr", row_nr);
 
-            collectionHall.updateOne(eq("hall_id", hall_id), new Document("$push", new Document("seats", docSeat)));
+            collectionHall.updateOne(eq("_id", hall_id), new Document("$push", new Document("seats", docSeat)));
         }
 
     }
