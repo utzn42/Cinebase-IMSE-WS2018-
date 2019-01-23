@@ -93,15 +93,15 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                     <tbody>
                     <tr>
                         <td>
-                            <input class="screeningID" id='screeningID' name='screeningID' type='text' size='10'
+                            <input class="screeningID" id='screeningID' name='screeningID' type='text' size="30"
                                    value='<?php echo $GET['screeningID'] ?>'/>
                         </td>
                         <td>
-                            <input id='customerID' name='customerID' type='text' size='20'
+                            <input id='customerID' name='customerID' type='text' size="30"
                                    value='<?php echo $_GET['customerID']; ?>'/>
                         </td>
                         <td>
-                            <input id='price' name='price' type='text' size='20'
+                            <input id='price' name='price' type='text' size="30"
                                    value='<?php echo $_GET['price']; ?>'/>
                         </td>
                     </tr>
@@ -142,7 +142,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
         <table style="float:none; border: 1px solid #DDDDDD">
             <thead>
-            <tr id="tableRow">
+            <tr>
                 <th style="padding: 0px 10px 0px 10px;">Ticket-ID</th>
                 <th style="padding: 0px 10px 0px 10px;">Screening-ID</th>
                 <th style="padding: 0px 10px 0px 10px;">Customer-ID</th>
@@ -167,7 +167,7 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
                     if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
                         echo "<td><a href=\"updateticket.php?ticket_id=" . $row['ticket_id'] . "&screening_id=" . $row['screening_id'] . "&customer_id=" . $row['customer_id'] . "&price=" . $row['price'] . "&discount_type=" . $row['discount_type'] . "\"> UPDATE </a></td>";
-                        echo "<td><a href=\"deleteticket.php?id=" . $row['ticket_id'] . "\"> DELETE </a></td>";
+                        echo "<td><a href=\"deleteticketemp.php?id=" . $row['ticket_id'] . "\"> DELETE </a></td>";
                     }
 
                     echo "</tr>";
@@ -194,7 +194,6 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
             $username = $_SESSION['username'];
             echo("<script type=\"text/javascript\">setEmployeeMode(\"$username\");</script>");
-            echo("<script type=\"text/javascript\">displayFilmIDs();</script>");
         }
         $conn->close();
         ?>
