@@ -1,23 +1,16 @@
 package ms3kinoUI;
 
-import static com.mongodb.client.model.Filters.eq;
-
 import Extras.Defaults;
-import SQLHandling.LoginDataProvider;
 import com.mongodb.client.MongoCollection;
-import java.net.ConnectException;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
-import java.sql.Statement;
-import java.util.Collections;
-import javax.swing.JOptionPane;
-import javax.xml.transform.Result;
 import ms3extras.MongoConnector;
 import org.bson.Document;
-import org.bson.types.ObjectId;
+
+import javax.swing.*;
+import java.net.ConnectException;
+import java.sql.*;
+import java.util.Collections;
+
+import static com.mongodb.client.model.Filters.eq;
 
 public class SQLMigrator {
 
@@ -35,6 +28,7 @@ public class SQLMigrator {
       throw new ConnectException();
     }
     statement = conn.createStatement();
+    migrateAll();
 
   }
 
@@ -61,7 +55,7 @@ public class SQLMigrator {
     String password = "";
 
     MongoCollection<Document> collectionCustomer = MongoConnector.cinebase
-        .getCollection("customer");
+            .getCollection("customers");
 
     Document docCustomer;
 
@@ -83,10 +77,11 @@ public class SQLMigrator {
             break;
         }
       }
-      docCustomer = new Document("customer_id", customer_id)
+      docCustomer = new Document("_id", customer_id)
           .append("customer_type", customer_type)
           .append("email", email)
-          .append("password", password);
+              .append("password", password)
+              .append("tickets", Collections.emptyList());
       collectionCustomer.insertOne(docCustomer);
     }
 
@@ -109,7 +104,7 @@ public class SQLMigrator {
 
 
     MongoCollection<Document> collectionFilm = MongoConnector.cinebase
-        .getCollection("film");
+            .getCollection("films");
 
     while (filmSet.next()) {
 
@@ -138,7 +133,7 @@ public class SQLMigrator {
             break;
         }
       }
-      Document docFilm = new Document("film_id", film_id)
+      Document docFilm = new Document("_id", film_id)
           .append("title", title)
           .append("director", director)
           .append("country", country)
@@ -183,7 +178,7 @@ public class SQLMigrator {
       }
 
       MongoCollection<Document> collectionFilm = MongoConnector.cinebase
-          .getCollection("film");
+              .getCollection("films");
 
 
       Document docScreening = new Document("screening_id", screening_id)
