@@ -106,7 +106,43 @@
                 <input id='insert' type='submit' value='Insert!'/>
             </form>
         </div>
+
+		<?php
+        //Handle insert
+		try {
+     
+			$mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+			
+			if (isset($_POST['film_id']) && !empty($_POST['film_id']) && isset($_POST['title']) && !empty($_POST['title'])) {
+
+				$bulk = new MongoDB\Driver\BulkWrite;
 		
+				$doc = ['_id' => $_POST['film_id'], 'title' => $_POST['title'], 'director' => $_POST['director'], 'country' => $_POST['country'], 'film_language' => $_POST['film_language'], 'age_rating' => $_POST['age_rating'], 'duration' => $_POST['duration'] ];
+				$bulk->insert($doc);
+				//$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
+				//$bulk->delete(['name' => 'Hummer']);
+				
+				$mng->executeBulkWrite('cinebase.films', $bulk);
+
+			}
+		} catch (MongoDB\Driver\Exception\Exception $e) {
+
+			$filename = basename(__FILE__);
+			
+			echo "The $filename script has experienced an error.\n"; 
+			echo "It failed with the following exception:\n";
+			
+			echo "Exception:", $e->getMessage(), "\n";
+			echo "In file:", $e->getFile(), "\n";
+			echo "On line:", $e->getLine(), "\n";    
+	    }
+		
+
+
+        //echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
+
+
+        ?>
 		
 		<br>
 
@@ -145,21 +181,21 @@
 					$query = new MongoDB\Driver\Query($filter); 
 
 				} else if (isset($_GET['sortbytitle'])) {
-					$filter = [ '_id' =>  $_GET['searchFilmID']  ]; 
-					$query = new MongoDB\Driver\Query($filter); 
+					$query = new MongoDB\Driver\Query([], ['sort' => [ 'title' => 1]]); 
 
 				} else if (isset($_GET['sortbydirector'])) {
-					$sql = "SELECT * FROM film ORDER BY director ASC";
+					$query = new MongoDB\Driver\Query([], ['sort' => [ 'director' => 1]]); 
+					
 				} else if (isset($_GET['sortbycountry'])) {
-					$sql = "SELECT * FROM film ORDER BY country ASC";
+					$query = new MongoDB\Driver\Query([], ['sort' => [ 'country' => 1]]); 
 				} else if (isset($_GET['sortbylanguage'])) {
-					$sql = "SELECT * FROM film ORDER BY film_language ASC";
+					$query = new MongoDB\Driver\Query([], ['sort' => [ 'film_language' => 1]]); 
 				} else if (isset($_GET['sortbydur'])) {
-					$sql = "SELECT * FROM film ORDER BY duration ASC";
+					$query = new MongoDB\Driver\Query([], ['sort' => [ 'duration' => 1]]); 
 				} else if (isset($_GET['sortbyage'])) {
-					$sql = "SELECT * FROM film ORDER BY age_rating ASC";
+					$query = new MongoDB\Driver\Query([], ['sort' => [ 'age_rating' => 1]]); 
 				} else if (isset($_GET['sortbyid'])) {
-					$sql = "SELECT * FROM film ORDER BY film_id ASC";
+					$query = new MongoDB\Driver\Query([], ['sort' => [ '_id' => 1]]); 
 				} else {
 					$query = new MongoDB\Driver\Query([]);
 				}
@@ -185,7 +221,8 @@
 
                     if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
                         echo "<td><a href=\"updatefilm.php?film_id=$row->_id&title=$row->title&director=$row->director&country=$row->country&film_language=$row->film_language&age_rating=$row->age_rating&duration=$row->duration\"> UPDATE </a></td>";
-                        echo "<td><a href=\"deletefilm.php?id=$row->_id\"> DELETE </a></td>";
+                        echo "<td><a href=\"movies.php?del=$row->_id\"> DELETE </a></td>";
+				
                     }
                     echo "<td><a href=\"screening.php?searchFilmID=$row->_id\"> Show Screenings </a></td>";
              
@@ -212,6 +249,54 @@
             ?>
             </tbody>
         </table>
+		
+
+		<?php
+		//Handle delete
+
+		try {
+	 
+			$mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+							
+			if (isset($_GET["del"])) {
+
+				$bulk = new MongoDB\Driver\BulkWrite;
+				
+				$del_id = $_GET["del"];
+		
+				//$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
+				$bulk->delete(['_id' => $del_id]);
+				
+				$mng->executeBulkWrite('cinebase.films', $bulk);
+
+			}
+			else if (isset($_GET["upd_id"])) {
+				$bulk = new MongoDB\Driver\BulkWrite;
+				
+				$upd_id = $_GET["upd_id"];
+		
+				$bulk->update(['_id' => $upd_id], ['$set' => ['title' => $_GET["upd_title"]]]);
+				
+				$mng->executeBulkWrite('cinebase.films', $bulk);
+				
+			}
+		} catch (MongoDB\Driver\Exception\Exception $e) {
+
+			$filename = basename(__FILE__);
+			
+			echo "The $filename script has experienced an error.\n"; 
+			echo "It failed with the following exception:\n";
+			
+			echo "Exception:", $e->getMessage(), "\n";
+			echo "In file:", $e->getFile(), "\n";
+			echo "On line:", $e->getLine(), "\n";    
+		}
+		
+
+        //echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
+
+
+        ?>
         <?php
         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
             $username = $_SESSION['username'];
