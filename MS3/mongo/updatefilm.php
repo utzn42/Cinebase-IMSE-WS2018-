@@ -1,14 +1,4 @@
-<?php
 
-
-$user = 'root';
-$pass = '';
-$database = 'cinebase';
-
-$conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
-
-
-?>
 <html>
 <head>
 </head>
@@ -35,29 +25,30 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
             <tr>
                 <td>
                     <input id='film_id' name='film_id' type='text' size='20' readonly
-                           value='<?php echo $_GET['film_id']; ?>'/>
+                           value='<?php echo $_POST['film_id']; ?>'/>
                 </td>
                 <td>
-                    <input id='title' name='title' type='text' size='20' value='<?php echo $_GET['title']; ?>'/>
+                    <input id='title' name='title' type='text' size='20' value='<?php echo $_POST['title']; ?>'/>
                 </td>
                 <td>
                     <input id='director' name='director' type='text' size='20'
-                           value='<?php echo $_GET['director']; ?>'/>
+                           value='<?php echo $_POST['director']; ?>'/>
                 </td>
                 <td>
-                    <input id='country' name='country' type='text' size='20' value='<?php echo $_GET['country']; ?>'/>
+                    <input id='country' name='country' type='text' size='20' value='<?php echo $_POST['country']; ?>'/>
                 </td>
                 <td>
                     <input id='film_language' name='film_language' type='text' size='20'
-                           value='<?php echo $_GET['film_language']; ?>'/>
+                           value='<?php echo $_POST['film_language']; ?>'/>
                 </td>
                 <td>
                     <input id='age_rating' name='age_rating' type='text' size='20'
-                           value='<?php echo $_GET['age_rating']; ?>'/>
+                           value='<?php echo $_POST['age_rating']; ?>'/>
                 </td>
                 <td>
                     <input id='duration' name='duration' type='text' size='20'
-                           value='<?php echo $_GET['duration']; ?>'/>
+                           value='<?php echo $_POST
+						   ['duration']; ?>'/>
                 </td>
             </tr>
             </tbody>
@@ -72,34 +63,53 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 if (isset($_GET["submit"])) {
 
 
-    $film_id = $_GET['film_id'];
-    $title = $_GET['title'];
-    $director = $_GET['director'];
-    $country = $_GET['country'];
-    $film_language = $_GET['film_language'];
-    $age_rating = $_GET['age_rating'];
-    $duration = $_GET['duration'];
+    $film_id = $_POST['film_id'];
+    $title = $_POST['title'];
+    $director = $_POST['director'];
+    $country = $_POST['country'];
+    $film_language = $_POST['film_language'];
+    $age_rating = $_POST['age_rating'];
+    $duration = $_POST['duration'];
 
 
-    // sql to update a record
-    $sql = "UPDATE film 
-		SET title = \"$title\",
-		director=\"$director\",
-		country=\"$country\",
-		film_language=\"$film_language\",
-		age_rating=$age_rating,
-		duration=$duration
-		WHERE film_id=$film_id";
+        //Handle insert
+		try {
+     
+			$mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+			
+
+			$bulk = new MongoDB\Driver\BulkWrite;
+	
+			$bulk->update(['_id' => $film_id], ['$set' => ['title' => $title]]);
+			$bulk->update(['_id' => $film_id], ['$set' => ['director' => $director]]);
+			$bulk->update(['_id' => $film_id], ['$set' => ['country' => $country]]);
+			$bulk->update(['_id' => $film_id], ['$set' => ['film_language' => $film_language]]);
+			$bulk->update(['_id' => $film_id], ['$set' => ['age_rating' => $age_rating]]);
+			$bulk->update(['_id' => $film_id], ['$set' => ['duration' => $duration]]);
+			
+			//$bulk->delete(['name' => 'Hummer']);
+			
+			$mng->executeBulkWrite('cinebase.films', $bulk);
+			header("location: movies.php");
+			
+		} catch (MongoDB\Driver\Exception\Exception $e) {
+
+			$filename = basename(__FILE__);
+			
+			echo "The $filename script has experienced an error.\n"; 
+			echo "It failed with the following exception:\n";
+			
+			echo "Exception:", $e->getMessage(), "\n";
+			echo "In file:", $e->getFile(), "\n";
+			echo "On line:", $e->getLine(), "\n";    
+	    }
+		
 
 
-    //Parse and execute statement
-    if ($conn->query($sql) === TRUE) {
-        echo "Record updated succesfully";
-        header("location: movies.php");
+        //echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
 
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
-    }
+
+        
 }
 
 

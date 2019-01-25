@@ -9,6 +9,9 @@
     <script src="js/main.js"></script>
 </head>
 <body>
+<?php
+session_start();
+?>
 
 
 <div class="wrapper">
@@ -106,7 +109,6 @@
                 <input id='insert' type='submit' value='Insert!'/>
             </form>
         </div>
-
 		<?php
         //Handle insert
 		try {
@@ -199,15 +201,13 @@
 				} else {
 					$query = new MongoDB\Driver\Query([]);
 				}
-				
+					
 				
 				 
 				$rows = $mng->executeQuery("cinebase.films", $query);
 				
 				foreach ($rows as $row) {
 					echo "<tr>";
-
-					
 
                     if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
                         echo "<td style=\"padding: 5px 10px 5px 10px;\">$row->_id</td>";
@@ -220,8 +220,36 @@
 					echo "<td style=\"padding: 5px 10px 5px 10px;\">$row->duration</td>";
 
                     if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
-                        echo "<td><a href=\"updatefilm.php?film_id=$row->_id&title=$row->title&director=$row->director&country=$row->country&film_language=$row->film_language&age_rating=$row->age_rating&duration=$row->duration\"> UPDATE </a></td>";
-                        echo "<td><a href=\"movies.php?del=$row->_id\"> DELETE </a></td>";
+                        
+						//UPDATE BUTTON
+						//echo "<td><a href=\"updatefilm.php?film_id=$row->_id&title=$row->title&director=$row->director&country=$row->country&film_language=$row->film_language&age_rating=$row->age_rating&duration=$row->duration\"> UPDATE </a></td>";
+                        echo "<td>";
+						echo "<form method='post' action='updatefilm.php' class='inline'>";
+						echo "<input type='hidden' name='film_id' value=$row->_id>";
+						echo "<input type='hidden' name='title' value=$row->title>";
+						echo "<input type='hidden' name='director' value=$row->director>";
+						echo "<input type='hidden' name='country' value=$row->country>";
+						echo "<input type='hidden' name='director' value=$row->director>";
+						echo "<input type='hidden' name='film_language' value=$row->film_language>";
+						echo "<input type='hidden' name='age_rating' value=$row->age_rating>";
+						echo "<input type='hidden' name='duration' value=$row->duration>";
+						echo "<button type='submit' name='submit_param' value='submit_value' class='link-button'>";
+						echo "UPDATE";
+						echo "</button>";
+						echo "</form>";
+					    echo "</td>";
+
+
+						
+						//DELETE BUTTON
+						//echo "<td><a href=\"movies.php?del=$row->_id\"> DELETE </a></td>";
+						echo "<td>";
+						echo "<form action='movies.php' method='post'>";
+						echo "<input type='hidden' name='del' value=$row->_id>";
+						echo "<button>DELETE</button>" ;
+						echo "</form>";
+					    echo "</td>";
+
 				
                     }
                     echo "<td><a href=\"screening.php?searchFilmID=$row->_id\"> Show Screenings </a></td>";
@@ -258,11 +286,11 @@
 	 
 			$mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
 							
-			if (isset($_GET["del"])) {
+			if (isset($_POST["del"])) {
 
 				$bulk = new MongoDB\Driver\BulkWrite;
 				
-				$del_id = $_GET["del"];
+				$del_id = $_POST["del"];
 		
 				//$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
 				$bulk->delete(['_id' => $del_id]);
@@ -270,16 +298,7 @@
 				$mng->executeBulkWrite('cinebase.films', $bulk);
 
 			}
-			else if (isset($_GET["upd_id"])) {
-				$bulk = new MongoDB\Driver\BulkWrite;
-				
-				$upd_id = $_GET["upd_id"];
 		
-				$bulk->update(['_id' => $upd_id], ['$set' => ['title' => $_GET["upd_title"]]]);
-				
-				$mng->executeBulkWrite('cinebase.films', $bulk);
-				
-			}
 		} catch (MongoDB\Driver\Exception\Exception $e) {
 
 			$filename = basename(__FILE__);
