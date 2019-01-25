@@ -11,6 +11,8 @@
 <body>
 <?php
 session_start();
+error_reporting(E_ALL ^ E_NOTICE); 
+
 ?>
 
 
@@ -56,6 +58,49 @@ session_start();
             <br>
         </div>
 		
+		
+		
+		
+		
+		<?php
+			
+
+		
+			try {
+
+				$mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+				$query = new MongoDB\Driver\Query([], ['sort' => [ '_id' => 1]]); 
+
+				$rows = $mng->executeQuery("cinebase.films", $query);
+				$idx=0;
+				foreach ($rows as $row) {
+					
+					if($row->_id>$idx){
+						$idx=$row->_id;
+					}
+					
+
+				}
+				
+			} catch (MongoDB\Driver\Exception\Exception $e) {
+
+				$filename = basename(__FILE__);
+				
+				echo "The $filename script has experienced an error.\n"; 
+				echo "It failed with the following exception:\n";
+				
+				echo "Exception:", $e->getMessage(), "\n";
+				echo "In file:", $e->getFile(), "\n";
+				echo "On line:", $e->getLine(), "\n";       
+			}
+        ?>
+		
+		
+		
+		
+		
+		
+		
 		<br>
         <div id="insertMovie">
             <form id='insertform' action='movies.php' method='post'>
@@ -76,7 +121,7 @@ session_start();
                     <tr>
                         <td>
                             <input class="inputFilmID" id='film_id' name='film_id' type='text' size='10'
-                                   value='<?php echo $max_row["max"] + 1; ?>'/>
+                                   value='<?php echo $idx + 1; ?>'/>
                         </td>
                         <td>
                             <input id='title' name='title' type='text' size='20'
@@ -109,6 +154,46 @@ session_start();
                 <input id='insert' type='submit' value='Insert!'/>
             </form>
         </div>
+				<?php
+		//Handle delete
+
+		try {
+	 
+			$mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+							
+			if (isset($_POST["del"])) {
+
+				$bulk = new MongoDB\Driver\BulkWrite;
+				
+				$del_id = $_POST["del"];
+		
+				//$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
+				$bulk->delete(['_id' => $del_id]);
+				
+				$mng->executeBulkWrite('cinebase.films', $bulk);
+				//header("location: movies.php");
+				//header("Refresh:0");
+
+
+			}
+		
+		} catch (MongoDB\Driver\Exception\Exception $e) {
+
+			$filename = basename(__FILE__);
+			
+			echo "The $filename script has experienced an error.\n"; 
+			echo "It failed with the following exception:\n";
+			
+			echo "Exception:", $e->getMessage(), "\n";
+			echo "In file:", $e->getFile(), "\n";
+			echo "On line:", $e->getLine(), "\n";    
+		}
+		
+
+        //echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
+
+
+        ?>
 		<?php
         //Handle insert
 		try {
@@ -205,8 +290,10 @@ session_start();
 				
 				 
 				$rows = $mng->executeQuery("cinebase.films", $query);
-				
+				$idx=0;
 				foreach ($rows as $row) {
+					
+					$idx++;
 					echo "<tr>";
 
                     if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
@@ -226,11 +313,18 @@ session_start();
                         echo "<td>";
 						echo "<form method='post' action='updatefilm.php' class='inline'>";
 						echo "<input type='hidden' name='film_id' value=$row->_id>";
-						echo "<input type='hidden' name='title' value=$row->title>";
-						echo "<input type='hidden' name='director' value=$row->director>";
+										
+						$str_title = urlencode($row->title);  
+						echo "<input type='hidden' name='title' value=$str_title>";
+
+						$str_director = urlencode($row->director);  
+						echo "<input type='hidden' name='director' value=$str_director>";
+						
 						echo "<input type='hidden' name='country' value=$row->country>";
-						echo "<input type='hidden' name='director' value=$row->director>";
-						echo "<input type='hidden' name='film_language' value=$row->film_language>";
+						
+						$str_language = urlencode($row->film_language);  
+						echo "<input type='hidden' name='film_language' value=$str_language>";
+						
 						echo "<input type='hidden' name='age_rating' value=$row->age_rating>";
 						echo "<input type='hidden' name='duration' value=$row->duration>";
 						echo "<button type='submit' name='submit_param' value='submit_value' class='link-button'>";
@@ -279,43 +373,7 @@ session_start();
         </table>
 		
 
-		<?php
-		//Handle delete
 
-		try {
-	 
-			$mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
-							
-			if (isset($_POST["del"])) {
-
-				$bulk = new MongoDB\Driver\BulkWrite;
-				
-				$del_id = $_POST["del"];
-		
-				//$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
-				$bulk->delete(['_id' => $del_id]);
-				
-				$mng->executeBulkWrite('cinebase.films', $bulk);
-
-			}
-		
-		} catch (MongoDB\Driver\Exception\Exception $e) {
-
-			$filename = basename(__FILE__);
-			
-			echo "The $filename script has experienced an error.\n"; 
-			echo "It failed with the following exception:\n";
-			
-			echo "Exception:", $e->getMessage(), "\n";
-			echo "In file:", $e->getFile(), "\n";
-			echo "On line:", $e->getLine(), "\n";    
-		}
-		
-
-        //echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
-
-
-        ?>
         <?php
         if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
             $username = $_SESSION['username'];

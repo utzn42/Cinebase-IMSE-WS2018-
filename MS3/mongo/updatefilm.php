@@ -4,9 +4,19 @@
 </head>
 <body>
 
-<a href="ticket.php">Back to Tickets</a><br><br>
+<?php
+    $film_id = $_POST['film_id'];
+    $title = urldecode($_POST['title']);
+    $director = urldecode($_POST['director']);
+    $country = $_POST['country'];
+    $film_language = urldecode($_POST['film_language']);
+    $age_rating = $_POST['age_rating'];
+    $duration = $_POST['duration'];
+?>
+
+<a href="movies.php">Back to Movies</a><br><br>
 <div>
-    <form id='updateform' action="" method="get">
+    <form id='updateform' action="updatefilm.php" method="post">
         Update film:
         <table style='border: 1px solid #DDDDDD'>
             <thead>
@@ -25,30 +35,29 @@
             <tr>
                 <td>
                     <input id='film_id' name='film_id' type='text' size='20' readonly
-                           value='<?php echo $_POST['film_id']; ?>'/>
+                           value='<?php echo $film_id; ?>'/>
                 </td>
                 <td>
-                    <input id='title' name='title' type='text' size='20' value='<?php echo $_POST['title']; ?>'/>
+                    <input id='title' name='title' type='text' size='20' value='<?php echo $title; ?>'/>
                 </td>
                 <td>
                     <input id='director' name='director' type='text' size='20'
-                           value='<?php echo $_POST['director']; ?>'/>
+                           value='<?php echo $director; ?>'/>
                 </td>
                 <td>
-                    <input id='country' name='country' type='text' size='20' value='<?php echo $_POST['country']; ?>'/>
+                    <input id='country' name='country' type='text' size='20' value='<?php echo $country; ?>'/>
                 </td>
                 <td>
                     <input id='film_language' name='film_language' type='text' size='20'
-                           value='<?php echo $_POST['film_language']; ?>'/>
+                           value='<?php echo $film_language; ?>'/>
                 </td>
                 <td>
                     <input id='age_rating' name='age_rating' type='text' size='20'
-                           value='<?php echo $_POST['age_rating']; ?>'/>
+                           value='<?php echo $age_rating; ?>'/>
                 </td>
                 <td>
                     <input id='duration' name='duration' type='text' size='20'
-                           value='<?php echo $_POST
-						   ['duration']; ?>'/>
+                           value='<?php echo $duration; ?>'/>
                 </td>
             </tr>
             </tbody>
@@ -60,16 +69,10 @@
 <?php
 
 
-if (isset($_GET["submit"])) {
+if (isset($_POST["submit"])) {
 
 
-    $film_id = $_POST['film_id'];
-    $title = $_POST['title'];
-    $director = $_POST['director'];
-    $country = $_POST['country'];
-    $film_language = $_POST['film_language'];
-    $age_rating = $_POST['age_rating'];
-    $duration = $_POST['duration'];
+
 
 
         //Handle insert
@@ -79,9 +82,9 @@ if (isset($_GET["submit"])) {
 			
 
 			$bulk = new MongoDB\Driver\BulkWrite;
-	
-			$bulk->update(['_id' => $film_id], ['$set' => ['title' => $title]]);
 			$bulk->update(['_id' => $film_id], ['$set' => ['director' => $director]]);
+			
+			$bulk->update(['_id' => $film_id], ['$set' => ['title' => $title]]);
 			$bulk->update(['_id' => $film_id], ['$set' => ['country' => $country]]);
 			$bulk->update(['_id' => $film_id], ['$set' => ['film_language' => $film_language]]);
 			$bulk->update(['_id' => $film_id], ['$set' => ['age_rating' => $age_rating]]);
