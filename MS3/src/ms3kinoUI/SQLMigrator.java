@@ -40,6 +40,7 @@ public class SQLMigrator {
     migrateEmployees();
     migrateHalls();
     migrateSeats();
+    migrateTickets();
 
     JOptionPane.showMessageDialog(null, "Success!");
     new MainScreen().frame.setVisible(true);
