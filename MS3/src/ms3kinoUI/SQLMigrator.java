@@ -344,30 +344,27 @@ public class SQLMigrator {
 
         ResultSet ticketSet = statement.executeQuery("SELECT * FROM ticket");
 
-        int ticket_id = 0;
-        int screening_id = 0;
-        int customer_id = 0;
-        int price = 0;
+        String ticket_id = "";
+        String screening_id = "";
+        String customer_id = "";
+        String price = "";
         String discount_type = "";
-
-        MongoCollection<Document> collectionTicket = MongoConnector.cinebase
-                .getCollection("tickets");
 
         while (ticketSet.next()) {
 
             for (int i = 1; i <= ticketSet.getMetaData().getColumnCount(); i++) {
                 switch (i) {
                     case 1:
-                        ticket_id = ticketSet.getInt(i);
+                        ticket_id = ticketSet.getString(i);
                         break;
                     case 2:
-                        screening_id = ticketSet.getInt(i);
+                        screening_id = ticketSet.getString(i);
                         break;
                     case 3:
-                        customer_id = ticketSet.getInt(i);
+                        customer_id = ticketSet.getString(i);
                         break;
                     case 4:
-                        price = ticketSet.getInt(i);
+                        price = ticketSet.getString(i);
                         break;
                     case 5:
                         discount_type = ticketSet.getString(i);
