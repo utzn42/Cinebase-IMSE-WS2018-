@@ -2,15 +2,16 @@ package ms3kinoUI;
 
 import Extras.Defaults;
 import com.mongodb.client.MongoCollection;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import ms3extras.MongoConnector;
 import org.bson.Document;
+
 import javax.swing.*;
 import java.net.ConnectException;
 import java.sql.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Collections;
+import java.util.Date;
 
 import static com.mongodb.client.model.Filters.eq;
 
@@ -97,13 +98,13 @@ public class SQLMigrator {
 
     ResultSet filmSet = statement.executeQuery("SELECT * FROM film");
 
-    String film_id = "";
+      int film_id = 0;
     String title = "";
     String director = "";
     String country = "";
     String film_language = "";
-    String age_rating = "";
-    String duration = "";
+      int age_rating = 0;
+      int duration = 0;
 
 
     MongoCollection<Document> collectionFilm = MongoConnector.cinebase
@@ -114,7 +115,7 @@ public class SQLMigrator {
       for (int i = 1; i <= filmSet.getMetaData().getColumnCount(); i++) {
         switch (i) {
           case 1:
-            film_id = filmSet.getString(i);
+              film_id = filmSet.getInt(i);
             break;
           case 2:
             title = filmSet.getString(i);
@@ -129,10 +130,10 @@ public class SQLMigrator {
             film_language = filmSet.getString(i);
             break;
           case 6:
-            age_rating = filmSet.getString(i);
+              age_rating = filmSet.getInt(i);
             break;
           case 7:
-            duration = filmSet.getString(i);
+              duration = filmSet.getInt(i);
             break;
         }
       }
@@ -156,9 +157,9 @@ public class SQLMigrator {
 
     ResultSet screeningSet = statement.executeQuery("SELECT * FROM screening");
 
-    String screening_id = "";
-    String hall_id = "";
-    String film_id = "";
+      int screening_id = 0;
+      int hall_id = 0;
+      int film_id = 0;
     String starting_time = "";
 
     while (screeningSet.next()) {
@@ -166,13 +167,13 @@ public class SQLMigrator {
       for (int i = 1; i <= screeningSet.getMetaData().getColumnCount(); i++) {
         switch (i) {
           case 1:
-            screening_id = screeningSet.getString(i);
+              screening_id = screeningSet.getInt(i);
             break;
           case 2:
-            hall_id = screeningSet.getString(i);
+              hall_id = screeningSet.getInt(i);
             break;
           case 3:
-            film_id = screeningSet.getString(i);
+              film_id = screeningSet.getInt(i);
             break;
           case 4:
             starting_time = screeningSet.getString(i);
@@ -191,7 +192,7 @@ public class SQLMigrator {
 
       Date date = format.parse ( starting_time );
 
-      Document docScreening = new Document("screening_id", screening_id)
+        Document docScreening = new Document("_id", screening_id)
           //.append("$ref", "halls")
           .append("hall_id", hall_id)
           //.append("$db", "cinebase")
@@ -212,8 +213,8 @@ public class SQLMigrator {
 
         ResultSet employeeSet = statement.executeQuery("SELECT * FROM employee");
 
-        String employee_nr = "";
-        String manager_id = "";
+        int employee_nr = 0;
+        int manager_id = 0;
         String first_name = "";
         String last_name = "";
         String email = "";
@@ -229,10 +230,10 @@ public class SQLMigrator {
             for (int i = 1; i <= employeeSet.getMetaData().getColumnCount(); i++) {
                 switch (i) {
                     case 1:
-                        employee_nr = employeeSet.getString(i);
+                        employee_nr = employeeSet.getInt(i);
                         break;
                     case 2:
-                        manager_id = employeeSet.getString(i);
+                        manager_id = employeeSet.getInt(i);
                         break;
                     case 3:
                         first_name = employeeSet.getString(i);
@@ -264,7 +265,7 @@ public class SQLMigrator {
 
         ResultSet hallSet = statement.executeQuery("SELECT * FROM hall");
 
-        String hall_id = "";
+        int hall_id = 0;
         String name = "";
         String equipment = "";
 
@@ -276,7 +277,7 @@ public class SQLMigrator {
             for (int i = 1; i <= hallSet.getMetaData().getColumnCount(); i++) {
                 switch (i) {
                     case 1:
-                        hall_id = hallSet.getString(i);
+                        hall_id = hallSet.getInt(i);
                         break;
                     case 2:
                         name = hallSet.getString(i);
@@ -300,26 +301,26 @@ public class SQLMigrator {
 
         ResultSet seatSet = statement.executeQuery("SELECT * FROM seat");
 
-        String seat_id = "";
-        String hall_id = "";
-        String seat_nr = "";
-        String row_nr = "";
+        int seat_id = 0;
+        int hall_id = 0;
+        int seat_nr = 0;
+        int row_nr = 0;
 
         while (seatSet.next()) {
 
             for (int i = 1; i <= seatSet.getMetaData().getColumnCount(); i++) {
                 switch (i) {
                     case 1:
-                        seat_id = seatSet.getString(i);
+                        seat_id = seatSet.getInt(i);
                         break;
                     case 2:
-                        hall_id = seatSet.getString(i);
+                        hall_id = seatSet.getInt(i);
                         break;
                     case 3:
-                        seat_nr = seatSet.getString(i);
+                        seat_nr = seatSet.getInt(i);
                         break;
                     case 4:
-                        row_nr = seatSet.getString(i);
+                        row_nr = seatSet.getInt(i);
                         break;
                 }
             }
@@ -328,7 +329,7 @@ public class SQLMigrator {
                     .getCollection("halls");
 
 
-            Document docSeat = new Document("seat_id", seat_id)
+            Document docSeat = new Document("_id", seat_id)
                     .append("seat_nr", seat_nr)
                     .append("row_nr", row_nr);
 
@@ -342,10 +343,10 @@ public class SQLMigrator {
 
         ResultSet ticketSet = statement.executeQuery("SELECT * FROM ticket");
 
-        String ticket_id = "";
-        String screening_id = "";
-        String customer_id = "";
-        String price = "";
+        int ticket_id = 0;
+        int screening_id = 0;
+        int customer_id = 0;
+        int price = 0;
         String discount_type = "";
 
         MongoCollection<Document> collectionTicket = MongoConnector.cinebase
@@ -356,16 +357,16 @@ public class SQLMigrator {
             for (int i = 1; i <= ticketSet.getMetaData().getColumnCount(); i++) {
                 switch (i) {
                     case 1:
-                        ticket_id = ticketSet.getString(i);
+                        ticket_id = ticketSet.getInt(i);
                         break;
                     case 2:
-                        screening_id = ticketSet.getString(i);
+                        screening_id = ticketSet.getInt(i);
                         break;
                     case 3:
-                        customer_id = ticketSet.getString(i);
+                        customer_id = ticketSet.getInt(i);
                         break;
                     case 4:
-                        price = ticketSet.getString(i);
+                        price = ticketSet.getInt(i);
                         break;
                     case 5:
                         discount_type = ticketSet.getString(i);
