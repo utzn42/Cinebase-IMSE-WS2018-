@@ -24,7 +24,7 @@
         </constraints>
         <properties>
           <horizontalAlignment value="10"/>
-          <toolTipText value="Please enter a program ID."/>
+          <toolTipText value="Please enter a run.program ID."/>
         </properties>
       </component>
       <component id="2703b" class="javax.swing.JLabel">
