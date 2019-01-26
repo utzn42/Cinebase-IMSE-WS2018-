@@ -12,15 +12,7 @@
 
 <?php
 session_start();
-error_reporting(0);
-
-$user = 'root';
-$pass = '';
-$database = 'cinebase';
-
-// establish database connection
-$conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
-
+error_reporting(E_ALL ^ E_NOTICE);
 ?>
 
 <div class="wrapper">
@@ -62,74 +54,36 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
             <br>
         </div>
         <?php
-        // check if search view of list view
-        if (isset($_GET['searchName'])) {
-            $sql = "SELECT * FROM employee WHERE first_name like '%" . $_GET['searchName'] . "%'
-        OR last_name like '%" . $_GET['searchName'] . "%'";
-        } else {
-            $sql = "SELECT * FROM employee";
-        }
-        $result = $conn->query($sql);
 
 
-        ?>
+        try {
 
+            $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+            $query = new MongoDB\Driver\Query([], ['sort' => [ '_id' => 1]]);
 
-        <table style='border: 1px solid #DDDDDD'>
-            <thead>
-            <tr>
-                <th>Employee Nr.</th>
-                <th>Manager-ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>E-Mail</th>
-                <th>Password</th>
-            </tr>
-            </thead>
-            <tbody>
-            <?php
+            $rows = $mng->executeQuery("cinebase.employees", $query);
+            $idx=0;
+            foreach ($rows as $row) {
 
-            // fetch rows of the executed sql query
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-
-                    echo "<tr>";
-
-
-                    echo "<td>" . $row['employee_nr'] . "</td>";
-                    echo "<td>" . $row['manager_id'] . "</td>";
-                    echo "<td>" . $row['first_name'] . "</td>";
-                    echo "<td>" . $row['last_name'] . "</td>";
-                    echo "<td>" . $row['email'] . "</td>";
-                    echo "<td>" . $row['password'] . "</td>";
-
-                    echo "<td><a href=\"updateemployee.php?employee_nr=" . $row['employee_nr'] . "&manager_id=" . $row['manager_id'] . "&first_name=" . $row['first_name'] . "&last_name=" . $row['last_name'] . "&email=" . $row['email'] . "&password=" . $row['password'] . "\"> UPDATE </a></td>";
-                    echo "<td><a href=\"deleteemployee.php?id=" . $row['employee_nr'] . "\"> DELETE </a></td>";
-
-                    $id = $row['employee_nr'];
-                    $sql2 = "SELECT COUNT(*) as amount FROM employee WHERE manager_id = $id
-                    AND manager_id <> employee_nr";
-                    $rs = $conn->query($sql2);
-                    while ($data = mysqli_fetch_array($rs)) {
-                        $count = $data['amount'];
-                    }
-                    if ($count > 0) {
-                        echo "<td><a href=\"employees_of_manager.php?searchEmployee=" . $row['employee_nr'] . "\"> Show subordinates</a></td>";
-                    }
-
-
-                    echo "</tr>";
+                if($row->_id>$idx){
+                    $idx=$row->_id;
                 }
+
+
             }
-            $row_cnt = mysqli_num_rows($result);
 
+        } catch (MongoDB\Driver\Exception\Exception $e) {
 
-            ?>
-            </tbody>
-        </table>
+            $filename = basename(__FILE__);
 
-        <div><?php echo $row_cnt ?> Employee/s found!</div>
+            echo "The $filename script has experienced an error.\n";
+            echo "It failed with the following exception:\n";
 
+            echo "Exception:", $e->getMessage(), "\n";
+            echo "In file:", $e->getFile(), "\n";
+            echo "On line:", $e->getLine(), "\n";
+        }
+        ?>
 
         <br>
 
@@ -183,28 +137,212 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
         <?php
         //Handle insert
-        if (isset($_GET['employee_nr']) && !empty($_GET['employee_nr'])) {
+        try {
 
-            //Prepare insert statementd
-            $sql = "INSERT INTO employee VALUES(" . $_GET['employee_nr'] . ",'" . $_GET['manager_id'] . "','" . $_GET['first_name'] . "','" . $_GET['last_name'] . "','" . $_GET['email'] . "','" . $_GET['password'] . "')";
+            $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+
+            if (isset($_POST["del"])) {
+
+                $bulk = new MongoDB\Driver\BulkWrite;
+
+                $del_id = $_POST["del"];
+
+                //$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
+                $bulk->delete(['_id' => $del_id]);
+
+                $mng->executeBulkWrite('cinebase.employees', $bulk);
+                //header("location: movies.php");
+                //header("Refresh:0");
 
 
-            //Parse and execute statement
-            if ($conn->query($sql) === TRUE) {
-                echo "New record created succesfully";
-                echo '<meta http-equiv="refresh" content="0">';
-
-            } else {
-                echo "Error: " . $sql . "<br>" . $conn->error;
             }
 
+        } catch (MongoDB\Driver\Exception\Exception $e) {
+
+            $filename = basename(__FILE__);
+
+            echo "The $filename script has experienced an error.\n";
+            echo "It failed with the following exception:\n";
+
+            echo "Exception:", $e->getMessage(), "\n";
+            echo "In file:", $e->getFile(), "\n";
+            echo "On line:", $e->getLine(), "\n";
         }
 
 
+        //echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
+
+
         ?>
+        <?php
+        //Handle insert
+		try {
+
+			$mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+
+			if (isset($_POST['employee_nr']) && !empty($_POST['employee_nr'])) {
+
+				$bulk = new MongoDB\Driver\BulkWrite;
+
+				$doc = ['_id' => $_POST['employee_nr'], 'manager_id' => $_POST['manager_id'], 'first_name' => $_POST['first_name'], 'last_name' => $_POST['last_name'], 'email' => $_POST['email'], 'password' => $_POST['password']];
+				$bulk->insert($doc);
+				//$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
+				//$bulk->delete(['name' => 'Hummer']);
+
+				$mng->executeBulkWrite('cinebase.employees', $bulk);
+
+			}
+		} catch (MongoDB\Driver\Exception\Exception $e) {
+
+			$filename = basename(__FILE__);
+
+			echo "The $filename script has experienced an error.\n";
+			echo "It failed with the following exception:\n";
+
+			echo "Exception:", $e->getMessage(), "\n";
+			echo "In file:", $e->getFile(), "\n";
+			echo "On line:", $e->getLine(), "\n";
+	    }
+	    ?>
+
+        <br>
 
 
-        <?php $conn->close(); ?>
+        <table style="float:none; border: 1px solid #DDDDDD">
+            <thead>
+            <tr id="tableRow">
+
+                <th style="padding: 0px 10px 0px 10px;"><a href="movies.php?sortbytitle=true">Title</a></th>
+                <th style="padding: 0px 10px 0px 10px;"><a href="movies.php?sortbydirector=true">Director</a></th>
+                <th style="padding: 0px 10px 0px 10px;"><a href="movies.php?sortbycountry=true">Country</a></th>
+                <th style="padding: 0px 10px 0px 10px;"><a href="movies.php?sortbylanguage=true">Language</a></th>
+                <th style="padding: 0px 10px 0px 10px;"><a href="movies.php?sortbyage=true">Age rating</a></th>
+                <th style="padding: 0px 10px 0px 10px;"><a href="movies.php?sortbydur=true">Duration (minutes)</a></th>
+
+            </tr>
+            </thead>
+            <tbody>
+            <?php
+
+
+
+            try {
+
+                $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+
+
+
+                if (isset($_GET['searchTitle'])) {
+
+                    $filter = [ 'title' => new MongoDB\BSON\Regex($_GET['searchTitle'], 'i') ];
+                    $query = new MongoDB\Driver\Query($filter);
+
+                } else if (isset($_GET['searchFilmID'])) {
+                    $filter = [ '_id' => $_GET['searchFilmID'] ];
+                    $query = new MongoDB\Driver\Query($filter);
+
+                } else if (isset($_GET['sortbytitle'])) {
+                    $query = new MongoDB\Driver\Query([], ['sort' => [ 'title' => 1]]);
+
+                } else if (isset($_GET['sortbydirector'])) {
+                    $query = new MongoDB\Driver\Query([], ['sort' => [ 'director' => 1]]);
+
+                } else if (isset($_GET['sortbycountry'])) {
+                    $query = new MongoDB\Driver\Query([], ['sort' => [ 'country' => 1]]);
+                } else if (isset($_GET['sortbylanguage'])) {
+                    $query = new MongoDB\Driver\Query([], ['sort' => [ 'film_language' => 1]]);
+                } else if (isset($_GET['sortbydur'])) {
+                    $query = new MongoDB\Driver\Query([], ['sort' => [ 'duration' => 1]]);
+                } else if (isset($_GET['sortbyage'])) {
+                    $query = new MongoDB\Driver\Query([], ['sort' => [ 'age_rating' => 1]]);
+                } else if (isset($_GET['sortbyid'])) {
+                    $query = new MongoDB\Driver\Query([], ['sort' => [ '_id' => 1]]);
+                } else {
+                    $query = new MongoDB\Driver\Query([]);
+                }
+
+
+
+                $rows = $mng->executeQuery("cinebase.films", $query);
+                $idx=0;
+                foreach ($rows as $row) {
+
+                    $idx++;
+                    echo "<tr>";
+
+                    if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+                        echo "<td style=\"padding: 5px 10px 5px 10px;\">$row->_id</td>";
+                    }
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">$row->title</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">$row->director</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">$row->country</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">$row->film_language</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">$row->age_rating</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">$row->duration</td>";
+
+                    if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+
+                        //UPDATE BUTTON
+                        //echo "<td><a href=\"updatefilm.php?film_id=$row->_id&title=$row->title&director=$row->director&country=$row->country&film_language=$row->film_language&age_rating=$row->age_rating&duration=$row->duration\"> UPDATE </a></td>";
+                        echo "<td>";
+                        echo "<form method='post' action='updatefilm.php' class='inline'>";
+                        echo "<input type='hidden' name='film_id' value=$row->_id>";
+
+                        $str_title = urlencode($row->title);
+                        echo "<input type='hidden' name='title' value=$str_title>";
+
+                        $str_director = urlencode($row->director);
+                        echo "<input type='hidden' name='director' value=$str_director>";
+
+                        echo "<input type='hidden' name='country' value=$row->country>";
+
+                        $str_language = urlencode($row->film_language);
+                        echo "<input type='hidden' name='film_language' value=$str_language>";
+
+                        echo "<input type='hidden' name='age_rating' value=$row->age_rating>";
+                        echo "<input type='hidden' name='duration' value=$row->duration>";
+                        echo "<button type='submit' name='submit_param' value='submit_value' class='link-button'>";
+                        echo "UPDATE";
+                        echo "</button>";
+                        echo "</form>";
+                        echo "</td>";
+
+
+
+                        //DELETE BUTTON
+                        //echo "<td><a href=\"movies.php?del=$row->_id\"> DELETE </a></td>";
+                        echo "<td>";
+                        echo "<form action='movies.php' method='post'>";
+                        echo "<input type='hidden' name='del' value=$row->_id>";
+                        echo "<button>DELETE</button>" ;
+                        echo "</form>";
+                        echo "</td>";
+
+
+                    }
+                    echo "<td><a href=\"screening.php?searchFilmID=$row->_id\"> Show Screenings </a></td>";
+
+
+                    echo "</tr>";
+
+                }
+
+            } catch (MongoDB\Driver\Exception\Exception $e) {
+
+                $filename = basename(__FILE__);
+
+                echo "The $filename script has experienced an error.\n";
+                echo "It failed with the following exception:\n";
+
+                echo "Exception:", $e->getMessage(), "\n";
+                echo "In file:", $e->getFile(), "\n";
+                echo "On line:", $e->getLine(), "\n";
+            }
+
+
+
+
+            ?>
 
     </div>
 </div>
