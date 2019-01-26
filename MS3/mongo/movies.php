@@ -65,7 +65,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 		<?php
 			
 
-		
+		//MAX FINDER
 			try {
 
 				$mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
@@ -120,7 +120,7 @@ error_reporting(E_ALL ^ E_NOTICE);
                     <tbody>
                     <tr>
                         <td>
-                            <input class="inputFilmID" id='film_id' name='film_id' type='text' size='10'
+                            <input class="inputFilmID" id='film_id' name='film_id' type='number' size='10'
                                    value='<?php echo $idx + 1; ?>'/>
                         </td>
                         <td>
@@ -141,11 +141,11 @@ error_reporting(E_ALL ^ E_NOTICE);
                                    value='<?php echo $_GET['film_language']; ?>'/>
                         </td>
                         <td>
-                            <input class="inputAge" id='age_rating' name='age_rating' type='text' size='20'
+                            <input class="inputAge" id='age_rating' name='age_rating' type='number' size='20'
                                    value='<?php echo $_GET['age_rating']; ?>'/>
                         </td>
                         <td>
-                            <input class="inputDuration" id='duration' name='duration' type='text' size='20'
+                            <input class="inputDuration" id='duration' name='duration' type='number' size='20'
                                    value='<?php echo $_GET['duration']; ?>'/>
                         </td>
                     </tr>
@@ -154,7 +154,11 @@ error_reporting(E_ALL ^ E_NOTICE);
                 <input id='insert' type='submit' value='Insert!'/>
             </form>
         </div>
-				<?php
+		<?php
+				
+		//HIDE INSERT FOR NON EMPLOYEES
+		echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
+
 		//Handle delete
 
 		try {
@@ -168,7 +172,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 				$del_id = $_POST["del"];
 		
 				//$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
-				$bulk->delete(['_id' => $del_id]);
+				$bulk->delete(['_id' => intval($del_id)]);
 				
 				$mng->executeBulkWrite('cinebase.films', $bulk);
 				//header("location: movies.php");
@@ -204,7 +208,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 				$bulk = new MongoDB\Driver\BulkWrite;
 		
-				$doc = ['_id' => $_POST['film_id'], 'title' => $_POST['title'], 'director' => $_POST['director'], 'country' => $_POST['country'], 'film_language' => $_POST['film_language'], 'age_rating' => $_POST['age_rating'], 'duration' => $_POST['duration'] ];
+				$doc = ['_id' => intval($_POST['film_id']), 'title' => $_POST['title'], 'director' => $_POST['director'], 'country' => $_POST['country'], 'film_language' => $_POST['film_language'], 'age_rating' => intval($_POST['age_rating']), 'duration' => intval($_POST['duration'])];
 				$bulk->insert($doc);
 				//$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
 				//$bulk->delete(['name' => 'Hummer']);
@@ -225,8 +229,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 	    }
 		
 
-
-        //echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
+		
 
 
         ?>

@@ -34,29 +34,29 @@
             <tbody>
             <tr>
                 <td>
-                    <input id='film_id' name='film_id' type='text' size='20' readonly
+                    <input id='new_film_id' name='new_film_id' type='number' size='20' readonly
                            value='<?php echo $film_id; ?>'/>
                 </td>
                 <td>
-                    <input id='title' name='title' type='text' size='20' value='<?php echo $title; ?>'/>
+                    <input id='new_title' name='new_title' type='text' size='20' value='<?php echo $title; ?>'/>
                 </td>
                 <td>
-                    <input id='director' name='director' type='text' size='20'
+                    <input id='new_director' name='new_director' type='text' size='20'
                            value='<?php echo $director; ?>'/>
                 </td>
                 <td>
-                    <input id='country' name='country' type='text' size='20' value='<?php echo $country; ?>'/>
+                    <input id='new_country' name='new_country' type='text' size='20' value='<?php echo $country; ?>'/>
                 </td>
                 <td>
-                    <input id='film_language' name='film_language' type='text' size='20'
+                    <input id='new_film_language' name='new_film_language' type='text' size='20'
                            value='<?php echo $film_language; ?>'/>
                 </td>
                 <td>
-                    <input id='age_rating' name='age_rating' type='text' size='20'
+                    <input id='new_age_rating' name='new_age_rating' type='number' size='20'
                            value='<?php echo $age_rating; ?>'/>
                 </td>
                 <td>
-                    <input id='duration' name='duration' type='text' size='20'
+                    <input id='new_duration' name='new_duration' type='number' size='20'
                            value='<?php echo $duration; ?>'/>
                 </td>
             </tr>
@@ -70,9 +70,7 @@
 
 
 if (isset($_POST["submit"])) {
-
-
-
+		//echo $_POST['new_director'];
 
 
         //Handle insert
@@ -81,16 +79,17 @@ if (isset($_POST["submit"])) {
 			$mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
 			
 
+			echo intval($_POST['new_film_id']);
+
 			$bulk = new MongoDB\Driver\BulkWrite;
-			$bulk->update(['_id' => $film_id], ['$set' => ['director' => $director]]);
 			
-			$bulk->update(['_id' => $film_id], ['$set' => ['title' => $title]]);
-			$bulk->update(['_id' => $film_id], ['$set' => ['country' => $country]]);
-			$bulk->update(['_id' => $film_id], ['$set' => ['film_language' => $film_language]]);
-			$bulk->update(['_id' => $film_id], ['$set' => ['age_rating' => $age_rating]]);
-			$bulk->update(['_id' => $film_id], ['$set' => ['duration' => $duration]]);
+			$bulk->update(['_id' => intval($_POST['new_film_id'])], ['$set' => ['director' => $_POST['new_director']]]);			
+			$bulk->update(['_id' => intval($_POST['new_film_id'])], ['$set' => ['title' => $_POST['new_title']]]);
+			$bulk->update(['_id' => intval($_POST['new_film_id'])], ['$set' => ['country' => $_POST['new_country']]]);
+			$bulk->update(['_id' => intval($_POST['new_film_id'])], ['$set' => ['film_language' => $_POST['new_film_language']]]);
+			$bulk->update(['_id' => intval($_POST['new_film_id'])], ['$set' => ['age_rating' => intval($_POST['new_age_rating'])]]);
+			$bulk->update(['_id' => intval($_POST['new_film_id'])], ['$set' => ['duration' => intval($_POST['new_duration'])]]);
 			
-			//$bulk->delete(['name' => 'Hummer']);
 			
 			$mng->executeBulkWrite('cinebase.films', $bulk);
 			header("location: movies.php");
@@ -106,13 +105,7 @@ if (isset($_POST["submit"])) {
 			echo "In file:", $e->getFile(), "\n";
 			echo "On line:", $e->getLine(), "\n";    
 	    }
-		
 
-
-        //echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
-
-
-        
 }
 
 
