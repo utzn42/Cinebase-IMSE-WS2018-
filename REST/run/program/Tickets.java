@@ -6,10 +6,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-public class QueryHandler {
+public class Tickets {
 
     @CrossOrigin()
-    @RequestMapping(value = "/create", method = RequestMethod.GET)
+    @RequestMapping(value = "/tickets/getAllTickets", method = RequestMethod.GET)
     public String createProject() {
         return "Test";
     }
