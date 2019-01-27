@@ -78,11 +78,11 @@ if (isset($_POST["submit"])) {
 
         $bulk = new MongoDB\Driver\BulkWrite;
 
-        $bulk->update(['_id' => ($_POST['employee_nr'])], ['$set' => ['manager_id' => $_POST['manager_id']]]);
-        $bulk->update(['_id' => ($_POST['employee_nr'])], ['$set' => ['first_name' => $_POST['first_name']]]);
-        $bulk->update(['_id' => ($_POST['employee_nr'])], ['$set' => ['last_name' => $_POST['last_name']]]);
-        $bulk->update(['_id' => ($_POST['employee_nr'])], ['$set' => ['email' => $_POST['new_email']]]);
-        $bulk->update(['_id' => ($_POST['employee_nr'])], ['$set' => ['password' => ($_POST['password'])]]);
+        $bulk->update(['_id' => intval(($_POST['employee_nr']))], ['$set' => ['manager_id' => $_POST['manager_id']]]);
+        $bulk->update(['_id' => intval(($_POST['employee_nr']))], ['$set' => ['first_name' => $_POST['first_name']]]);
+        $bulk->update(['_id' => intval(($_POST['employee_nr']))], ['$set' => ['last_name' => $_POST['last_name']]]);
+        $bulk->update(['_id' => intval(($_POST['employee_nr']))], ['$set' => ['email' => $_POST['new_email']]]);
+        $bulk->update(['_id' => intval(($_POST['employee_nr']))], ['$set' => ['password' => ($_POST['password'])]]);
 
 
         $mng->executeBulkWrite('cinebase.employees', $bulk);

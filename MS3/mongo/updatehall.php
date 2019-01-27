@@ -1,22 +1,18 @@
-<?php
 
-
-$user = 'root';
-$pass = '';
-$database = 'cinebase';
-
-$conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
-
-
-?>
 <html>
 <head>
 </head>
 <body>
 
+<?php
+$hall_id= $_POST['hall_id'];
+$name = urldecode(($_POST['name']));
+$equipment = urldecode(($_POST['equipment']));
+?>
+
 <a href="hall_administration.php">Back to Halls</a><br><br>
 <div>
-    <form id='updateform' action="" method="get">
+    <form id='updateform' action="" method="post">
         Update Hall:
         <table style='border: 1px solid #DDDDDD'>
             <thead>
@@ -30,14 +26,15 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
             <tr>
                 <td>
                     <input id='hall_id' name='hall_id' type='text' size='20' readonly
-                           value='<?php echo $_GET['hall_id']; ?>'/>
+                           value='<?php echo $hall_id; ?>'/>
                 </td>
                 <td>
-                    <input id='name' name='name' type='text' size='20' value='<?php echo $_GET['name']; ?>'/>
+                    <input id='name' name='name' type='text' size='20'
+                           value='<?php echo $name; ?>'/>
                 </td>
                 <td>
                     <input id='equipment' name='equipment' type='text' size='20'
-                           value='<?php echo $_GET['equipment']; ?>'/>
+                           value='<?php echo $equipment; ?>'/>
                 </td>
             </tr>
             </tbody>
@@ -49,29 +46,39 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 <?php
 
 
-if (isset($_GET["submit"])) {
+if (isset($_POST["submit"])) {
+    //echo $_POST['new_director'];
 
 
-    $hall_id = $_GET['hall_id'];
-    $name = $_GET['name'];
-    $equipment = $_GET['equipment'];
+    //Handle insert
+    try {
+
+        $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
 
 
-    // sql to update a record
-    $sql = "UPDATE hall 
-		SET name = \"$name\",
-		equipment=\"$equipment\"
-		WHERE hall_id=$hall_id";
+        echo intval(($_POST['hall_id']));
+
+        $bulk = new MongoDB\Driver\BulkWrite;
+
+        $bulk->update(['_id' => intval(($_POST['hall_id']))], ['$set' => ['name' => $_POST['name']]]);
+        $bulk->update(['_id' => intval(($_POST['hall_id']))], ['$set' => ['equipment' => $_POST['equipment']]]);
 
 
-    //Parse and execute statement
-    if ($conn->query($sql) === TRUE) {
-        echo "Record updated succesfully";
+        $mng->executeBulkWrite('cinebase.halls', $bulk);
         header("location: hall_administration.php");
 
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+    } catch (MongoDB\Driver\Exception\Exception $e) {
+
+        $filename = basename(__FILE__);
+
+        echo "The $filename script has experienced an error.\n";
+        echo "It failed with the following exception:\n";
+
+        echo "Exception:", $e->getMessage(), "\n";
+        echo "In file:", $e->getFile(), "\n";
+        echo "On line:", $e->getLine(), "\n";
     }
+
 }
 
 
