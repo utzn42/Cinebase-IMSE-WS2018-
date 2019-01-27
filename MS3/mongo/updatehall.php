@@ -6,8 +6,8 @@
 
 <?php
 $hall_id= $_POST['hall_id'];
-$name = ($_POST['name']);
-$equipment = ($_POST['equipment']);
+$name = urldecode(($_POST['name']));
+$equipment = urldecode(($_POST['equipment']));
 ?>
 
 <a href="hall_administration.php">Back to Halls</a><br><br>
