@@ -221,13 +221,13 @@ error_reporting(E_ALL ^ E_NOTICE);
 
                 echo "<td>";
                 echo "<form method='post' action='updatehall.php' class='inline'>";
-                echo "<input type='hidden' name='inputHall_ID' value=$row->_id>";
+                echo "<input type='hidden' name='hall_id' value=$row->_id>";
 
                 $str_name = urlencode($row->name);
-                echo "<input type='hidden' name='nameHall' value=$str_name>";
+                echo "<input type='hidden' name='name' value=$str_name>";
 
                 $str_equipment = urlencode($row->equipment);
-                echo "<input type='hidden' name='first_name' value=$str_equipment>";
+                echo "<input type='hidden' name='equipment' value=$str_equipment>";
 
                 echo "<button type='submit' name='submit_param' value='submit_value' class='link-button'>";
                 echo "UPDATE";
