@@ -1,4 +1,4 @@
-# MS3 Documentation
+# MS3 Documentation (Group 11)
 
 ## 1. NoSQL Database design
 ### 1.1. Migration of relational design to NoSQL
@@ -21,3 +21,6 @@ For the migration of our database, we used our Java tool in continuation of the 
 
 ## 2.2. Initialization of the program
 To run our Java application for MS3, simply download and run `executables` -> `MS3` -> `Kino_JDBC.jar`. If you wish to compile the source code yourself, the main class can be found in `MS3`-> `src` -> `ms3kinoUI` -> `StartScreen.java`.
+
+# 3. Implementation IS (NoSQL)
+For specifics on the team members responsibilities and the use case implementation, please refer to `work_distribution` -> `work_distribution.docx`. For a list of our individual contributions, please refer to `work_distribution` -> `[surname]_work_protocol.xlsx`.
