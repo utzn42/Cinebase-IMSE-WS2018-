@@ -3,6 +3,7 @@
 $screening_id = $_POST['screening_id'];
 $film_id = $_POST['film_id'];
 $hall_id = $_POST['hall_id'];
+$old_id = $_POST['old_id'];
 
 
 $utc_string = $_POST['starting_time'];
@@ -58,6 +59,7 @@ $temp_starting_time = date("Y-m-d H:i:s", $utc_string);
           <input id='new_starting_time' name='new_starting_time' type='text' size='20'
                  value='<?php echo $temp_starting_time; ?>'/>
         </td>
+		<input type='hidden' name='old_id' value='<?php echo $screening_id; ?>'/>
 
       </tr>
       </tbody>
@@ -106,7 +108,7 @@ if (isset($_POST["submit"])) {
             $count = 0;
             foreach ($row->screenings as $key => $value) {
 
-                if ($screeningsArray[$count]->_id == intval($new_screening_id)){
+                if ($screeningsArray[$count]->_id == intval($old_id)){
                   $screeningIndex = $count;
                   break;
                 }
