@@ -164,26 +164,14 @@ error_reporting(E_ALL ^ E_NOTICE);
 						$screeningsArray = [];
 					}
 					
-					//UTC TO DATE
-					// $utctime = $starting_time;
-                    // $datetime = $utctime->toDateTime();
-
-                    // $time=$datetime->format(DATE_RSS);
-					// $utc_string = strtotime($time.' UTC');
-					// $temp_starting_time = date("Y-m-d H:i", $utc_string);
-					
-					
-					
-					
+		
 					//DATE TO UTC
 				    $orig_date = new DateTime($starting_time);
 				    $orig_date=$orig_date->getTimestamp();
 			        $utcdatetime = new MongoDB\BSON\UTCDateTime($orig_date*1000);
 					
+				
 					
-					
-					
-                  //$newScreening = ["_id" => intval($screening_id), "hall_id" => intval($hall_id), "starting_time" => new MongoDB\BSON\UTCDateTime(1416445411987)];
                   $newScreening = ["_id" => intval($screening_id), "hall_id" => intval($hall_id), "starting_time" => $utcdatetime];
 
                   array_push($screeningsArray, $newScreening);
@@ -323,9 +311,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 
               $idx++;
 
-              if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
-                  //  echo "<td style=\"padding: 5px 10px 5px 10px;\">$row->screenings->hall_id</td>";
-              }
+      
               $count = 0;
 
               if (is_array($row->screenings) || is_object($row->screenings)) {
@@ -401,10 +387,6 @@ error_reporting(E_ALL ^ E_NOTICE);
 
                       $count++;
                   }
-
-
-                  //echo '<pre>'; print_r($row->screenings); echo '</pre>';
-
 
               }
 

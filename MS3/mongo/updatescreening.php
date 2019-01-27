@@ -70,8 +70,6 @@ $temp_starting_time = date("Y-m-d H:i:s", $utc_string);
 
 
 if (isset($_POST["submit"])) {
-    //echo $_POST['new_director'];
-
 
     //Handle insert
     try {
@@ -120,8 +118,6 @@ if (isset($_POST["submit"])) {
 
         $bulk = new MongoDB\Driver\BulkWrite;
 
-//        $bulk->update(['_id' => intval($film_id)], ['$set' => ['screenings.0.hall_id' => $new_hall_id]]);
-//        $bulk->update(['_id' => 1], ['$set' => ['screenings.0.hall_id' => 12]]);
 
         $bulk->update(['_id' => intval($new_film_id)], ['$set' => ["screenings.".$screeningIndex."._id" => intval($new_screening_id)]]);
         $bulk->update(['_id' => intval($new_film_id)], ['$set' => ["screenings.".$screeningIndex.".hall_id" => intval($new_hall_id)]]);
