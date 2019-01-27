@@ -3,9 +3,22 @@
 $screening_id = $_POST['screening_id'];
 $film_id = $_POST['film_id'];
 $hall_id = $_POST['hall_id'];
-$starting_time = urldecode($_POST['starting_time']);
 
 
+$utc_string = $_POST['starting_time'];
+
+//DATE TO UTC
+$utctime = new MongoDB\BSON\UTCDateTime($utc_string);
+
+$datetime = $utctime->toDateTime();
+
+$time=$datetime->format(DATE_RSS);
+$utc_string = strtotime($time.' UTC');
+
+$temp_starting_time_encoded = urlencode(date("Y-m-d H:i:s", $utc_string));
+$temp_starting_time = date("Y-m-d H:i:s", $utc_string);
+
+	
 
 
 ?>
@@ -43,7 +56,7 @@ $starting_time = urldecode($_POST['starting_time']);
         </td>
         <td>
           <input id='new_starting_time' name='new_starting_time' type='text' size='20'
-                 value='<?php echo $starting_time; ?>'/>
+                 value='<?php echo $temp_starting_time; ?>'/>
         </td>
 
       </tr>
@@ -69,9 +82,16 @@ if (isset($_POST["submit"])) {
         $new_screening_id = $_POST['new_screening_id'];
         $new_film_id = $_POST['new_film_id'];
         $new_hall_id = $_POST['new_hall_id'];
-        $new_starting_time = urldecode($_POST['new_starting_time']);
+        $new_starting_time = $_POST['new_starting_time'];
 
 //        echo intval($_POST['new_film_id']);
+
+
+
+		//UTC TO DATE
+		$orig_date = new DateTime($new_starting_time);
+		$orig_date=$orig_date->getTimestamp();
+		$utcdatetime = new MongoDB\BSON\UTCDateTime($orig_date*1000);
 
 
 
@@ -105,7 +125,7 @@ if (isset($_POST["submit"])) {
 
         $bulk->update(['_id' => intval($new_film_id)], ['$set' => ["screenings.".$screeningIndex."._id" => intval($new_screening_id)]]);
         $bulk->update(['_id' => intval($new_film_id)], ['$set' => ["screenings.".$screeningIndex.".hall_id" => intval($new_hall_id)]]);
-        $bulk->update(['_id' => intval($new_film_id)], ['$set' => ["screenings.".$screeningIndex.".starting_date" => intval($new_starting_time)]]);
+        $bulk->update(['_id' => intval($new_film_id)], ['$set' => ["screenings.".$screeningIndex.".starting_time" => $utcdatetime]]);
 
 
 

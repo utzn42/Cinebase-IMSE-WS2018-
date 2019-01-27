@@ -58,13 +58,7 @@ error_reporting(E_ALL ^ E_NOTICE);
       </form>
       <br>
     </div>
-    <div>
-
-      <a href="screening.php?today=true">Show todays screenings</a><br>
-      <a href="screening.php?tomorrow=true">Show tomorrows screenings</a><br>
-      <a href="screening.php?nextweek=true">Show this weeks screenings</a><br>
-
-    </div>
+   
 
     <?php
 
@@ -375,8 +369,12 @@ error_reporting(E_ALL ^ E_NOTICE);
                           echo "<input type='hidden' name='hall_id' value=$temp_hall_id>";
 
 
-                          $str_starting = urlencode($temp_starting_time);
-                          echo "<input type='hidden' name='starting_time' value=$str_starting>";
+						  $orig_date = new DateTime($temp_starting_time);
+						  $orig_date=$orig_date->getTimestamp();
+					      $utcdatetime = new MongoDB\BSON\UTCDateTime($orig_date*1000);
+						  
+                     
+                          echo "<input type='hidden' name='starting_time' value=$utcdatetime>";
 
                           echo "<button type='submit' name='submit_param' value='submit_value' class='link-button'>";
                           echo "UPDATE";
