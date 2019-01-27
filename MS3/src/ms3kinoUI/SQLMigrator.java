@@ -15,200 +15,206 @@ import java.util.Date;
 
 import static com.mongodb.client.model.Filters.eq;
 
-public class SQLMigrator {
+class SQLMigrator {
 
-  private static String databaseURL = Defaults.databaseURL;
-  private static Connection conn;
-  Statement statement;
-
-
-  public SQLMigrator() throws ConnectException, SQLException {
-
-    try {
-      conn = DriverManager
-          .getConnection(databaseURL, "root", "");
-    } catch (SQLException e) {
-      throw new ConnectException();
-    }
-    statement = conn.createStatement();
-  }
-
-  public void migrateAll() throws SQLException, ConnectException, ParseException {
-    migrateFilms();
-    migrateCustomers();
-    migrateScreenings();
-    migrateEmployees();
-    migrateHalls();
-    migrateSeats();
-    migrateTickets();
-
-    JOptionPane.showMessageDialog(null, "Success!");
-    new MainScreen().frame.setVisible(true);
-  }
+    private static String databaseURL = Defaults.databaseURL;
+    private static Connection conn;
+    private Statement statement;
+    private JProgressBar pb;
 
 
+    SQLMigrator(JProgressBar pb) throws ConnectException, SQLException {
 
-  public void migrateCustomers() throws ConnectException, SQLException{
-
-    statement.execute("SELECT * FROM customer");
-
-    ResultSet customerSet = statement.executeQuery("SELECT * FROM customer");
-
-    String customer_id = "";
-    String customer_type = "";
-    String email = "";
-    String password = "";
-
-    MongoCollection<Document> collectionCustomer = MongoConnector.cinebase
-            .getCollection("customers");
-
-    Document docCustomer;
-
-    while (customerSet.next()) {
-
-      for (int i = 1; i <= customerSet.getMetaData().getColumnCount(); i++) {
-        switch (i) {
-          case 1:
-            customer_id = customerSet.getString(i);
-            break;
-          case 2:
-            customer_type = customerSet.getString(i);
-            break;
-          case 3:
-            email = customerSet.getString(i);
-            break;
-          case 4:
-            password = customerSet.getString(i);
-            break;
+        try {
+            conn = DriverManager
+                    .getConnection(databaseURL, "root", "");
+        } catch (SQLException e) {
+            throw new ConnectException();
         }
-      }
-      docCustomer = new Document("_id", customer_id)
-          .append("customer_type", customer_type)
-          .append("email", email)
-              .append("password", password)
-              .append("tickets", Collections.emptyList());
-      collectionCustomer.insertOne(docCustomer);
+        statement = conn.createStatement();
+        this.pb = pb;
+        pb.setStringPainted(true);
+        pb.setValue(0);
+    }
+
+    void migrateAll() throws SQLException, ConnectException, ParseException {
+        migrateFilms();
+        pb.setValue(pb.getValue() + 1);
+        migrateCustomers();
+        pb.setValue(pb.getValue() + 1);
+        migrateScreenings();
+        pb.setValue(pb.getValue() + 1);
+        migrateEmployees();
+        pb.setValue(pb.getValue() + 1);
+        migrateHalls();
+        pb.setValue(pb.getValue() + 1);
+        migrateSeats();
+        pb.setValue(pb.getValue() + 1);
+        migrateTickets();
+        pb.setValue(pb.getValue() + 1);
+
+        JOptionPane.showMessageDialog(null, "Successfully imported SQL data!");
     }
 
 
-  }
+    private void migrateCustomers() throws SQLException {
 
-  public void migrateFilms() throws ConnectException, SQLException{
+        statement.execute("SELECT * FROM customer");
 
-    statement.execute("SELECT * FROM film");
+        ResultSet customerSet = statement.executeQuery("SELECT * FROM customer");
 
-    ResultSet filmSet = statement.executeQuery("SELECT * FROM film");
+        String customer_id = "";
+        String customer_type = "";
+        String email = "";
+        String password = "";
 
-      int film_id = 0;
-    String title = "";
-    String director = "";
-    String country = "";
-    String film_language = "";
-      int age_rating = 0;
-      int duration = 0;
+        MongoCollection<Document> collectionCustomer = MongoConnector.cinebase
+                .getCollection("customers");
 
+        Document docCustomer;
 
-    MongoCollection<Document> collectionFilm = MongoConnector.cinebase
-            .getCollection("films");
+        while (customerSet.next()) {
 
-    while (filmSet.next()) {
-
-      for (int i = 1; i <= filmSet.getMetaData().getColumnCount(); i++) {
-        switch (i) {
-          case 1:
-              film_id = filmSet.getInt(i);
-            break;
-          case 2:
-            title = filmSet.getString(i);
-            break;
-          case 3:
-            director = filmSet.getString(i);
-            break;
-          case 4:
-            country = filmSet.getString(i);
-            break;
-          case 5:
-            film_language = filmSet.getString(i);
-            break;
-          case 6:
-              age_rating = filmSet.getInt(i);
-            break;
-          case 7:
-              duration = filmSet.getInt(i);
-            break;
+            for (int i = 1; i <= customerSet.getMetaData().getColumnCount(); i++) {
+                switch (i) {
+                    case 1:
+                        customer_id = customerSet.getString(i);
+                        break;
+                    case 2:
+                        customer_type = customerSet.getString(i);
+                        break;
+                    case 3:
+                        email = customerSet.getString(i);
+                        break;
+                    case 4:
+                        password = customerSet.getString(i);
+                        break;
+                }
+            }
+            docCustomer = new Document("_id", customer_id)
+                    .append("customer_type", customer_type)
+                    .append("email", email)
+                    .append("password", password)
+                    .append("tickets", Collections.emptyList());
+            collectionCustomer.insertOne(docCustomer);
         }
-      }
-      Document docFilm = new Document("_id", film_id)
-          .append("title", title)
-          .append("director", director)
-          .append("country", country)
-          .append("film_language", film_language)
-          .append("age_rating", age_rating)
-          .append("duration", duration);
 
-      collectionFilm.insertOne(docFilm);
+
     }
 
+    private void migrateFilms() throws SQLException {
 
-  }
+        statement.execute("SELECT * FROM film");
 
-  public void migrateScreenings() throws ConnectException, SQLException, ParseException {
+        ResultSet filmSet = statement.executeQuery("SELECT * FROM film");
 
-    statement.execute("SELECT * FROM screening");
+        int film_id = 0;
+        String title = "";
+        String director = "";
+        String country = "";
+        String film_language = "";
+        int age_rating = 0;
+        int duration = 0;
 
-    ResultSet screeningSet = statement.executeQuery("SELECT * FROM screening");
 
-      int screening_id = 0;
-      int hall_id = 0;
-      int film_id = 0;
-    String starting_time = "";
+        MongoCollection<Document> collectionFilm = MongoConnector.cinebase
+                .getCollection("films");
 
-    while (screeningSet.next()) {
+        while (filmSet.next()) {
 
-      for (int i = 1; i <= screeningSet.getMetaData().getColumnCount(); i++) {
-        switch (i) {
-          case 1:
-              screening_id = screeningSet.getInt(i);
-            break;
-          case 2:
-              hall_id = screeningSet.getInt(i);
-            break;
-          case 3:
-              film_id = screeningSet.getInt(i);
-            break;
-          case 4:
-            starting_time = screeningSet.getString(i);
-            break;
+            for (int i = 1; i <= filmSet.getMetaData().getColumnCount(); i++) {
+                switch (i) {
+                    case 1:
+                        film_id = filmSet.getInt(i);
+                        break;
+                    case 2:
+                        title = filmSet.getString(i);
+                        break;
+                    case 3:
+                        director = filmSet.getString(i);
+                        break;
+                    case 4:
+                        country = filmSet.getString(i);
+                        break;
+                    case 5:
+                        film_language = filmSet.getString(i);
+                        break;
+                    case 6:
+                        age_rating = filmSet.getInt(i);
+                        break;
+                    case 7:
+                        duration = filmSet.getInt(i);
+                        break;
+                }
+            }
+            Document docFilm = new Document("_id", film_id)
+                    .append("title", title)
+                    .append("director", director)
+                    .append("country", country)
+                    .append("film_language", film_language)
+                    .append("age_rating", age_rating)
+                    .append("duration", duration);
+
+            collectionFilm.insertOne(docFilm);
         }
-      }
-
-      MongoCollection<Document> collectionFilm = MongoConnector.cinebase
-              .getCollection("films");
-
-      //Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(starting_time);
-
-     // Date formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
-
-      SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-
-      Date date = format.parse ( starting_time );
-
-        Document docScreening = new Document("_id", screening_id)
-          //.append("$ref", "halls")
-          .append("hall_id", hall_id)
-          //.append("$db", "cinebase")
-          .append("starting_time", starting_time);
 
 
-
-
-
-      collectionFilm.updateOne(eq("_id", film_id), new Document("$push", new Document("screenings", docScreening)));
     }
 
-  }
+    private void migrateScreenings() throws SQLException, ParseException {
 
-    public void migrateEmployees() throws ConnectException, SQLException{
+        statement.execute("SELECT * FROM screening");
+
+        ResultSet screeningSet = statement.executeQuery("SELECT * FROM screening");
+
+        int screening_id = 0;
+        int hall_id = 0;
+        int film_id = 0;
+        String starting_time = "";
+
+        while (screeningSet.next()) {
+
+            for (int i = 1; i <= screeningSet.getMetaData().getColumnCount(); i++) {
+                switch (i) {
+                    case 1:
+                        screening_id = screeningSet.getInt(i);
+                        break;
+                    case 2:
+                        hall_id = screeningSet.getInt(i);
+                        break;
+                    case 3:
+                        film_id = screeningSet.getInt(i);
+                        break;
+                    case 4:
+                        starting_time = screeningSet.getString(i);
+                        break;
+                }
+            }
+
+            MongoCollection<Document> collectionFilm = MongoConnector.cinebase
+                    .getCollection("films");
+
+            //Date date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(starting_time);
+
+            // Date formattedDate = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'");
+
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+            Date date = format.parse(starting_time);
+
+            Document docScreening = new Document("_id", screening_id)
+                    //.append("$ref", "halls")
+                    .append("hall_id", hall_id)
+                    //.append("$db", "cinebase")
+                    .append("starting_time", starting_time);
+
+
+            collectionFilm.updateOne(eq("_id", film_id), new Document("$push", new Document("screenings", docScreening)));
+        }
+
+    }
+
+    private void migrateEmployees() throws SQLException {
 
         statement.execute("SELECT * FROM employee");
 
@@ -254,13 +260,13 @@ public class SQLMigrator {
                     .append("manager_id", manager_id)
                     .append("first_name", first_name)
                     .append("last_name", last_name)
-                    .append("email",email)
-                    .append("password",password);
+                    .append("email", email)
+                    .append("password", password);
             collectionEmployee.insertOne(docEmployee);
         }
     }
 
-    public void migrateHalls() throws ConnectException, SQLException{
+    private void migrateHalls() throws SQLException {
 
         statement.execute("SELECT * FROM hall");
 
@@ -296,7 +302,7 @@ public class SQLMigrator {
         }
     }
 
-    public void migrateSeats() throws ConnectException, SQLException{
+    private void migrateSeats() throws SQLException {
 
         statement.execute("SELECT * FROM seat");
 
@@ -338,7 +344,7 @@ public class SQLMigrator {
         }
     }
 
-    public void migrateTickets() throws ConnectException, SQLException{
+    private void migrateTickets() throws SQLException {
 
         statement.execute("SELECT * FROM ticket");
 
