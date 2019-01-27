@@ -20,4 +20,4 @@ For the migration of our database, we used our Java tool in continuation of the 
 + **Querying information regarding the database/collections:** For _Milestone 3_, we also provided the ability to view specific sets of information regarding the database, such as the database name, size as well as the number of collections and data sets within. This screen provided us with a simple opportunity to verify the correctness of our CRUD operations without having to use the mongo CLI or MongoDB Compass.
 
 ## 2.2. Initialization of the program
-To run our Java application for MS3, simply download and run `Cinebase_MS3.jar`. If you wish to compile the source code yourself, the main class can be found in `MS3`-> `src` -> `ms3kinoUI` -> `StartScreen.java`.
+To run our Java application for MS3, simply download and run `executables` -> `MS3` -> `Kino_JDBC.jar`. If you wish to compile the source code yourself, the main class can be found in `MS3`-> `src` -> `ms3kinoUI` -> `StartScreen.java`.
