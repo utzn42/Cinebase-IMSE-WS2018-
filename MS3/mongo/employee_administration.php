@@ -152,7 +152,7 @@ error_reporting(E_ALL ^ E_NOTICE);
                 $del_id = $_POST["del"];
 
                 //$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
-                $bulk->delete(['_id' => $del_id]);
+                $bulk->delete(['_id' => intval($del_id)]);
 
                 $mng->executeBulkWrite('cinebase.employees', $bulk);
                 //header("location: movies.php");
@@ -188,7 +188,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 				$bulk = new MongoDB\Driver\BulkWrite;
 
-				$doc = ['_id' => $_GET['employee_nr'], 'manager_id' => $_GET['manager_id'], 'first_name' => $_GET['first_name'], 'last_name' => $_GET['last_name'], 'email' => $_GET['email'], 'password' => $_GET['password']];
+				$doc = ['_id' => intval($_GET['employee_nr']), 'manager_id' => $_GET['manager_id'], 'first_name' => $_GET['first_name'], 'last_name' => $_GET['last_name'], 'email' => $_GET['email'], 'password' => $_GET['password']];
 				$bulk->insert($doc);
 				//$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
 				//$bulk->delete(['name' => 'Hummer']);
@@ -226,7 +226,6 @@ error_reporting(E_ALL ^ E_NOTICE);
             <?php
 
             if (isset($_GET['searchName'])) {
-                $result = 'first_name' . 'last_name';
                 $filter = [
                     '$or' =>[
                         ['first_name' => new MongoDB\BSON\Regex( $_GET['searchName'], 'i' )],
