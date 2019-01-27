@@ -60,6 +60,40 @@ $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
         </div>
         <?php
 
+        try {
+
+
+
+            $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+
+            $query = new MongoDB\Driver\Query([]);
+
+            $rows = $mng->executeQuery("cinebase.customers", $query);
+            $highest = 0;
+            foreach ($rows as $row) {
+                if (is_array($row->tickets) || is_object($row->tickets)) {
+                    $_count=0;
+                    foreach ($row->tickets as $key => $value) {
+                        $temp_id = $row->tickets[$_count]->_id;
+                        if ($temp_id>$highest){
+                            $highest=$temp_id;
+                        }
+                        $_count++;
+                    }
+                }
+            }
+
+        } catch (MongoDB\Driver\Exception\Exception $e) {
+
+            $filename = basename(__FILE__);
+
+            echo "The $filename script has experienced an error.\n";
+            echo "It failed with the following exception:\n";
+
+            echo "Exception:", $e->getMessage(), "\n";
+            echo "In file:", $e->getFile(), "\n";
+            echo "On line:", $e->getLine(), "\n";
+        }
 
         if (isset($_GET['searchEmail'])) {
             //$sql = "SELECT * FROM ticket INNER JOIN customer ON ticket.customer_id = customer.customer_id WHERE email like '%" . $_GET['searchEmail'] . "%'";
@@ -70,11 +104,14 @@ $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
         }
         $rows = $mng->executeQuery("cinebase.customers", $query);
 
+        //MAX FINDER
+
+
         ?>
 
         <br>
         <div id="insertMovie">
-            <form id='insertform' action='ticket.php' method='get'>
+            <form id='insertform' action='ticket.php' method='post'>
                 Add new ticket:
                 <table style='border: 1px solid #DDDDDD'>
                     <thead>
@@ -87,11 +124,11 @@ $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
                     <tbody>
                     <tr>
                         <td>
-                            <input class="screeningID" id='screeningID' name='screeningID' type='text' size="30"
+                            <input class="screeningID" id='screening_id' name='screening_id' type='text' size="30"
                                    value='<?php echo $GET['screeningID'] ?>'/>
                         </td>
                         <td>
-                            <input id='customerID' name='customerID' type='text' size="30"
+                            <input id='customer_id' name='customer_id' type='text' size="30"
                                    value='<?php echo $_GET['customerID']; ?>'/>
                         </td>
                         <td>
@@ -107,25 +144,56 @@ $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
 
         <?php
         //Handle insert
-        if (isset($_GET['screeningID']) && !empty($_GET['screeningID']) && isset($_GET['customerID']) && !empty($_GET['customerID'])) {
+        try {
+            if (isset($_POST['screening_id']) && !empty($_POST['screening_id']) && isset($_POST['customer_id']) && !empty($_POST['customer_id']) && isset($_POST['price']) && !empty($_POST['price'])) {
 
-            //Prepare insert statement
-            //$sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES(" . $_GET['screeningID'] . ", " . $_GET['customerID'] . ", " . $_GET['price'] . ", 'manually created')";
-//            $bulk = new MongoDB\Driver\BulkWrite;
-//            $doc = ['customer_type' => $username, 'password' => $password];
-//            $bulk->insert($doc);
-//            $mng->executeBulkWrite('cinebase.customers', $bulk);
+                $screening_id = $_POST['screening_id'];
+                $customer_id = $_POST['customer_id'];
+                $price = $_POST['price'];
 
-            //Parse and execute statement
-            if ($conn->query($sql) === TRUE) {
-                echo "New record created sucessfully";
-                #header("location: movies.php");
+                $bulk = new MongoDB\Driver\BulkWrite;
 
-            } else {
-                echo "Error: " . $sql . "<br>" . $conn->error;
+                $filter = ['_id' => intval($customer_id)];
+                $query = new MongoDB\Driver\Query($filter);
+                $rows = $mng->executeQuery("cinebase.customers", $query);
+
+                $ticketIndex = 0;
+
+                foreach ($rows as $row) {
+
+                    if($row->tickets!=null){
+                        $ticketsArray = $row->tickets;
+                    }
+                    else{
+                        $ticketsArray = [];
+                    }
+
+                    $newTicket = ["_id" => intval($highest+1), "screening_id" => intval($screening_id), "customer_id" => intVal($customer_id), "price" => $price, "discount_type" => "manually inserted"];
+
+                    array_push($ticketsArray, $newTicket);
+
+                    $bulk->update(['_id' => intval($customer_id)], ['$set' => ["tickets" => $ticketsArray]]);
+
+                }
+
+                $mng->executeBulkWrite('cinebase.customers', $bulk);
+                header("location: ticket.php");
+
+
             }
+        } catch (MongoDB\Driver\Exception\Exception $e) {
 
+            $filename = basename(__FILE__);
+
+            echo "The $filename script has experienced an error.\n";
+            echo "It failed with the following exception:\n";
+
+            echo "Exception:", $e->getMessage(), "\n";
+            echo "In file:", $e->getFile(), "\n";
+            echo "On line:", $e->getLine(), "\n";
         }
+
+
 
 
         echo("<script type=\"text/javascript\">hideFormInsertMovie();</script>");
@@ -152,10 +220,11 @@ $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
 
             $countOverall=0;
             foreach ($rows as $row) {
-                echo "<tr>";
+
 
                 $count = 0;
                 foreach ($row->tickets as $key => $value) {
+                    echo "<tr>";
 
                     $ticket_id = $row->tickets[$count]->_id;
                     $screening_id = $row->tickets[$count]->screening_id;
@@ -167,36 +236,16 @@ $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
                     echo "<td style=\"padding: 5px 10px 5px 10px;\">$customer_id</td>";
                     echo "<td style=\"padding: 5px 10px 5px 10px;\">$price</td>";
                     echo "<td style=\"padding: 5px 10px 5px 10px;\">$discount_type</td>";
+                    if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+                        echo "<td><a href=\"updateticket.php?ticket_id=" . $ticket_id . "&screening_id=" . $screening_id . "&customer_id=" . $customer_id . "&price=" . $price . "&discount_type=" . $discount_type . "\"> UPDATE </a></td>";
+                        echo "<td><a href=\"deleteticketemp.php?tid=" . $ticket_id . "&cid=" . $customer_id . "\"> DELETE </a></td>";
+                    }
                     $count++;
                     $countOverall++;
                     echo "</tr>";
                 }
 
             }
-
-            // fetch rows of the executed sql query
-            /*
-            if ($result->num_rows > 0) {
-                while ($row = $result->fetch_assoc()) {
-
-                    echo "<tr>";
-
-                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['ticket_id'] . "</td>";
-                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['screening_id'] . "</td>";
-                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['customer_id'] . "</td>";
-                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['price'] . "</td>";
-                    echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $row['discount_type'] . "</td>";
-
-                    if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
-                        echo "<td><a href=\"updateticket.php?ticket_id=" . $row['ticket_id'] . "&screening_id=" . $row['screening_id'] . "&customer_id=" . $row['customer_id'] . "&price=" . $row['price'] . "&discount_type=" . $row['discount_type'] . "\"> UPDATE </a></td>";
-                        echo "<td><a href=\"deleteticketemp.php?id=" . $row['ticket_id'] . "\"> DELETE </a></td>";
-                    }
-
-                    echo "</tr>";
-                }
-            }
-            $row_cnt = mysqli_num_rows($result);*/
-
 
             ?>
             </tbody>
