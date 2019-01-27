@@ -51,18 +51,40 @@ error_reporting(E_ALL ^ E_NOTICE);
             </form>
             <br>
         </div>
+
         <?php
-        // check if search view of list view
-        if (isset($_GET['searchName'])) {
-            $sql = "SELECT * FROM hall WHERE name like '%" . $_GET['searchName'] . "%'";
-        } else {
-            $sql = "SELECT * FROM hall";
+
+
+
+
+        try {
+
+            $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+            $query = new MongoDB\Driver\Query([], ['sort' => [ '_id' => 1]]);
+
+            $rows = $mng->executeQuery("cinebase.halls", $query);
+            $idx=0;
+            foreach ($rows as $row) {
+
+                if($row->_id>$idx){
+                    $idx=$row->_id;
+                }
+
+
+            }
+
+        } catch (MongoDB\Driver\Exception\Exception $e) {
+
+            $filename = basename(__FILE__);
+
+            echo "The $filename script has experienced an error.\n";
+            echo "It failed with the following exception:\n";
+
+            echo "Exception:", $e->getMessage(), "\n";
+            echo "In file:", $e->getFile(), "\n";
+            echo "On line:", $e->getLine(), "\n";
         }
-        $result = $conn->query($sql);
-
         ?>
-
-
 
         <br>
 
@@ -112,7 +134,7 @@ error_reporting(E_ALL ^ E_NOTICE);
                 $del_id = $_POST["del"];
 
                 //$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
-                $bulk->delete(['_id' => $del_id]);
+                $bulk->delete(['_id' => intval($del_id)]);
 
                 $mng->executeBulkWrite('cinebase.halls', $bulk);
                 //header("location: movies.php");
@@ -148,7 +170,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 
                 $bulk = new MongoDB\Driver\BulkWrite;
 
-                $doc = ['_id' => $_GET['inputHall_ID'], 'name' => $_GET['nameHall'], 'equipment' => $_GET['equipmentHall'] ];
+                $doc = ['_id' => intval($_GET['inputHall_ID']), 'name' => $_GET['nameHall'], 'equipment' => $_GET['equipmentHall'] ];
                 $bulk->insert($doc);
                 //$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
                 //$bulk->delete(['name' => 'Hummer']);
@@ -173,12 +195,9 @@ error_reporting(E_ALL ^ E_NOTICE);
         <table style='border: 1px solid #DDDDDD'>
             <thead>
             <tr>
-                <th>Employee Nr.</th>
-                <th>Manager-ID</th>
-                <th>First Name</th>
-                <th>Last Name</th>
-                <th>E-Mail</th>
-                <th>Password</th>
+                <th>Hall-ID</th>
+                <th>Name</th>
+                <th>Equipment</th>
             </tr>
             </thead>
             <tbody>
@@ -186,45 +205,30 @@ error_reporting(E_ALL ^ E_NOTICE);
             <?php
 
             if (isset($_GET['searchName'])) {
-                $result = 'first_name' . 'last_name';
-                $filter = [
-                    '$or' =>[
-                        ['first_name' => new MongoDB\BSON\Regex( $_GET['searchName'], 'i' )],
-                        ['last_name' => new MongoDB\BSON\Regex( $_GET['searchName'], 'i' )],
-                    ]
-                ];
+                $filter = [ 'name' => new MongoDB\BSON\Regex($_GET['searchName'], 'i') ];
                 $query = new MongoDB\Driver\Query($filter);
             }
 
-            $rows = $mng->executeQuery("cinebase.employees", $query);
+            $rows = $mng->executeQuery("cinebase.halls", $query);
             $idx=0;
             foreach ($rows as $row) {
 
                 $idx++;
                 echo "<tr>";
                 echo "<td style=\"padding: 5px 100px 5px 10px;\">$row->_id</td>";
-                echo "<td style=\"padding: 5px 100px 5px 10px;\">$row->manager_id</td>";
-                echo "<td style=\"padding: 5px 100px 5px 10px;\">$row->first_name</td>";
-                echo "<td style=\"padding: 5px 100px 5px 10px;\">$row->last_name</td>";
-                echo "<td style=\"padding: 5px 100px 5px 10px;\">$row->email</td>";
-                echo "<td style=\"padding: 5px 100px 5px 10px;\">$row->password</td>";
+                echo "<td style=\"padding: 5px 100px 5px 10px;\">$row->name</td>";
+                echo "<td style=\"padding: 5px 100px 5px 10px;\">$row->equipment</td>";
 
                 echo "<td>";
-                echo "<form method='post' action='updateemployee.php' class='inline'>";
-                echo "<input type='hidden' name='employee_nr' value=$row->_id>";
+                echo "<form method='post' action='updatehall.php' class='inline'>";
+                echo "<input type='hidden' name='inputHall_ID' value=$row->_id>";
 
-                $str_manager_id = urlencode($row->manager_id);
-                echo "<input type='hidden' name='manager_id' value=$str_manager_id>";
+                $str_name = urlencode($row->name);
+                echo "<input type='hidden' name='nameHall' value=$str_name>";
 
-                $str_first_name = urlencode($row->first_name);
-                echo "<input type='hidden' name='first_name' value=$str_first_name>";
+                $str_equipment = urlencode($row->equipment);
+                echo "<input type='hidden' name='first_name' value=$str_equipment>";
 
-                echo "<input type='hidden' name='last_name' value=$row->last_name>";
-
-                $str_email = urlencode($row->email);
-                echo "<input type='hidden' name='email' value=$str_email>";
-
-                echo "<input type='hidden' name='password' value=$row->password>";
                 echo "<button type='submit' name='submit_param' value='submit_value' class='link-button'>";
                 echo "UPDATE";
                 echo "</button>";
@@ -232,7 +236,7 @@ error_reporting(E_ALL ^ E_NOTICE);
                 echo "</td>";
 
                 echo "<td>";
-                echo "<form action='employee_administration.php' method='post'>";
+                echo "<form action='hall_administration.php' method='post'>";
                 echo "<input type='hidden' name='del' value=$row->_id>";
                 echo "<button>DELETE</button>" ;
                 echo "</form>";
