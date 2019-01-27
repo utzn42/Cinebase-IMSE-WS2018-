@@ -15,6 +15,15 @@ Clearly, this hierarchy would not work going forward - splitting up the tables a
 This design was superior to the one in _Milestone 2_ in regards to the lower amount of tables. However, access to the nested documents PHP would prove to be a major obstacle. As always, no change to a complex system comes without its up- and downsides. 
 
 ### 1.2. Motivation of single steps
+Concerning the tables which we deemed unviable / lacking in information on their own, we decided to integrate them in other existing tables, taking into account logical coherence. An alternative would have been to extend the fields within the documents to hold enough information on their own - we decided against this approach as we were aware that this might provide an undesirable level of redundancy within the database. Let's look at the specific changes in detail:
+
++ **Screenings:** We integrated screenings as an array field into screenings, since according to us, this was the most straightforward implementation of the 1:n relationship they hold. Each screening holds the corresponding ID of the hall in which it is taking place.
+
++ **Tickets:** The same goes for tickets. We chose to not explicitly model the m:n relationship between screenings and tickets, since our implemented use cases are fully functional without a dedicated reference to one or the other.
+
++ **Seats:** Seats are modeled in the same way as screenings and tickets. A hall holds 0-n seats, with no external references or usages being required.
+
++ **Employee management:** The 1:n self-relationship is modeled as a manager array field within employee. Each employee now holds 0-n manager IDs in this field, which in turn are simple employee IDs.
 
 ### 1.3. Realization of NoSQL DBMS
 
