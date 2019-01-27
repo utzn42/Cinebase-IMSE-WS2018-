@@ -206,7 +206,7 @@ class SQLMigrator {
                     //.append("$ref", "halls")
                     .append("hall_id", hall_id)
                     //.append("$db", "cinebase")
-                    .append("starting_time", starting_time);
+                    .append("starting_time", date);
 
 
             collectionFilm.updateOne(eq("_id", film_id), new Document("$push", new Document("screenings", docScreening)));
