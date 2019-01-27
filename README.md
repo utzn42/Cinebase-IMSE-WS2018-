@@ -7,8 +7,8 @@
 
 ### 1.3. Realization of NoSQL DBMS
 
-# 2. Data Migration
-## 2.1. Overview
+## 2. Data Migration
+### 2.1. Overview
 For the migration of our database, we used our Java tool in continuation of the work we already presented in _Milestone 2_. We created an extra application, which implements the following functions:
 
 + **Complete migration from a MySQL schema:** Transfers the complete set of data from MySQL to our MongoDB database. To accomplish this, we created a parser (`SQLMigrator.java`), which selects the tuples in each table and then rearranges the syntax so they can be inserted into MongoDB sequentially.
@@ -19,8 +19,8 @@ For the migration of our database, we used our Java tool in continuation of the 
 
 + **Querying information regarding the database/collections:** For _Milestone 3_, we also provided the ability to view specific sets of information regarding the database, such as the database name, size as well as the number of collections and data sets within. This screen provided us with a simple opportunity to verify the correctness of our CRUD operations without having to use the mongo CLI or MongoDB Compass.
 
-## 2.2. Initialization of the program
+### 2.2. Initialization of the program
 To run our Java application for MS3, simply download and run `executables` -> `MS3` -> `Kino_JDBC.jar`. If you wish to compile the source code yourself, the main class can be found in `MS3`-> `src` -> `ms3kinoUI` -> `StartScreen.java`.
 
-# 3. Implementation IS (NoSQL)
+## 3. Implementation IS (NoSQL)
 For specifics on the team members responsibilities and the use case implementation, please refer to `work_distribution` -> `work_distribution.docx`. For a list of our individual contributions, please refer to `work_distribution` -> `[surname]_work_protocol.xlsx`.
