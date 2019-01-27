@@ -1,24 +1,20 @@
 package ms3kinoUI;
 
 import Extras.Window;
-import javafx.scene.control.ComboBox;
 import ms3extras.MongoConnector;
+import ms3kinoUI.Stats.CollectionStatsScreen;
+import ms3kinoUI.Stats.GeneralStatsScreen;
 
-import java.net.ConnectException;
-import java.sql.SQLException;
-import java.text.ParseException;
 import javax.swing.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class MainScreen extends Window {
+    public JProgressBar importProgressBar;
+    public JProgressBar dropProgressBar;
     private JButton importAllFromCinebaseButton;
     private JPanel mainPanel;
     private JComboBox comboBox1;
     private JButton manualDataEntryButton;
     private JButton dropDatabaseButton;
-    public JProgressBar importProgressBar;
-    public JProgressBar dropProgressBar;
     private JButton viewStatsButton;
 
     MainScreen() {
@@ -31,13 +27,20 @@ public class MainScreen extends Window {
             try {
                 new SQLMigrator(importProgressBar).migrateAll();
             } catch (Exception e1) {
-                e1.printStackTrace();
+                JOptionPane.showMessageDialog(null, "Error. Database has already been imported!");
             }
         });
         dropDatabaseButton.addActionListener(e -> {
             MongoConnector.cinebase.drop();
             dropProgressBar.setValue(dropProgressBar.getMaximum());
             JOptionPane.showMessageDialog(null, "Successfully dropped Cinebase!");
+        });
+        viewStatsButton.addActionListener(e -> {
+            if (comboBox1.getSelectedItem() == "General") {
+                new GeneralStatsScreen().frame.setVisible(true);
+            } else {
+                new CollectionStatsScreen().frame.setVisible(true);
+            }
         });
     }
 }

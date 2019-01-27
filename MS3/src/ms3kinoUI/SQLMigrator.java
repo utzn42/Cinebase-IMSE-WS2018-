@@ -37,7 +37,7 @@ class SQLMigrator {
         pb.setValue(0);
     }
 
-    void migrateAll() throws SQLException, ConnectException, ParseException {
+    void migrateAll() throws SQLException, ParseException {
         migrateFilms();
         pb.setValue(pb.getValue() + 1);
         migrateCustomers();
