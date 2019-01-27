@@ -14,12 +14,8 @@
 session_start();
 error_reporting(0);
 
-$user = 'root';
-$pass = '';
-$database = 'cinebase';
-
 // establish database connection
-$conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
+$mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
 
 ?>
 
@@ -63,18 +59,16 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
             <br>
         </div>
         <?php
-        $sql = "SELECT * FROM ticket ORDER BY ticket_id ASC";
-
-        $result = $conn->query($sql);
-        $max_row = mysqli_fetch_array($result);
 
 
         if (isset($_GET['searchEmail'])) {
-            $sql = "SELECT * FROM ticket INNER JOIN customer ON ticket.customer_id = customer.customer_id WHERE email like '%" . $_GET['searchEmail'] . "%'";
+            //$sql = "SELECT * FROM ticket INNER JOIN customer ON ticket.customer_id = customer.customer_id WHERE email like '%" . $_GET['searchEmail'] . "%'";
+            $filter = ['email' => $_GET['searchEmail']];
+            $query = new MongoDB\Driver\Query($filter);
         } else {
-            $sql = "SELECT * FROM ticket";
+            $query = new MongoDB\Driver\Query([], ['sort' => [ '_id' => 1]]);
         }
-        $result = $conn->query($sql);
+        $rows = $mng->executeQuery("cinebase.customers", $query);
 
         ?>
 
@@ -115,9 +109,12 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
         //Handle insert
         if (isset($_GET['screeningID']) && !empty($_GET['screeningID']) && isset($_GET['customerID']) && !empty($_GET['customerID'])) {
 
-            //Prepare insert statementd
-            $sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES(" . $_GET['screeningID'] . ", " . $_GET['customerID'] . ", " . $_GET['price'] . ", 'manually created')";
-
+            //Prepare insert statement
+            //$sql = "INSERT INTO ticket(screening_id, customer_id, price, discount_type) VALUES(" . $_GET['screeningID'] . ", " . $_GET['customerID'] . ", " . $_GET['price'] . ", 'manually created')";
+//            $bulk = new MongoDB\Driver\BulkWrite;
+//            $doc = ['customer_type' => $username, 'password' => $password];
+//            $bulk->insert($doc);
+//            $mng->executeBulkWrite('cinebase.customers', $bulk);
 
             //Parse and execute statement
             if ($conn->query($sql) === TRUE) {
@@ -153,7 +150,32 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
             <tbody>
             <?php
 
+            $countOverall=0;
+            foreach ($rows as $row) {
+                echo "<tr>";
+
+                $count = 0;
+                foreach ($row->tickets as $key => $value) {
+
+                    $ticket_id = $row->tickets[$count]->_id;
+                    $screening_id = $row->tickets[$count]->screening_id;
+                    $customer_id = $row->tickets[$count]->customer_id;
+                    $price = $row->tickets[$count]->price;
+                    $discount_type = $row->tickets[$count]->discount_type;
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">$ticket_id</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">$screening_id</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">$customer_id</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">$price</td>";
+                    echo "<td style=\"padding: 5px 10px 5px 10px;\">$discount_type</td>";
+                    $count++;
+                    $countOverall++;
+                    echo "</tr>";
+                }
+
+            }
+
             // fetch rows of the executed sql query
+            /*
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
 
@@ -173,14 +195,14 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
                     echo "</tr>";
                 }
             }
-            $row_cnt = mysqli_num_rows($result);
+            $row_cnt = mysqli_num_rows($result);*/
 
 
             ?>
             </tbody>
         </table>
 
-        <div><?php echo $row_cnt ?> Ticket/s found!</div>
+        <div><?php echo $countOverall ?> Ticket/s found!</div>
 
 
         <?php
