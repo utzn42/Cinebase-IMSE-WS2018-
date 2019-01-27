@@ -2,6 +2,17 @@
 
 ## 1. NoSQL Database design
 ### 1.1. Migration of relational design to NoSQL
+For _Milestone 3_, the task was to migrate the (My-)SQL schema to a NoSQL DBMS. Our system of choice was **MongoDB**, due to its unrivalled popularity and widespread support in the Java and PHP programming language. Since these are exactly the technologies we used in our project, the choice was fairly obvious to us.
+
+However, using MongoDB involved the challenge of adapting our data model to the technology.
+
+![alt text](https://github.com/utzn42/IMSE-WS2018/blob/master/readme_extras/ms2_rm.jpeg "Milestone 2 relational model")
+
+Clearly, this hierarchy would not work going forward - splitting up the tables as above would result in significant loss of information (consider Tickets - how would we know who they belong to?). Hence, we came up with a new, non-relational model as follows:
+
+**@yasin96 bitte noch überarbeitetes NoSQL schema einfügen**
+
+This design was superior to the one in _Milestone 2_ in regards to the lower amount of tables. However, access to the nested documents PHP would prove to be a major obstacle. As always, no change to a complex system comes without its up- and downsides. 
 
 ### 1.2. Motivation of single steps
 
