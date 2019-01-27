@@ -10,7 +10,8 @@ However, using MongoDB involved the challenge of adapting our data model to the 
 
 Clearly, this hierarchy would not work going forward - splitting up the tables as above would result in significant loss of information (consider Tickets - how would we know who they belong to?). Hence, we came up with a new, non-relational model as follows:
 
-**@yasin96 bitte noch überarbeitetes NoSQL schema einfügen**
+![alt text](https://github.com/utzn42/IMSE-WS2018/blob/master/readme_extras/MonoDB_Design.JPG)
+      
 
 This design was superior to the one in _Milestone 2_ in regards to the lower amount of tables. However, access to the nested documents PHP would prove to be a major obstacle. As always, no change to a complex system comes without its up- and downsides. 
 
