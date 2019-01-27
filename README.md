@@ -1,14 +1,11 @@
-# IMSE-WS2018 MS3
-## 1. How to pull the Java project correctly (IntelliJ)
-1. Pull the project to fetch the changes which have been made since the MS2 deadline.
-2. You will find that the source files now reside within their respective milestone folder.
-3. Project structure has been changed to use Maven as dependency management system, since importing them manually (as in MS2) caused Java not being able to find build critical classes. To add Maven framework support, right click on `Kino_JDBC -> Add framework support -> Maven` (You can find it right under the File/Edit/View buttons in the top bar of the window).
-5. On the very right side, you should see a bar, one of the items being 'Maven'. Click on it and then click on the `+`-sign (4th icon from the left. Navigate to the pom.xml and select auto-import upon the next prompt.
-4. Good to go!
+# MS3 Documentation
 
-## 2. Installing MongoDB
-[Traversy Media @ YouTube](https://www.youtube.com/watch?v=pWbMrx5rVBE), ~ first 13 min. user:root and pw:imse2018 (credentials don't seem to make an impact currently)
+## 1. NoSQL Database design
 
-## 3. Documentation for MS3
-[Google Docs](https://docs.google.com/document/d/1JCOZX0dZhAGQLyJ-2gw6WzFZUrPco5MWx4ZgjtWSHKM/edit?usp=sharing
-)
+### 1.1. Migration of relational design to NoSQL
+
+### 1.2. Motivation of single steps
+
+### 1.3. Realization of NoSQL DBMS
+
+# 2. Data Migration
