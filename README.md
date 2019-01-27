@@ -27,6 +27,9 @@ Concerning the tables which we deemed unviable / lacking in information on their
 
 ### 1.3. Realization of NoSQL DBMS
 
+Link of MongoDB Driver we used: https://pecl.php.net/package/mongodb
+
+
 ## 2. Data Migration
 ### 2.1. Overview
 For the migration of our database, we used our Java tool in continuation of the work we already presented in _Milestone 2_. We created an extra application, which implements the following functions:
