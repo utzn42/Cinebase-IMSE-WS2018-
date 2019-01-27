@@ -9,8 +9,8 @@ public abstract class Window {
 
     public void run(JPanel panel) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = screenSize.width / 4;
-        int height = screenSize.height / 4;
+        int width = screenSize.width / 3;
+        int height = screenSize.height / 3;
         frame.setPreferredSize(new Dimension(width, height));
         frame.pack();
         frame.setLocationRelativeTo(null);

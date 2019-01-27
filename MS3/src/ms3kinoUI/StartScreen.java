@@ -12,7 +12,7 @@ public class StartScreen {
     private JPasswordField passwordField;
     private JButton submitButton;
 
-    public StartScreen() {
+    private StartScreen() {
 
         submitButton.addActionListener(e -> {
             MongoConnector.connect(usernameField.getText(), String.valueOf(passwordField.getPassword()));
@@ -21,10 +21,10 @@ public class StartScreen {
         });
     }
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) {
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        int width = screenSize.width / 4;
-        int height = screenSize.height / 4;
+        int width = screenSize.width / 3;
+        int height = screenSize.height / 3;
         frame.setPreferredSize(new Dimension(width, height));
         frame.pack();
         frame.setLocationRelativeTo(null);
