@@ -30,15 +30,15 @@ $starting_time = urldecode($_POST['starting_time']);
       <tbody>
       <tr>
         <td>
-          <input id='new_screening_id' name='new_screening_id' type='text' size='20'
+          <input id='new_screening_id' name='new_screening_id' type='number' size='20'
                  value='<?php echo $screening_id; ?>'/>
         </td>
         <td>
-          <input id='new_hall_id' name='new_hall_id' type='text' size='20'
+          <input id='new_hall_id' name='new_hall_id' type='number' size='20'
                  value='<?php echo $hall_id; ?>'/>
         </td>
         <td>
-          <input id='new_film_id' name='new_film_id' type='text' size='20' readonly
+          <input id='new_film_id' name='new_film_id' type='number' size='20' readonly
                  value='<?php echo $film_id; ?>'/>
         </td>
         <td>
@@ -75,7 +75,7 @@ if (isset($_POST["submit"])) {
 
 
 
-        $filter = ['_id' => $new_film_id];
+        $filter = ['_id' => intval($new_film_id)];
         $query = new MongoDB\Driver\Query($filter);
         $rows = $mng->executeQuery("cinebase.films", $query);
 
@@ -88,7 +88,7 @@ if (isset($_POST["submit"])) {
             $count = 0;
             foreach ($row->screenings as $key => $value) {
 
-                if ($screeningsArray[$count]->film_id == $new_film_id){
+                if ($screeningsArray[$count]->_id == intval($new_screening_id)){
                   $screeningIndex = $count;
                   break;
                 }

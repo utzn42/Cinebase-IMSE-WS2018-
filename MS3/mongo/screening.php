@@ -149,11 +149,6 @@ error_reporting(E_ALL ^ E_NOTICE);
 
               $bulk = new MongoDB\Driver\BulkWrite;
 
-//              $doc = ['_id' => intval($_POST['film_id']), 'title' => $_POST['title'], 'director' => $_POST['director'], 'country' => $_POST['country'], 'film_language' => $_POST['film_language'], 'age_rating' => intval($_POST['age_rating']), 'duration' => intval($_POST['duration'])];
-//              $bulk->insert($doc);
-              //$bulk->update(['name' => 'Audi'], ['$set' => ['price' => 52000]]);
-              //$bulk->delete(['name' => 'Hummer']);
-
               $filter = ['_id' => intval($film_id)];
               $query = new MongoDB\Driver\Query($filter);
               $rows = $mng->executeQuery("cinebase.films", $query);
@@ -163,32 +158,12 @@ error_reporting(E_ALL ^ E_NOTICE);
 
               foreach ($rows as $row) {
 
-
                   $screeningsArray = $row->screenings;
-
-
-
-
-
-
-
-//                  Array ( [0] => stdClass Object ( [_id] => 97 [hall_id] => 1 [starting_time] => MongoDB\BSON\UTCDateTime Object ( [milliseconds] => 1555460081000 ) ) )
-
-                  /*$array = [
-                      "foo" => "bar",
-                      "bar" => "foo",
-                  ];*/
                   $newScreening = ["_id" => intval($screening_id), "hall_id" => intval($hall_id), "starting_time" => new MongoDB\BSON\UTCDateTime($starting_time)];
 
                   array_push($screeningsArray, $newScreening);
 
-
-//                  $doc = ['_id' => intval($film_id), 'screenings' => $screeningsArray];
-//                  $update = ['_id' => intval($film_id)], [$set=> ["screenings" => $screeningsArray]];
-//                  $bulk->update(['_id' => intval($new_film_id)], ['$set' => ["screenings.".$screeningIndex."._id" => intval($new_screening_id)]]);
                   $bulk->update(['_id' => intval($film_id)], ['$set' => ["screenings" => $screeningsArray]]);
-
-
 
               }
 
@@ -209,6 +184,64 @@ error_reporting(E_ALL ^ E_NOTICE);
 
 
       echo("<script type=\"text/javascript\">hideFormInsertScreening();</script>");
+
+
+      //Handle delete
+
+      try {
+
+          $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+
+          if (isset($_POST["delScreening"])) {
+
+              $bulk = new MongoDB\Driver\BulkWrite;
+
+              $del_screening = $_POST["delScreening"];
+              $del_film = $_POST["delFilm"];
+
+              $filter = ['_id' => intval($del_film)];
+              $query = new MongoDB\Driver\Query($filter);
+              $rows = $mng->executeQuery("cinebase.films", $query);
+
+              $screeningIndex = 0;
+
+
+              foreach ($rows as $row) {
+
+                  $screeningsArray = $row->screenings;
+
+                  $count = 0;
+                  foreach ($row->screenings as $key => $value) {
+
+                      if ($screeningsArray[$count]->_id == $del_screening){
+                          $screeningIndex = $count;
+                          break;
+                      }
+
+                      $count++;
+                  }
+
+                  \array_splice($screeningsArray, $screeningIndex, 1);
+
+                  $bulk->update(['_id' => intval($del_film)], ['$set' => ["screenings" => $screeningsArray]]);
+
+              }
+
+              $mng->executeBulkWrite('cinebase.films', $bulk);
+          }
+
+      } catch (MongoDB\Driver\Exception\Exception $e) {
+
+          $filename = basename(__FILE__);
+
+          echo "The $filename script has experienced an error.\n";
+          echo "It failed with the following exception:\n";
+
+          echo "Exception:", $e->getMessage(), "\n";
+          echo "In file:", $e->getFile(), "\n";
+          echo "On line:", $e->getLine(), "\n";
+      }
+
 
       ?>
 
@@ -338,7 +371,8 @@ error_reporting(E_ALL ^ E_NOTICE);
                           //DELETE BUTTON
                           echo "<td>";
                           echo "<form action='screening.php' method='post'>";
-                          echo "<input type='hidden' name='del' value=temp_id>";
+                          echo "<input type='hidden' name='delScreening' id='delScreening' value=$temp_id>";
+                          echo "<input type='hidden' name='delFilm' id='delFilm' value=$temp_film_id>";
                           echo "<button>DELETE</button>";
                           echo "</form>";
                           echo "</td>";
