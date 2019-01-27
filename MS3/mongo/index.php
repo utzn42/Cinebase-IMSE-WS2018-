@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <title>Cinebase</title>
-    <link rel="stylesheet"
-          type="text/css"
-          href="css/main.css"/>
-    <script src="js/main.js"></script>
+  <meta charset="UTF-8">
+  <title>Cinebase</title>
+  <link rel="stylesheet"
+        type="text/css"
+        href="css/main.css"/>
+  <script src="js/main.js"></script>
 </head>
 <body>
 
@@ -14,13 +14,9 @@
 session_start();
 
 //establish serverconnection
-$servername = "localhost";
-$user = "root";
-$pw = "";
-$db = "cinebase";
-$con = new mysqli($servername, $user, $pw, $db);
+$mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
 
-if ($_SERVER['REQUEST_METHOD'] == "POST") {
+if (isset($_POST['password'])) {
     $password = $_POST['password'];
 
 
@@ -29,26 +25,26 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
         $username = $_POST['email'];
         $passwordRepeat = $_POST['passwordRepeat'];
         if (strcmp($password, $passwordRepeat) == 0) {
-            $sqlInsertUser = "INSERT INTO customer (email, password) VALUES (\"$username\", \"$password\")";
-            if ($con->query($sqlInsertUser) == true) {
-                echo("<script type=\"text/javascript\">registerSuccess(\"$username\");</script>");
-                $_SESSION['loggedin'] = true;
-                $_SESSION['username'] = $username;
-                $_SESSION['password'] = $password;
+            $bulk = new MongoDB\Driver\BulkWrite;
+            $doc = ['email' => $username, 'password' => $password];
+            $bulk->insert($doc);
+            $mng->executeBulkWrite('cinebase.customers', $bulk);
+            echo("<script type=\"text/javascript\">registerSuccess(\"$username\");</script>");
+            $_SESSION['loggedin'] = true;
+            $_SESSION['username'] = $username;
+            $_SESSION['password'] = $password;
 
-                $sqlSearchUser = "SELECT * FROM customer WHERE password = \"$password\" AND email = \"$username\";";
-                $result = $con->query($sqlSearchUser);
+            $filter = ['email' => $_POST['email']];
+            $query = new MongoDB\Driver\Query($filter);
 
-                if ($result->num_rows > 0) {
-                    while ($i = $result->fetch_assoc()) {
-                        if ($i['password'] == $_POST['password']) {
-                            $_SESSION['customer_id'] = $i['customer_id'];
-                            break;
-                        }
-                    }
+            $rows = $mng->executeQuery("cinebase.customers", $query);
+
+
+            foreach ($rows as $row) {
+                if (strcmp($row->password, $password) == 0) {
+                    $_SESSION['customer_id'] = $row->_id;
+                    break;
                 }
-            } else {
-                echo("<script type=\"text/javascript\">signUpFailedErrorMessage();</script>");
             }
         } else {
             echo("<script type=\"text/javascript\">signUpFailedErrorMessagePasswords();</script>");
@@ -57,47 +53,55 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     } //employee login
     else if (isset($_POST['remember'])) {
         $username = $_POST['username'];
+        $password = $_POST['password'];
 
         if ($username != "admin" && $password != "cinebase") {
-            $sqlSearchEmployee = "SELECT * FROM employee WHERE password = \"$password\" AND email = \"$username\";";
-            $result = $con->query($sqlSearchEmployee);
+            $filter = ['email' => $_POST['username']];
+            $query = new MongoDB\Driver\Query($filter);
+            $rows = $mng->executeQuery("cinebase.employees", $query);
 
-
-            if ($result->num_rows > 0) {
-                while ($i = $result->fetch_assoc()) {
-                    if ($i['password'] == $_POST['password']) {
-                        echo("<script type=\"text/javascript\">loginSuccess(\"$username\");</script>");
-                        $_SESSION['loggedinEmployee'] = true;
-                        $_SESSION['username'] = $username;
-                        break;
-                    }
+            $count=0;
+            foreach ($rows as $row) {
+              $count++;
+                if (strcmp($row->password, $password) == 0) {
+                    echo("<script type=\"text/javascript\">loginSuccess(\"$username\");</script>");
+                    $_SESSION['loggedinEmployee'] = true;
+                    $_SESSION['username'] = $username;
+                    break;
                 }
-            } else {
+            }
+            if($count == 0){
                 echo("<script type=\"text/javascript\">loginFailedErrorMessage();</script>");
             }
+
+        } else{
+            echo("<script type=\"text/javascript\">loginFailedErrorMessage();</script>");
         }
     } //sign in existing user
     else {
         $username = $_POST['username'];
+        $password = $_POST['password'];
 
         //normal user
         if ($username != "admin" && $password != "cinebase") {
-            $sqlSearchUser = "SELECT * FROM customer WHERE password = \"$password\" AND email = \"$username\";";
-            $result = $con->query($sqlSearchUser);
+            $filter = ['email' => $_POST['username']];
+            $query = new MongoDB\Driver\Query($filter);
+            $rows = $mng->executeQuery("cinebase.customers", $query);
 
+            $count=0;
 
-            if ($result->num_rows > 0) {
-                while ($i = $result->fetch_assoc()) {
-                    if ($i['password'] == $_POST['password']) {
-                        echo("<script type=\"text/javascript\">loginSuccess(\"$username\");</script>");
-                        $_SESSION['loggedin'] = true;
-                        $_SESSION['username'] = $username;
-                        $_SESSION['customer_id'] = $i['customer_id'];
-                        $_SESSION['password'] = $password;
-                        break;
-                    }
+            foreach ($rows as $row) {
+                $count++;
+                if (strcmp($row->password, $password) == 0) {
+                    echo("<script type=\"text/javascript\">loginSuccess(\"$username\");</script>");
+                    $_SESSION['loggedin'] = true;
+                    $_SESSION['username'] = $username;
+                    $_SESSION['customer_id'] = $i['customer_id'];
+                    $_SESSION['password'] = $password;
+                    break;
                 }
-            } else {
+            }
+            if($count == 0){
                 echo("<script type=\"text/javascript\">loginFailedErrorMessage();</script>");
             }
         } //ADMIN MODE
@@ -110,40 +114,40 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
 ?>
 <div class="wrapper">
-    <div class="topLine" id="topLine">
-        cinebase
-        <button onclick="window.location='index.php';"
-                style="border-bottom: 2px solid whitesmoke; font-weight: bold; margin-left: 20px"
-                class="buttonBig">Home
-        </button>
-        <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
-        <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
-        <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
-            echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
-        } ?>
-        <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
-            echo "<button onclick=\"window.location='hall_administration.php';\" class=\"buttonBig\">Halls</button>";
-        } ?>
-        <?php if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
-            echo "<button onclick=\"window.location='ticket.php';\" class=\"buttonBig\">Tickets</button>";
-        } ?>
+  <div class="topLine" id="topLine">
+    cinebase
+    <button onclick="window.location='index.php';"
+            style="border-bottom: 2px solid whitesmoke; font-weight: bold; margin-left: 20px"
+            class="buttonBig">Home
+    </button>
+    <button onclick="window.location='movies.php';" class="buttonBig">Movies</button>
+    <button onclick="window.location='screening.php';" class="buttonBig">Screenings</button>
+      <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+          echo "<button onclick=\"window.location='employee_administration.php';\" class=\"buttonBig\">Employees</button>";
+      } ?>
+      <?php if (isset($_SESSION['loggedinAdmin']) && $_SESSION['loggedinAdmin'] == true) {
+          echo "<button onclick=\"window.location='hall_administration.php';\" class=\"buttonBig\">Halls</button>";
+      } ?>
+      <?php if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == true) {
+          echo "<button onclick=\"window.location='ticket.php';\" class=\"buttonBig\">Tickets</button>";
+      } ?>
 
-        <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
-                class="buttonLogin">
-            Sign In
-        </button>
-        <button id="register" onclick="window.location='register.php';"
-                class="buttonRegister">Register
-        </button>
-    </div>
+    <button id="signIn" onclick="document.getElementById('popUpLogin').style.display='block'"
+            class="buttonLogin">
+      Sign In
+    </button>
+    <button id="register" onclick="window.location='register.php';"
+            class="buttonRegister">Register
+    </button>
+  </div>
 </div>
 <div class="wrapperMainBody">
-    <div class="mainBody" id="mainBody">
-        <br>
-        <img src="img/filmReel.png" height="135" width="135">
-        <br><br>
-        Welcome to cinebase! Pick a movie and enjoy!
-    </div>
+  <div class="mainBody" id="mainBody">
+    <br>
+    <img src="img/filmReel.png" height="135" width="135">
+    <br><br>
+    Welcome to cinebase! Pick a movie and enjoy!
+  </div>
 </div>
 
 
@@ -166,42 +170,41 @@ if (isset($_SESSION['loggedinEmployee']) && $_SESSION['loggedinEmployee'] == tru
   <span onclick="document.getElementById('popUpLogin').style.display='none'"
         class="close" title="Close Modal">&times;</span>
 
-    <form class="modal-content animate" action="index.php" method="post">
+  <form class="modal-content animate" action="index.php" method="post">
 
-        <div class="container">
-            <label for="username"><b>Username</b></label>
-            <input class="signInInputs" type="text" placeholder="Enter Username" name="username" required>
+    <div class="container">
+      <label for="username"><b>Username</b></label>
+      <input class="signInInputs" type="text" placeholder="Enter Username" name="username" required>
 
-            <label for="password"><b>Password</b></label>
-            <input class="signInInputs" type="password" placeholder="Enter Password" name="password"
-                   required>
+      <label for="password"><b>Password</b></label>
+      <input class="signInInputs" type="password" placeholder="Enter Password" name="password"
+             required>
 
-            <button class="buttonLoginModal" type="submit">Login</button>
-            <label>
-                <input type="checkbox" name="remember"> Employee
-            </label>
-        </div>
+      <button class="buttonLoginModal" type="submit">Login</button>
+      <label>
+        <input type="checkbox" name="remember"> Employee
+      </label>
+    </div>
 
-        <div class="container" style="background-color:#f1f1f1">
-            <button type="button" onclick="document.getElementById('popUpLogin').style.display='none'"
-                    class="cancelbtn">Cancel
-            </button>
-            <span class="psw">Forgot <a href="#">password?</a></span>
-        </div>
-    </form>
+    <div class="container" style="background-color:#f1f1f1">
+      <button type="button" onclick="document.getElementById('popUpLogin').style.display='none'"
+              class="cancelbtn">Cancel
+      </button>
+      <span class="psw">Forgot <a href="#">password?</a></span>
+    </div>
+  </form>
 </div>
 <!-- End of the part taken from: https://www.w3schools.com/howto/howto_css_login_form.asp -->
 
 <br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 
 <p style="text-align:center">Yasin Ergüven Utz Nisslmüller Alexander Ramharter Oliver
-    Schweiger</p>
+  Schweiger</p>
 
 
 <?php
 
 //close serverconnection
-$con->close();
 ?>
 </body>
 </html>

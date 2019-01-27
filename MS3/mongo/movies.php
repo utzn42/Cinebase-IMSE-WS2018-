@@ -103,9 +103,9 @@ error_reporting(E_ALL ^ E_NOTICE);
 		
 		<br>
         <div id="insertMovie">
-            <form id='insertform' action='movies.php' method='post'>
+            <form id='insertform' action='movies.php?sortbyid=true' method='post'>
                 Add new film:
-                <table style='border: 1px solid #DDDDDD'>
+                <table style='border: 1px solid #DDDDDD'  align='center'>
                     <thead>
                     <tr>
                         <th>Film-ID</th>
@@ -267,7 +267,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 					$query = new MongoDB\Driver\Query($filter); 
 
 				} else if (isset($_GET['searchFilmID'])) {
-					$filter = [ '_id' => $_GET['searchFilmID'] ]; 
+					$filter = [ '_id' => intval($_GET['searchFilmID']) ]; 
 					$query = new MongoDB\Driver\Query($filter); 
 
 				} else if (isset($_GET['sortbytitle'])) {
@@ -341,7 +341,7 @@ error_reporting(E_ALL ^ E_NOTICE);
 						//DELETE BUTTON
 						//echo "<td><a href=\"movies.php?del=$row->_id\"> DELETE </a></td>";
 						echo "<td>";
-						echo "<form action='movies.php' method='post'>";
+						echo "<form action='movies.php?sortbyid=true' method='post'>";
 						echo "<input type='hidden' name='del' value=$row->_id>";
 						echo "<button>DELETE</button>" ;
 						echo "</form>";

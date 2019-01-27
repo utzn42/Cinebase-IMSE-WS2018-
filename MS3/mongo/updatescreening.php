@@ -1,11 +1,24 @@
 <?php
 
+$screening_id = $_POST['screening_id'];
+$film_id = $_POST['film_id'];
+$hall_id = $_POST['hall_id'];
 
-$user = 'root';
-$pass = '';
-$database = 'cinebase';
 
-$conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
+$utc_string = $_POST['starting_time'];
+
+//DATE TO UTC
+$utctime = new MongoDB\BSON\UTCDateTime($utc_string);
+
+$datetime = $utctime->toDateTime();
+
+$time=$datetime->format(DATE_RSS);
+$utc_string = strtotime($time.' UTC');
+
+$temp_starting_time_encoded = urlencode(date("Y-m-d H:i:s", $utc_string));
+$temp_starting_time = date("Y-m-d H:i:s", $utc_string);
+
+	
 
 
 ?>
@@ -16,69 +29,121 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 
 <a href="screening.php">Back to Screenings</a><br><br>
 <div>
-    <form id='updateform' action="" method="get">
-        Update screening:
-        <table style='border: 1px solid #DDDDDD'>
-            <thead>
-            <tr>
-                <th>Screening-ID</th>
-                <th>Hall-ID</th>
-                <th>Film-ID</th>
-                <th>Starting Time</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr>
-                <td>
-                    <input id='screening_id' name='screening_id' type='text' size='20' readonly
-                           value='<?php echo $_GET['screening_id']; ?>'/>
-                </td>
-                <td>
-                    <input id='hall_id' name='hall_id' type='text' size='20' value='<?php echo $_GET['hall_id']; ?>'/>
-                </td>
-                <td>
-                    <input id='film_id' name='film_id' type='text' size='20' value='<?php echo $_GET['film_id']; ?>'/>
-                </td>
-                <td>
-                    <input id='starting_time' name='starting_time' type='text' size='20'
-                           value='<?php echo $_GET['starting_time']; ?>'/>
-                </td>
+  <form id='updateform' action="updatescreening.php" method="post">
+    Update screening:
+    <table style='border: 1px solid #DDDDDD'>
+      <thead>
+      <tr>
+        <th>Screening-ID</th>
+        <th>Hall-ID</th>
+        <th>Film-ID</th>
+        <th>Starting Time</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr>
+        <td>
+          <input id='new_screening_id' name='new_screening_id' type='number' size='20'
+                 value='<?php echo $screening_id; ?>'/>
+        </td>
+        <td>
+          <input id='new_hall_id' name='new_hall_id' type='number' size='20'
+                 value='<?php echo $hall_id; ?>'/>
+        </td>
+        <td>
+          <input id='new_film_id' name='new_film_id' type='number' size='20' readonly
+                 value='<?php echo $film_id; ?>'/>
+        </td>
+        <td>
+          <input id='new_starting_time' name='new_starting_time' type='text' size='20'
+                 value='<?php echo $temp_starting_time; ?>'/>
+        </td>
 
-            </tr>
-            </tbody>
-        </table>
-        <input id='submit' type='submit' name="submit" value='Update!'/>
-    </form>
+      </tr>
+      </tbody>
+    </table>
+    <input id='submit' type='submit' name="submit" value='Update!'/>
+  </form>
 </div>
 
 <?php
 
 
-if (isset($_GET["submit"])) {
+if (isset($_POST["submit"])) {
+    //echo $_POST['new_director'];
 
 
-    $screening_id = $_GET['screening_id'];
-    $hall_id = $_GET['hall_id'];
-    $film_id = $_GET['film_id'];
-    $starting_time = $_GET['starting_time'];
+    //Handle insert
+    try {
+
+        $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
 
 
-    // sql to update a record
-    $sql = "UPDATE screening 
-		SET hall_id = \"$hall_id\",
-		film_id=\"$film_id\",
-		starting_time=\"$starting_time\"
-		WHERE screening_id=$screening_id";
+        $new_screening_id = $_POST['new_screening_id'];
+        $new_film_id = $_POST['new_film_id'];
+        $new_hall_id = $_POST['new_hall_id'];
+        $new_starting_time = $_POST['new_starting_time'];
+
+//        echo intval($_POST['new_film_id']);
 
 
-    //Parse and execute statement
-    if ($conn->query($sql) === TRUE) {
-        echo "Record updated succesfully";
+
+		//UTC TO DATE
+		$orig_date = new DateTime($new_starting_time);
+		$orig_date=$orig_date->getTimestamp();
+		$utcdatetime = new MongoDB\BSON\UTCDateTime($orig_date*1000);
+
+
+
+        $filter = ['_id' => intval($new_film_id)];
+        $query = new MongoDB\Driver\Query($filter);
+        $rows = $mng->executeQuery("cinebase.films", $query);
+
+        $screeningIndex = 0;
+
+        foreach ($rows as $row) {
+
+            $screeningsArray = $row->screenings;
+
+            $count = 0;
+            foreach ($row->screenings as $key => $value) {
+
+                if ($screeningsArray[$count]->_id == intval($new_screening_id)){
+                  $screeningIndex = $count;
+                  break;
+                }
+
+                $count++;
+            }
+
+        }
+
+        $bulk = new MongoDB\Driver\BulkWrite;
+
+//        $bulk->update(['_id' => intval($film_id)], ['$set' => ['screenings.0.hall_id' => $new_hall_id]]);
+//        $bulk->update(['_id' => 1], ['$set' => ['screenings.0.hall_id' => 12]]);
+
+        $bulk->update(['_id' => intval($new_film_id)], ['$set' => ["screenings.".$screeningIndex."._id" => intval($new_screening_id)]]);
+        $bulk->update(['_id' => intval($new_film_id)], ['$set' => ["screenings.".$screeningIndex.".hall_id" => intval($new_hall_id)]]);
+        $bulk->update(['_id' => intval($new_film_id)], ['$set' => ["screenings.".$screeningIndex.".starting_time" => $utcdatetime]]);
+
+
+
+        $mng->executeBulkWrite('cinebase.films', $bulk);
         header("location: screening.php");
 
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+    } catch (MongoDB\Driver\Exception\Exception $e) {
+
+        $filename = basename(__FILE__);
+
+        echo "The $filename script has experienced an error.\n";
+        echo "It failed with the following exception:\n";
+
+        echo "Exception:", $e->getMessage(), "\n";
+        echo "In file:", $e->getFile(), "\n";
+        echo "On line:", $e->getLine(), "\n";
     }
+
 }
 
 
