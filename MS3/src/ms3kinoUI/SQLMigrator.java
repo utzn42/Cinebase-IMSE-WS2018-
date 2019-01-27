@@ -63,7 +63,7 @@ class SQLMigrator {
 
         ResultSet customerSet = statement.executeQuery("SELECT * FROM customer");
 
-        String customer_id = "";
+        int customer_id = 0;
         String customer_type = "";
         String email = "";
         String password = "";
@@ -78,7 +78,7 @@ class SQLMigrator {
             for (int i = 1; i <= customerSet.getMetaData().getColumnCount(); i++) {
                 switch (i) {
                     case 1:
-                        customer_id = customerSet.getString(i);
+                        customer_id = customerSet.getInt(i);
                         break;
                     case 2:
                         customer_type = customerSet.getString(i);
@@ -350,8 +350,8 @@ class SQLMigrator {
 
         ResultSet ticketSet = statement.executeQuery("SELECT * FROM ticket");
 
-        String ticket_id = "";
-        String screening_id = "";
+        int ticket_id = 0;
+        int screening_id = 0;
         String customer_id = "";
         String price = "";
         String discount_type = "";
@@ -361,10 +361,10 @@ class SQLMigrator {
             for (int i = 1; i <= ticketSet.getMetaData().getColumnCount(); i++) {
                 switch (i) {
                     case 1:
-                        ticket_id = ticketSet.getString(i);
+                        ticket_id = ticketSet.getInt(i);
                         break;
                     case 2:
-                        screening_id = ticketSet.getString(i);
+                        screening_id = ticketSet.getInt(i);
                         break;
                     case 3:
                         customer_id = ticketSet.getString(i);
