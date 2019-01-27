@@ -1,14 +1,23 @@
-# IMSE-WS2018 MS3
-## 1. How to pull the Java project correctly (IntelliJ)
-1. Pull the project to fetch the changes which have been made since the MS2 deadline.
-2. You will find that the source files now reside within their respective milestone folder.
-3. Project structure has been changed to use Maven as dependency management system, since importing them manually (as in MS2) caused Java not being able to find build critical classes. To add Maven framework support, right click on `Kino_JDBC -> Add framework support -> Maven` (You can find it right under the File/Edit/View buttons in the top bar of the window).
-5. On the very right side, you should see a bar, one of the items being 'Maven'. Click on it and then click on the `+`-sign (4th icon from the left. Navigate to the pom.xml and select auto-import upon the next prompt.
-4. Good to go!
+# MS3 Documentation
 
-## 2. Installing MongoDB
-[Traversy Media @ YouTube](https://www.youtube.com/watch?v=pWbMrx5rVBE), ~ first 13 min. user:root and pw:imse2018 (credentials don't seem to make an impact currently)
+## 1. NoSQL Database design
+### 1.1. Migration of relational design to NoSQL
 
-## 3. Documentation for MS3
-[Google Docs](https://docs.google.com/document/d/1JCOZX0dZhAGQLyJ-2gw6WzFZUrPco5MWx4ZgjtWSHKM/edit?usp=sharing
-)
+### 1.2. Motivation of single steps
+
+### 1.3. Realization of NoSQL DBMS
+
+# 2. Data Migration
+## 2.1. Overview
+For the migration of our database, we used our Java tool in continuation of the work we already presented in _Milestone 2_. We created an extra application, which implements the following functions:
+
++ **Complete migration from a MySQL schema:** Transfers the complete set of data from MySQL to our MongoDB database. To accomplish this, we created a parser (`SQLMigrator.java`), which selects the tuples in each table and then rearranges the syntax so they can be inserted into MongoDB sequentially.
+
++ **Manual data entry into the MongoDB database and relevant collections:**  As in _Milestone 2_, the manual data entry window allows the user to insert data into the desired collections. However, due to the restructuring of data mentioned in Chapter 1, we were forced to adapt how the insertion is actually handled. Nonetheless, this is completely hidden from the user and the insertion screen looks identical to the one presented in _Milestone 2_. 
+
++ **Dropping the MongoDB database:** In case of the migration being incomplete or another error. More granular deletion can be done via the Web interface in Employee/Admin mode.
+
++ **Querying information regarding the database/collections:** For _Milestone 3_, we also provided the ability to view specific sets of information regarding the database, such as the database name, size as well as the number of collections and data sets within. This screen provided us with a simple opportunity to verify the correctness of our CRUD operations without having to use the mongo CLI or MongoDB Compass.
+
+## 2.2. Initialization of the program
+To run our Java application for MS3, simply download and run `Cinebase_MS3.jar`. If you wish to compile the source code yourself, the main class can be found in `MS3`-> `src` -> `ms3kinoUI` -> `StartScreen.java`.

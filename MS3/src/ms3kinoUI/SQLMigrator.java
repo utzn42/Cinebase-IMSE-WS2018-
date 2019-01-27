@@ -352,7 +352,7 @@ class SQLMigrator {
 
         int ticket_id = 0;
         int screening_id = 0;
-        String customer_id = "";
+        int customer_id = 0;
         String price = "";
         String discount_type = "";
 
@@ -367,7 +367,7 @@ class SQLMigrator {
                         screening_id = ticketSet.getInt(i);
                         break;
                     case 3:
-                        customer_id = ticketSet.getString(i);
+                        customer_id = ticketSet.getInt(i);
                         break;
                     case 4:
                         price = ticketSet.getString(i);
