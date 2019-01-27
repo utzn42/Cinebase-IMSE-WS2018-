@@ -1,22 +1,21 @@
-<?php
 
-
-$user = 'root';
-$pass = '';
-$database = 'cinebase';
-
-$conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
-
-
-?>
 <html>
 <head>
 </head>
 <body>
 
+<?php
+$employee_nr= $_POST['employee_nr'];
+$manager_id = urldecode($_POST['manager_id']);
+$first_name = urldecode($_POST['first_name']);
+$last_name = $_POST['last_name'];
+$email = urldecode($_POST['email']);
+$password = $_POST['password'];
+?>
+
 <a href="employee_administration.php">Back to Employees</a><br><br>
 <div>
-    <form id='updateform' action="" method="get">
+    <form id='updateform' action="" method="post">
         Update employee:
         <table style='border: 1px solid #DDDDDD'>
             <thead>
@@ -33,26 +32,27 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
             <tr>
                 <td>
                     <input id='employee_nr' name='employee_nr' type='text' size='20' readonly
-                           value='<?php echo $_GET['employee_nr']; ?>'/>
+                           value='<?php echo $employee_nr; ?>'/>
                 </td>
                 <td>
                     <input id='manager_id' name='manager_id' type='text' size='20'
-                           value='<?php echo $_GET['manager_id']; ?>'/>
+                           value='<?php echo $manager_id; ?>'/>
                 </td>
                 <td>
                     <input id='first_name' name='first_name' type='text' size='20'
-                           value='<?php echo $_GET['first_name']; ?>'/>
+                           value='<?php echo $first_name; ?>'/>
                 </td>
                 <td>
                     <input id='last_name' name='last_name' type='text' size='20'
-                           value='<?php echo $_GET['last_name']; ?>'/>
+                           value='<?php echo $last_name; ?>'/>
                 </td>
                 <td>
-                    <input id='email' name='email' type='text' size='20' value='<?php echo $_GET['email']; ?>'/>
+                    <input id='new_email' name='new_email' type='text' size='20'
+                           value='<?php echo $email; ?>'/>
                 </td>
                 <td>
                     <input id='password' name='password' type='text' size='20'
-                           value='<?php echo $_GET['password']; ?>'/>
+                           value='<?php echo $password; ?>'/>
                 </td>
             </tr>
             </tbody>
@@ -64,35 +64,42 @@ $conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
 <?php
 
 
-if (isset($_GET["submit"])) {
+if (isset($_POST["submit"])) {
+    //echo $_POST['new_director'];
 
 
-    $employee_nr = $_GET['employee_nr'];
-    $manager_id = $_GET['manager_id'];
-    $first_name = $_GET['first_name'];
-    $last_name = $_GET['last_name'];
-    $email = $_GET['email'];
-    $password = $_GET['password'];
+    //Handle insert
+    try {
+
+        $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
 
 
-    // sql to update a record
-    $sql = "UPDATE employee 
-		SET manager_id = \"$manager_id\",
-		first_name=\"$first_name\",
-		last_name=\"$last_name\",
-		email=\"$email\",
-		password=\"$password\"
-		WHERE employee_nr=$employee_nr";
+        echo ($_POST['employee_nr']);
+
+        $bulk = new MongoDB\Driver\BulkWrite;
+
+        $bulk->update(['_id' => ($_POST['employee_nr'])], ['$set' => ['manager_id' => $_POST['manager_id']]]);
+        $bulk->update(['_id' => ($_POST['employee_nr'])], ['$set' => ['first_name' => $_POST['first_name']]]);
+        $bulk->update(['_id' => ($_POST['employee_nr'])], ['$set' => ['last_name' => $_POST['last_name']]]);
+        $bulk->update(['_id' => ($_POST['employee_nr'])], ['$set' => ['email' => $_POST['new_email']]]);
+        $bulk->update(['_id' => ($_POST['employee_nr'])], ['$set' => ['password' => ($_POST['password'])]]);
 
 
-    //Parse and execute statement
-    if ($conn->query($sql) === TRUE) {
-        echo "Record updated succesfully";
+        $mng->executeBulkWrite('cinebase.employees', $bulk);
         header("location: employee_administration.php");
 
-    } else {
-        echo "Error: " . $sql . "<br>" . $conn->error;
+    } catch (MongoDB\Driver\Exception\Exception $e) {
+
+        $filename = basename(__FILE__);
+
+        echo "The $filename script has experienced an error.\n";
+        echo "It failed with the following exception:\n";
+
+        echo "Exception:", $e->getMessage(), "\n";
+        echo "In file:", $e->getFile(), "\n";
+        echo "On line:", $e->getLine(), "\n";
     }
+
 }
 
 

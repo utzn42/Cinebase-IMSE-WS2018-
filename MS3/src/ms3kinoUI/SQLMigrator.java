@@ -289,8 +289,8 @@ public class SQLMigrator {
                 }
             }
             Document docHall = new Document("_id", hall_id)
-                    .append("title", name)
-                    .append("director", equipment);
+                    .append("name", name)
+                    .append("equipment", equipment);
 
             collectionHall.insertOne(docHall);
         }
