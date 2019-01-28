@@ -60,6 +60,7 @@ error_reporting(0);
       $rows = $mng->executeQuery("cinebase.customers", $query);
 
       $ticketIndex = 0;
+      $countOverall = 0;
 
       foreach ($rows as $row) {
 
@@ -92,6 +93,7 @@ error_reporting(0);
                           echo "<td style=\"padding: 5px 10px 5px 10px;\">" . $discount_type . "</td>";
                           echo "<td><a href=\"deleteticket.php?tid=" . $ticket_id . "\"> DELETE </a></td>";
                           echo "</tr>";
+                          $countOverall++;
                       }
                       $count2++;
                   }
@@ -107,7 +109,7 @@ error_reporting(0);
       </tbody>
     </table>
 
-    <div><?php echo $count ?> Ticket/s found!</div>
+    <div><?php echo $countOverall ?> Ticket/s found!</div>
 
 
     <br><br><br><br>
