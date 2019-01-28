@@ -22,11 +22,23 @@ if (isset($_POST['password'])) {
 
     //sign up new user
     if (isset($_POST['passwordRepeat'])) {
+
+      //find max id value
+        $query = new MongoDB\Driver\Query([]);
+        $rows = $mng->executeQuery("cinebase.customers", $query);
+        $highest = 0;
+
+        foreach ($rows as $row) {
+            if ($highest < $row->_id) {
+                $highest = $row->_id;
+            }
+        }
+
         $username = $_POST['email'];
         $passwordRepeat = $_POST['passwordRepeat'];
         if (strcmp($password, $passwordRepeat) == 0) {
             $bulk = new MongoDB\Driver\BulkWrite;
-            $doc = ['email' => $username, 'password' => $password];
+            $doc = ['_id' => intval($highest+1), 'email' => $username, 'password' => $password];
             $bulk->insert($doc);
             $mng->executeBulkWrite('cinebase.customers', $bulk);
             echo("<script type=\"text/javascript\">registerSuccess(\"$username\");</script>");
