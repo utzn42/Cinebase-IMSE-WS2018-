@@ -6,11 +6,11 @@ For _Milestone 3_, the task was to migrate the (My-)SQL schema to a NoSQL DBMS. 
 
 However, using MongoDB involved the challenge of adapting our data model to the technology.
 
-![MS2 relational model](https://github.com/utzn42/IMSE-WS2018/blob/master/readme_extras/ms2_rm.jpeg "Milestone 2 relational model")
+![MS2 relational model](https://github.com/utzn42/IMSE-WS2018/blob/master/readme_extras/ms2_rm.png "Milestone 2 relational model")
 
 Clearly, this hierarchy would not work going forward - splitting up the tables as above would result in significant loss of information (consider Tickets - how would we know who they belong to?). Hence, we came up with a new, non-relational model as follows:
 
-![MS3 non-relational model](https://github.com/utzn42/IMSE-WS2018/blob/master/readme_extras/mongoDB_Design.JPG "Milestone 3 non-relational model")
+![MS3 non-relational model](https://github.com/utzn42/IMSE-WS2018/blob/master/readme_extras/mongoDB_Design.png "Milestone 3 non-relational model")
       
 
 This design was superior to the one in _Milestone 2_ in regards to the lower amount of tables. However, access to the nested documents PHP would prove to be a major obstacle. As always, no change to a complex system comes without its up- and downsides. 
