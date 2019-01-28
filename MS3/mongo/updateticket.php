@@ -39,11 +39,11 @@ $discount_type = $_GET['discount_type'];
                  value='<?php echo $_GET['ticket_id']; ?>'/>
         </td>
         <td>
-          <input id='new_screening_id' name='new_screening_id' type='text' size='20'
+          <input id='new_screening_id' name='new_screening_id' type='text' size='20' readonly
                  value='<?php echo $_GET['screening_id']; ?>'/>
         </td>
         <td>
-          <input id='new_customer_id' name='new_customer_id' type='text' size='20'
+          <input id='new_customer_id' name='new_customer_id' type='text' size='20' readonly
                  value='<?php echo $_GET['customer_id']; ?>'/>
         </td>
         <td>
