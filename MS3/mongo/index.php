@@ -96,7 +96,7 @@ if (isset($_POST['password'])) {
                     echo("<script type=\"text/javascript\">loginSuccess(\"$username\");</script>");
                     $_SESSION['loggedin'] = true;
                     $_SESSION['username'] = $username;
-                    $_SESSION['customer_id'] = $i['customer_id'];
+                    $_SESSION['customer_id'] = $row->_id;
                     $_SESSION['password'] = $password;
                     break;
                 }

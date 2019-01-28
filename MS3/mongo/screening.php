@@ -381,6 +381,9 @@ error_reporting(E_ALL ^ E_NOTICE);
 
                       }
                       echo "<td><a href=\"movies.php?searchFilmID=$temp_film_id\"> Show Film Details </a></td>";
+                      if (isset($_SESSION['loggedin']) && $_SESSION['loggedin'] == true) {
+                          echo "<td style=\"padding: 5px 10px 5px 10px;\"><a href=\"reserveticket.php?screening_id=" . $temp_id . "&film_id=" . $temp_film_id . "\"> RESERVE </a></td>";
+                      }
 
 
                       echo "</tr>";
