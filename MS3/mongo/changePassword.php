@@ -6,20 +6,26 @@ $password = $_GET['pw'];
 $_SESSION['password'] = $password;
 $customerID = $_SESSION['customer_id'];
 
-$user = 'root';
-$pass = '';
-$database = 'cinebase';
+try {
 
-$conn = new mysqli('localhost', $user, $pass, $database) or die("dead");
+    $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
+    $bulk = new MongoDB\Driver\BulkWrite;
 
-// sql to delete a record
-$sql = "UPDATE customer SET password = \"$password\" WHERE customer_id = \"$customerID\"";
+    $bulk->update(['_id' => intval($customerID)], ['$set' => ['password' => $password]]);
+    $mng->executeBulkWrite('cinebase.customers', $bulk);
 
-if (mysqli_query($conn, $sql)) {
-    mysqli_close($conn);
-    header('Location: user.php');
-    exit;
-} else {
-    echo "Error updating record";
+    header("location: user.php");
+
+} catch (MongoDB\Driver\Exception\Exception $e) {
+
+    $filename = basename(__FILE__);
+
+    echo "The $filename script has experienced an error.\n";
+    echo "It failed with the following exception:\n";
+
+    echo "Exception:", $e->getMessage(), "\n";
+    echo "In file:", $e->getFile(), "\n";
+    echo "On line:", $e->getLine(), "\n";
+
 }
 ?>
