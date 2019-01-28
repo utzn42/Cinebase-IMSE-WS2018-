@@ -166,7 +166,7 @@ try {
                       $temp_starting_time = date("Y-m-d H:i", $utc_string);
                       echo "<td style=\"padding: 5px 10px 5px 10px;\">$temp_starting_time</td>";
 
-                      $duration = $row->screenings[$count]->duration;
+                      $duration = $row->duration;
                       echo "<td style=\"padding: 5px 10px 5px 10px;\">$duration</td>";
 
                       break;
