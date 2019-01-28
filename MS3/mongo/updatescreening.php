@@ -1,4 +1,5 @@
 <?php
+error_reporting(0);
 
 $screening_id = $_POST['screening_id'];
 $film_id = $_POST['film_id'];
