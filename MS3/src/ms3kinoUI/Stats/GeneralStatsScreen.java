@@ -20,7 +20,7 @@ public class GeneralStatsScreen extends Window {
     public GeneralStatsScreen() {
         run(generalStatsPanel);
         nameField.setText(MongoConnector.cinebase.getName());
-        sizeField.setText("0 MB");
+        sizeField.setText("1 MB");
         collField.setText(String.valueOf(countCollections()));
         countField.setText(String.valueOf(countDataSets()));
         backButton.addActionListener(e -> frame.setVisible(false));

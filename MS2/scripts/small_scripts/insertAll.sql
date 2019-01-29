@@ -2626,6 +2626,10 @@ insert into screening (hall_id, film_id, starting_time) values (5, 80, '2019-10-
 insert into screening (hall_id, film_id, starting_time) values (8, 47, '2019-10-10 09:43:23');
 insert into screening (hall_id, film_id, starting_time) values (3, 29, '2019-02-16 16:23:53');
 insert into screening (hall_id, film_id, starting_time) values (1, 32, '2019-09-28 09:16:39');
+insert into screening (hall_id, film_id, starting_time) values (2, 38, '2019-01-29 19:15:39');
+insert into screening (hall_id, film_id, starting_time) values (3, 34, '2019-01-29 21:15:39');
+insert into screening (hall_id, film_id, starting_time) values (4, 31, '2019-01-30 17:15:39');
+insert into screening (hall_id, film_id, starting_time) values (5, 33, '2019-01-30 15:45:39');
 insert into ticket (screening_id, customer_id, price) values (58, 65, 8.14);
 insert into ticket (screening_id, customer_id, price) values (36, 68, 10.53);
 insert into ticket (screening_id, customer_id, price) values (328, 283, 13.14);

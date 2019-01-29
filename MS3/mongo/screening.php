@@ -146,41 +146,47 @@ error_reporting(E_ALL ^ E_NOTICE);
               $film_id = $_POST['film_id'];
               $hall_id = $_POST['hall_id'];
               $starting_time = $_POST['starting_time'];
+              if ($hall_id > 0 && $hall_id <= 8) {
+                  $bulk = new MongoDB\Driver\BulkWrite;
 
-              $bulk = new MongoDB\Driver\BulkWrite;
+                  $filter = ['_id' => intval($film_id)];
+                  $query = new MongoDB\Driver\Query($filter);
+                  $rows = $mng->executeQuery("cinebase.films", $query);
 
-              $filter = ['_id' => intval($film_id)];
-              $query = new MongoDB\Driver\Query($filter);
-              $rows = $mng->executeQuery("cinebase.films", $query);
+                  $screeningIndex = 0;
 
-              $screeningIndex = 0;
-			
-              foreach ($rows as $row) {
+                  foreach ($rows as $row) {
 
-					if($row->screenings!=null){
-						$screeningsArray = $row->screenings;
-					}
-					else{
-						$screeningsArray = [];
-					}
-					
-		
-					//DATE TO UTC
-				    $orig_date = new DateTime($starting_time);
-				    $orig_date=$orig_date->getTimestamp();
-			        $utcdatetime = new MongoDB\BSON\UTCDateTime($orig_date*1000);
-					
-				
-					
-                  $newScreening = ["_id" => intval($screening_id), "hall_id" => intval($hall_id), "starting_time" => $utcdatetime];
+                      if ($row->screenings != null) {
+                          $screeningsArray = $row->screenings;
+                      } else {
+                          $screeningsArray = [];
+                      }
 
-                  array_push($screeningsArray, $newScreening);
 
-                  $bulk->update(['_id' => intval($film_id)], ['$set' => ["screenings" => $screeningsArray]]);
+                      //DATE TO UTC
+                      $orig_date = new DateTime($starting_time);
+                      $orig_date = $orig_date->getTimestamp();
+                      $utcdatetime = new MongoDB\BSON\UTCDateTime($orig_date * 1000);
 
+
+                      $newScreening = ["_id" => intval($screening_id), "hall_id" => intval($hall_id), "starting_time" => $utcdatetime];
+
+                      array_push($screeningsArray, $newScreening);
+
+                      $bulk->update(['_id' => intval($film_id)], ['$set' => ["screenings" => $screeningsArray]]);
+
+                  }
+
+                  $mng->executeBulkWrite('cinebase.films', $bulk);
+
+
+
+
+
+              } else {
+                  echo "Invalid Hall ID";
               }
-
-              $mng->executeBulkWrite('cinebase.films', $bulk);
 
           }
       } catch (MongoDB\Driver\Exception\Exception $e) {
