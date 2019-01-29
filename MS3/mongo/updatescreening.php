@@ -45,8 +45,8 @@ $temp_starting_time = date("Y-m-d H:i:s", $utc_string);
       <tbody>
       <tr>
         <td>
-          <input id='new_screening_id' name='new_screening_id' type='number' size='20'
-                 value='<?php echo $screening_id; ?>'/>
+            <input id='new_screening_id' name='new_screening_id' type='number' size='20' readonly
+                   value='<?php echo $screening_id; ?>'/>
         </td>
         <td>
           <input id='new_hall_id' name='new_hall_id' type='number' size='20'

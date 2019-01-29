@@ -115,8 +115,8 @@ error_reporting(E_ALL ^ E_NOTICE);
           <tbody>
           <tr>
             <td>
-              <input id='screening_id' name='screening_id' type='text' size='10'
-                     value='<?php echo $highest + 1; ?>'/>
+                <input id='screening_id' name='screening_id' type='text' size='10' readonly
+                       value='<?php echo $highest + 1; ?>'/>
             </td>
             <td>
               <input id='hall_id' name='hall_id' type='text' size='20'

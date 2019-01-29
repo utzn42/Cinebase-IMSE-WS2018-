@@ -35,8 +35,8 @@ $discount_type = $_GET['discount_type'];
       <tbody>
       <tr>
         <td>
-          <input id='new_ticket_id' name='new_ticket_id' type='text' size='20'
-                 value='<?php echo $_GET['ticket_id']; ?>'/>
+            <input id='new_ticket_id' name='new_ticket_id' type='text' size='20' readonly
+                   value='<?php echo $_GET['ticket_id']; ?>'/>
         </td>
         <td>
           <input id='new_screening_id' name='new_screening_id' type='text' size='20' readonly

@@ -97,6 +97,7 @@ $mng = new MongoDB\Driver\Manager("mongodb://localhost:27017");
 
       if (isset($_GET['searchEmail'])) {
           //$sql = "SELECT * FROM ticket INNER JOIN customer ON ticket.customer_id = customer.customer_id WHERE email like '%" . $_GET['searchEmail'] . "%'";
+          //exact, no regex
           $filter = ['email' => $_GET['searchEmail']];
           $query = new MongoDB\Driver\Query($filter);
       } else {
